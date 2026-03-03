@@ -37,7 +37,7 @@ All functionality is unified under a single `/coherence` command with sub-comman
 | `/coherence init [--reset]` | Interactive setup wizard |
 | `/coherence check-drift [scope]` | Compare SPEC docs against codebase |
 | `/coherence check-principles [path]` | Compliance check against CLAUDE.md |
-| `/coherence test [scope]` | Run tests with flexible scope |
+| `/coherence test-runner [scope]` | Run tests with flexible scope |
 | `/coherence config` | Show local project configuration |
 | `/coherence help` | Show available sub-commands |
 

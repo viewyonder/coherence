@@ -88,5 +88,5 @@ Update `settings.local.json` to remove references to deleted hooks.
 │   └── security-auditor.md
 └── skills/
     ├── README.md              # Skill format docs
-    └── coherence/SKILL.md     # Unified: init, check-drift, check-principles, test
+    └── coherence/SKILL.md     # Unified: init, check-drift, check-principles, test-runner
 ```

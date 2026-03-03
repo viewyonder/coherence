@@ -26,7 +26,7 @@ Unified entry point for the Coherence guardrails system.
 | `/coherence init [--reset]` | Interactive setup wizard — generates hooks, agents, skills, CLAUDE.md |
 | `/coherence check-principles [path]` | Architecture compliance review against CLAUDE.md principles |
 | `/coherence check-drift [scope]` | Compare SPEC docs against codebase to detect drift |
-| `/coherence test [scope]` | Run tests with flexible scope control |
+| `/coherence test-runner [scope]` | Run tests with flexible scope control |
 | `/coherence hook` | List installed hooks with enforcement levels and status |
 | `/coherence spec` | List SPEC documents with verification metadata |
 | `/coherence config` | Show local project configuration — hooks, agents, skills, SPEC docs |
@@ -325,7 +325,7 @@ Agents:
   - ...
 
 Skills:
-  - /coherence — unified guardrails command (init, check-drift, check-principles, test)
+  - /coherence — unified guardrails command (init, check-drift, check-principles, test-runner)
 
 SPEC Templates (if selected):
   - docs/SPEC-API-SURFACE.md
@@ -588,7 +588,7 @@ Generate for writing, marketing, and research projects. Customize:
 
 #### TEMPLATE: Skill — coherence/SKILL.md
 
-Generate a unified `/coherence` skill with sub-commands appropriate to the project type. For code projects, include `check-principles`, `check-drift`, and `test` sub-commands. For writing projects, include `check-consistency` and `check-drift` sub-commands. Always include `init` and `help`.
+Generate a unified `/coherence` skill with sub-commands appropriate to the project type. For code projects, include `check-principles`, `check-drift`, and `test-runner` sub-commands. For writing projects, include `check-consistency` and `check-drift` sub-commands. Always include `init` and `help`.
 
 The generated skill should follow the same dispatcher pattern as this skill: parse the first argument to determine which sub-command to run.
 
@@ -716,18 +716,18 @@ A structured markdown drift report showing:
 
 ---
 
-## Sub-command: test
+## Sub-command: test-runner
 
 Run tests with flexible scope control.
 
 ### Usage
 
 ```
-/coherence test                         # Run all tests
-/coherence test api                     # All API tests
-/coherence test core                    # All core system tests
-/coherence test --filter <pattern>      # Run tests matching pattern
-/coherence test --all                   # Run all test suites
+/coherence test-runner                         # Run all tests
+/coherence test-runner api                     # All API tests
+/coherence test-runner core                    # All core system tests
+/coherence test-runner --filter <pattern>      # Run tests matching pattern
+/coherence test-runner --all                   # Run all test suites
 ```
 
 ### Instructions

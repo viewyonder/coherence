@@ -19,7 +19,7 @@ There is 1 skill with 10 sub-commands.
 | `/coherence init [--reset]` | None (interactive wizard) | Setup wizard — generates hooks, agents, skills, CLAUDE.md |
 | `/coherence check-principles [path]` | `architecture-reviewer` agent | Compliance check against CLAUDE.md principles |
 | `/coherence check-drift [scope]` | `drift-detector` agent | Compare SPEC docs against codebase |
-| `/coherence test [scope]` | None (runs test command directly) | Run tests with flexible scope |
+| `/coherence test-runner [scope]` | None (runs test command directly) | Run tests with flexible scope |
 | `/coherence hook` | None (reads config files) | List installed hooks with enforcement levels and status |
 | `/coherence spec` | None (reads SPEC files) | List SPEC documents with verification metadata |
 | `/coherence config` | None (reads config files) | Show local project configuration overview |

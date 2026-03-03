@@ -97,7 +97,7 @@ Then customize manually:
 | `/coherence init [--reset]` | Interactive setup wizard — generates a customized guardrails system |
 | `/coherence check-drift [scope]` | Invoke drift detector, compare specs against code |
 | `/coherence check-principles [path]` | Compliance review of staged changes or a path |
-| `/coherence test [scope]` | Run tests with flexible scope control |
+| `/coherence test-runner [scope]` | Run tests with flexible scope control |
 | `/coherence help` | Show available sub-commands |
 
 ---
