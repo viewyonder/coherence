@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-03-03
+
+### Changed
+
+- **Rename `check-architecture` sub-command to `check-principles`.** The old name suggested structural verification (like `check-drift`), when it actually checks adherence to the *principles* section of CLAUDE.md. The new name makes the distinction immediately clear.
+- Updated all 18 files across SKILL.md (template + plugin), CLAUDE.md, README, SPEC documents, site pages, and changelog data
+- Added "Names Are Load-Bearing" blog post explaining the rationale
+
 ## [1.2.1] - 2026-03-03
 
 ### Fixed

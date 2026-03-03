@@ -14,7 +14,7 @@ There are 5 agents. All are read-only (no Write or Edit access).
 
 | Agent | File | Model | Invoked By |
 |-------|------|-------|------------|
-| architecture-reviewer | `template/.claude/agents/architecture-reviewer.md` | sonnet | `/coherence check-architecture` |
+| architecture-reviewer | `template/.claude/agents/architecture-reviewer.md` | sonnet | `/coherence check-principles` |
 | drift-detector | `template/.claude/agents/drift-detector.md` | sonnet | `/coherence check-drift` |
 | code-reviewer | `template/.claude/agents/code-reviewer.md` | sonnet | Automatic (significant code changes) |
 | consistency-reviewer | `template/.claude/agents/consistency-reviewer.md` | sonnet | Manual invocation / content review |

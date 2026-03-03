@@ -24,7 +24,7 @@ Unified entry point for the Coherence guardrails system.
 | Command | What It Does |
 |---------|--------------|
 | `/coherence init [--reset]` | Interactive setup wizard — generates hooks, agents, skills, CLAUDE.md |
-| `/coherence check-architecture [path]` | Architecture compliance review against CLAUDE.md principles |
+| `/coherence check-principles [path]` | Architecture compliance review against CLAUDE.md principles |
 | `/coherence check-drift [scope]` | Compare SPEC docs against codebase to detect drift |
 | `/coherence test [scope]` | Run tests with flexible scope control |
 | `/coherence status [--prune]` | Show install state and registry contents |
@@ -322,7 +322,7 @@ Agents:
   - ...
 
 Skills:
-  - /coherence — unified guardrails command (init, check-drift, check-architecture, test)
+  - /coherence — unified guardrails command (init, check-drift, check-principles, test)
 
 SPEC Templates (if selected):
   - docs/SPEC-API-SURFACE.md
@@ -585,7 +585,7 @@ Generate for writing, marketing, and research projects. Customize:
 
 #### TEMPLATE: Skill — coherence/SKILL.md
 
-Generate a unified `/coherence` skill with sub-commands appropriate to the project type. For code projects, include `check-architecture`, `check-drift`, and `test` sub-commands. For writing projects, include `check-consistency` and `check-drift` sub-commands. Always include `init` and `help`.
+Generate a unified `/coherence` skill with sub-commands appropriate to the project type. For code projects, include `check-principles`, `check-drift`, and `test` sub-commands. For writing projects, include `check-consistency` and `check-drift` sub-commands. Always include `init` and `help`.
 
 The generated skill should follow the same dispatcher pattern as this skill: parse the first argument to determine which sub-command to run.
 
@@ -601,7 +601,7 @@ After generating all files:
 4. **Report results** to the user
 
 Suggest next steps:
-- "Run `/coherence check-architecture` to validate your codebase against the new principles"
+- "Run `/coherence check-principles` to validate your codebase against the new principles"
 - "Run `/coherence check-drift` to verify SPEC docs against the codebase"
 - "Run `/coherence status` to see the install state and registry"
 - "Edit `CLAUDE.md` to refine the principles for your specific needs"
@@ -635,16 +635,16 @@ No confirmation needed — this is a non-destructive bookkeeping step.
 
 ---
 
-## Sub-command: check-architecture
+## Sub-command: check-principles
 
 Runs an architecture compliance check against the principles documented in CLAUDE.md.
 
 ### Usage
 
 ```
-/coherence check-architecture              # Check staged changes
-/coherence check-architecture src/api/     # Check specific path
-/coherence check-architecture --all        # Check entire codebase
+/coherence check-principles              # Check staged changes
+/coherence check-principles src/api/     # Check specific path
+/coherence check-principles --all        # Check entire codebase
 ```
 
 ### Instructions

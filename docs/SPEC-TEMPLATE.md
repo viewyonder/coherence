@@ -36,7 +36,7 @@ template/
 │   │   └── security-auditor.md
 │   └── skills/
 │       ├── README.md                  # Skill documentation
-│       └── coherence/SKILL.md         # Unified: init, check-drift, check-architecture, test
+│       └── coherence/SKILL.md         # Unified: init, check-drift, check-principles, test
 ├── docs/
 │   ├── SPEC-TEMPLATE.md              # Blank SPEC template for adopters
 │   └── MEMORY.md                     # Memory document template

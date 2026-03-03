@@ -3,6 +3,10 @@
  * Edit the `text` fields to be human-friendly — these are displayed as-is.
  */
 export const changelog = [
+  // --- 2026-03-03 (v1.3.1) ---
+  { date: '2026-03-03', text: 'Rename check-architecture to check-principles — name now reflects what the sub-command actually checks' },
+  { date: '2026-03-03', text: 'Add "Names Are Load-Bearing" blog post on the rename rationale' },
+
   // --- 2026-03-03 (v1.3.0) ---
   { date: '2026-03-03', text: 'Add /coherence status sub-command — show install state, registered repos, and stale entries' },
   { date: '2026-03-03', text: 'Add /coherence uninstall sub-command — clean local hooks and optionally remove global config' },
