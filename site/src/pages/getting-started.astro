@@ -271,7 +271,7 @@ import Base from '../layouts/Base.astro';
           <div class="file-tree-item depth-2">drift-detector.md <span class="file-desc">— compare spec vs code</span></div>
           <div class="file-tree-item depth-1"><span class="file-icon">&#128193;</span> skills/</div>
           <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> coherence/ <span class="file-desc">— /coherence command + sub-commands</span></div>
-          <div class="file-tree-item depth-3 file-muted">init &middot; check-architecture &middot; check-drift &middot; test &middot; help</div>
+          <div class="file-tree-item depth-3 file-muted">init &middot; check-architecture &middot; check-drift &middot; test &middot; status &middot; uninstall &middot; help</div>
         </div>
       </section>
 
@@ -363,6 +363,10 @@ import Base from '../layouts/Base.astro';
           <div class="next-step">
             <code>/coherence check-drift</code>
             <p>After creating SPEC documents, run this to verify they match reality.</p>
+          </div>
+          <div class="next-step">
+            <code>/coherence status</code>
+            <p>See where Coherence is installed, check for stale registry entries, and verify global config.</p>
           </div>
           <div class="next-step">
             <span class="next-step-label">Review hook configs</span>

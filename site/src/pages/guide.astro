@@ -144,7 +144,7 @@ import Base from '../layouts/Base.astro';
         </div>
 
         <div class="callout">
-          <strong>Lifecycle summary:</strong> Install &rarr; Setup &rarr; Develop (hooks active) &rarr; Periodically check drift.
+          <strong>Lifecycle summary:</strong> Install &rarr; Setup &rarr; Develop (hooks active) &rarr; Periodically check drift &rarr; Uninstall when done.
         </div>
       </section>
 
@@ -300,6 +300,13 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-detail">
               <strong>Working in a worktree</strong>
               <p>Worktrees (via Claude Code's <code>/worktree</code> or <code>git worktree</code>) give you an isolated copy of the repo. Your <code>.claude/</code> directory is part of the repo, so hooks and settings travel with the worktree automatically. No extra setup needed &mdash; <code>/coherence check-drift</code> and <code>/coherence check-architecture</code> work the same in a worktree as in the main tree.</p>
+            </div>
+          </div>
+          <div class="lifecycle-step">
+            <div class="lifecycle-badge lifecycle-scenario">cleanup</div>
+            <div class="lifecycle-detail">
+              <strong>Removing Coherence from a repo</strong>
+              <p>Run <code>/coherence uninstall</code> to clean hook registrations from <code>settings.local.json</code> and remove the repo from the global registry. Your <code>.claude/hooks/</code>, agents, skills, and <code>CLAUDE.md</code> are left intact &mdash; they're your customized content. If this was the last repo using Coherence, global plugin config is cleaned up too. Use <code>/coherence status</code> first to see what's installed where.</p>
             </div>
           </div>
         </div>
