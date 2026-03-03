@@ -270,8 +270,8 @@ import Base from '../layouts/Base.astro';
           <div class="file-tree-item depth-2">architecture-reviewer.md <span class="file-desc">— validate against principles</span></div>
           <div class="file-tree-item depth-2">drift-detector.md <span class="file-desc">— compare spec vs code</span></div>
           <div class="file-tree-item depth-1"><span class="file-icon">&#128193;</span> skills/</div>
-          <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> check-drift/</div>
-          <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> check-architecture/</div>
+          <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> coherence/ <span class="file-desc">— /coherence command + sub-commands</span></div>
+          <div class="file-tree-item depth-3 file-muted">init &middot; check-architecture &middot; check-drift &middot; test &middot; help</div>
         </div>
       </section>
 
@@ -657,6 +657,7 @@ import Base from '../layouts/Base.astro';
   .depth-0 { padding-left: 0; }
   .depth-1 { padding-left: 1.5rem; }
   .depth-2 { padding-left: 3rem; }
+  .depth-3 { padding-left: 4.5rem; }
 
   .file-icon {
     margin-right: 0.4rem;

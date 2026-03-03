@@ -3,6 +3,11 @@
  * Edit the `text` fields to be human-friendly — these are displayed as-is.
  */
 export const changelog = [
+  // --- 2026-03-03 (v1.2.1) ---
+  { date: '2026-03-03', text: 'Add missing Consistency Reviewer to homepage agent cards' },
+  { date: '2026-03-03', text: 'Show all 5 /coherence sub-commands on homepage' },
+  { date: '2026-03-03', text: 'Fix Getting Started file tree to show consolidated skills/coherence/ directory' },
+
   // --- 2026-03-03 (v1.2.0) ---
   { date: '2026-03-03', text: 'Consolidate all skills under /coherence with sub-commands: init, check-drift, check-architecture, test, help' },
   { date: '2026-03-03', text: 'Wizard-generated projects now produce a single unified skill instead of three separate skills' },

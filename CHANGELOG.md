@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2026-03-03
+
+### Fixed
+
+- Add missing Consistency Reviewer to homepage agent cards (5 agents now shown, matching template)
+- Update homepage sub-commands list to show all 5 `/coherence` sub-commands
+- Fix Getting Started file tree to show consolidated `skills/coherence/` instead of old separate skill directories
+
 ## [1.2.0] - 2026-03-03
 
 ### Changed

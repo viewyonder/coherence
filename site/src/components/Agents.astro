@@ -19,6 +19,12 @@ const agents = [
     access: 'Read-only',
   },
   {
+    name: 'Consistency Reviewer',
+    type: 'Review',
+    desc: 'Terminology, voice, structure, and cross-reference checks for writing, docs, and brand content.',
+    access: 'Read-only',
+  },
+  {
     name: 'Security Auditor',
     type: 'Review',
     desc: 'OWASP Top 10 focused. Severity-classified with exploit scenarios and fix recommendations.',
@@ -28,16 +34,24 @@ const agents = [
 
 const skills = [
   {
-    command: '/coherence check-drift',
-    desc: 'Invoke drift detector, compare specs against code',
+    command: '/coherence',
+    desc: 'Interactive setup wizard (alias for init)',
   },
   {
     command: '/coherence check-architecture',
     desc: 'Compliance review of staged changes or a path',
   },
   {
+    command: '/coherence check-drift',
+    desc: 'Compare SPEC docs against codebase reality',
+  },
+  {
     command: '/coherence test',
     desc: 'Run tests with flexible scope control',
+  },
+  {
+    command: '/coherence help',
+    desc: 'Show available sub-commands',
   },
 ];
 ---
@@ -64,7 +78,7 @@ const skills = [
         ))}
       </div>
 
-      <h3 class="skills-title">Included Skills</h3>
+      <h3 class="skills-title">Sub-commands</h3>
       <div class="skills-list">
         {skills.map((skill) => (
           <div class="skill-item">
