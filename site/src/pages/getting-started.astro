@@ -63,6 +63,14 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
 
+        <div class="callout callout-warn">
+          <strong>Use user scope (the default).</strong>
+          When Claude Code prompts you for a scope, choose <code>user</code> — or just press Enter to accept the default.
+          Coherence is designed to work across all your projects: you install the plugin once, then run <code>/coherence</code> in each repo to generate project-specific guardrails.
+          If you install with <code>local</code> scope, the plugin is locked to a single project and you'll get an "already installed" error when you try to install it elsewhere.
+          See <a href="/plugins#installing">Plugin scopes</a> for details.
+        </div>
+
         <h3>3. Run <code>/coherence</code></h3>
         <p>Open Claude Code in your project and run:</p>
         <div class="terminal">
@@ -615,6 +623,10 @@ import Base from '../layouts/Base.astro';
 
   .callout strong {
     color: var(--text-primary);
+  }
+
+  .callout-warn {
+    border-left-color: var(--amber, #ffa600);
   }
 
   /* File tree */

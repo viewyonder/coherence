@@ -316,12 +316,19 @@ import Base from '../layouts/Base.astro';
             <span class="comment"># Add the marketplace</span><br />
             <span class="prompt">&gt;</span> /plugin marketplace add viewyonder/coherence<br />
             <br />
-            <span class="comment"># Install the plugin</span><br />
+            <span class="comment"># Install the plugin (accept the default "user" scope)</span><br />
             <span class="prompt">&gt;</span> /plugin install coherence<br />
             <br />
-            <span class="comment"># Run the wizard</span><br />
+            <span class="comment"># Run the wizard in any project</span><br />
             <span class="prompt">&gt;</span> /coherence
           </div>
+        </div>
+
+        <div class="callout callout-warn">
+          <strong>Scope matters.</strong>
+          When prompted for a scope, choose <code>user</code> (the default).
+          Coherence is a multi-repo tool &mdash; you install the plugin once at user scope, then run <code>/coherence</code> in each project to generate per-project guardrails.
+          Installing with <code>local</code> scope locks the plugin to a single project. You'll get an "already installed" error when you try to add it to a second repo.
         </div>
 
         <div class="cta-block">
@@ -435,6 +442,10 @@ import Base from '../layouts/Base.astro';
 
   .callout strong {
     color: var(--text-primary);
+  }
+
+  .callout-warn {
+    border-left-color: var(--amber, #ffa600);
   }
 
   /* Comparison table */

@@ -7,7 +7,7 @@ export interface FAQ {
 export const faqs: FAQ[] = [
   {
     question: "Are plugins device-wide or project-specific?",
-    answer: `Plugins can be installed at three scopes: <strong>user</strong> (available in all your projects, stored in <code>~/.claude/plugins/</code>), <strong>project</strong> (shared via git, stored in <code>.claude/plugins/</code>), or <strong>local</strong> (project-specific and gitignored). Use <code>--scope project</code> to share guardrails with your team automatically.`,
+    answer: `Plugins can be installed at three scopes: <strong>user</strong> (available in all your projects, stored in <code>~/.claude/plugins/</code>), <strong>project</strong> (shared via git, stored in <code>.claude/plugins/</code>), or <strong>local</strong> (project-specific and gitignored). <strong>For Coherence, use user scope (the default).</strong> Coherence is designed to work across multiple repos — you install the plugin once, then run <code>/coherence</code> in each project. If you install with <code>local</code> scope, the plugin is locked to one project and you'll get an "already installed" error in other repos. Use <code>--scope project</code> only if you want to share the plugin config with your team via git.`,
     tags: ["plugins"],
   },
   {
