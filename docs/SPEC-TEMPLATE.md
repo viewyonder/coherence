@@ -36,10 +36,7 @@ template/
 │   │   └── security-auditor.md
 │   └── skills/
 │       ├── README.md                  # Skill documentation
-│       ├── check-drift/SKILL.md
-│       ├── check-architecture/SKILL.md
-│       ├── test/SKILL.md
-│       └── coherence/SKILL.md
+│       └── coherence/SKILL.md         # Unified: init, check-drift, check-architecture, test
 ├── docs/
 │   ├── SPEC-TEMPLATE.md              # Blank SPEC template for adopters
 │   └── MEMORY.md                     # Memory document template
@@ -101,8 +98,8 @@ These constraints are falsifiable — each can be verified mechanically.
 1. **No raw placeholders in examples**: Example `CLAUDE.md` files contain zero `{{` markers. Verified by: `grep "{{" examples/*/CLAUDE.md` should return no results.
 2. **Template retains placeholders**: `template/CLAUDE.md` contains `{{PLACEHOLDER}}` markers. Verified by: `grep "{{" template/CLAUDE.md | wc -l` should be > 0.
 3. **Hook-settings alignment**: Every hook referenced in a generated `settings.local.json` has a corresponding file in `template/.claude/hooks/`. (Adopters verify this after running `/coherence`.)
-4. **Template completeness**: The template directory contains all 11 hooks, 5 agents, and 4 skills listed in the SPEC documents. Verified by: file counts match SPEC-HOOKS, SPEC-AGENTS, and SPEC-SKILLS.
+4. **Template completeness**: The template directory contains all 11 hooks, 5 agents, and 1 skill (with sub-commands) listed in the SPEC documents. Verified by: file counts match SPEC-HOOKS, SPEC-AGENTS, and SPEC-SKILLS.
 
 ---
 
-*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/check-drift` to detect discrepancies.*
+*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence check-drift` to detect discrepancies.*

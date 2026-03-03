@@ -193,7 +193,7 @@ These SPEC docs are the **authoritative source of truth** for the codebase. They
 
 - **If code contradicts a SPEC doc**: Update the SPEC and call it out in the PR description.
 - **When adding features**: Update the relevant SPEC doc as part of the change.
-- **Run `/check-drift`** periodically to detect undocumented changes.
+- **Run `/coherence check-drift`** periodically to detect undocumented changes.
 
 ---
 

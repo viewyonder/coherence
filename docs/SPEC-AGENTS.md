@@ -14,8 +14,8 @@ There are 5 agents. All are read-only (no Write or Edit access).
 
 | Agent | File | Model | Invoked By |
 |-------|------|-------|------------|
-| architecture-reviewer | `template/.claude/agents/architecture-reviewer.md` | sonnet | `/check-architecture` skill |
-| drift-detector | `template/.claude/agents/drift-detector.md` | sonnet | `/check-drift` skill |
+| architecture-reviewer | `template/.claude/agents/architecture-reviewer.md` | sonnet | `/coherence check-architecture` |
+| drift-detector | `template/.claude/agents/drift-detector.md` | sonnet | `/coherence check-drift` |
 | code-reviewer | `template/.claude/agents/code-reviewer.md` | sonnet | Automatic (significant code changes) |
 | consistency-reviewer | `template/.claude/agents/consistency-reviewer.md` | sonnet | Manual invocation / content review |
 | security-auditor | `template/.claude/agents/security-auditor.md` | sonnet | Manual invocation (security-critical code) |
@@ -48,7 +48,7 @@ model: sonnet
 Validates code against architectural principles defined in CLAUDE.md. Checks boundary rules, state flow principles, security constraints, and runtime limitations. Use proactively when reviewing changes or before merging PRs.
 
 ### drift-detector
-Compares SPEC documents against the actual codebase to detect architectural drift. Reads every SPEC document, verifies falsifiable claims against code, and produces a CURRENT/DRIFTED/UNDOCUMENTED report. Used by the `/check-drift` skill.
+Compares SPEC documents against the actual codebase to detect architectural drift. Reads every SPEC document, verifies falsifiable claims against code, and produces a CURRENT/DRIFTED/UNDOCUMENTED report. Used by `/coherence check-drift`.
 
 ### code-reviewer
 Expert code review specialist. Reviews for quality, security vulnerabilities, and best practices. Use proactively after significant code changes.
@@ -70,4 +70,4 @@ These constraints are falsifiable — each can be verified mechanically.
 
 ---
 
-*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/check-drift` to detect discrepancies.*
+*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence check-drift` to detect discrepancies.*

@@ -1,11 +1,32 @@
 ---
 name: coherence
-description: Interactive setup wizard that generates a complete .claude/ guardrails system customized to your project — hooks, agents, skills, CLAUDE.md, and settings.
+description: Coherence guardrails system — init wizard, architecture review, drift detection, and test runner.
 user_invocable: true
-arguments: "[--reset]"
+arguments: "<sub-command> [options]"
 ---
 
-# /coherence — Project Guardrails Setup
+# /coherence
+
+Unified entry point for the Coherence guardrails system.
+
+## Sub-commands
+
+| Command | What It Does |
+|---------|--------------|
+| `/coherence init [--reset]` | Interactive setup wizard — generates hooks, agents, skills, CLAUDE.md |
+| `/coherence check-architecture [path]` | Architecture compliance review against CLAUDE.md principles |
+| `/coherence check-drift [scope]` | Compare SPEC docs against codebase to detect drift |
+| `/coherence test [scope]` | Run tests with flexible scope control |
+| `/coherence help` | Show this help |
+
+## Dispatch
+
+Parse the first argument to determine which sub-command to run.
+If no argument or `help`: show the sub-commands table above and stop.
+
+---
+
+## Sub-command: init
 
 You are running the Coherence setup wizard. Your job is to guide the user through setting up a complete `.claude/` guardrails system customized to their project.
 
@@ -19,7 +40,7 @@ You are running the Coherence setup wizard. Your job is to guide the user throug
 
 ---
 
-## Pre-Phase: Dogfood Detection
+### Pre-Phase: Dogfood Detection
 
 Before starting the wizard, check whether you are running inside the coherence repo itself. Check **all four** of these conditions:
 
@@ -31,11 +52,11 @@ Before starting the wizard, check whether you are running inside the coherence r
 **If all four are true** → skip the wizard entirely and run **Dogfood Validation Mode** (described below).
 **Otherwise** → proceed to Phase 0 normally.
 
-### Dogfood Validation Mode
+#### Dogfood Validation Mode
 
 This is a read-only validation of the coherence repo's own templates, hooks, examples, and documentation. Do not generate or modify any files. Run each check below and produce a structured report.
 
-#### Checks
+##### Checks
 
 | # | Check | What to Do |
 |---|-------|------------|
@@ -46,7 +67,7 @@ This is a read-only validation of the coherence repo's own templates, hooks, exa
 | 5 | **Plugin Structure** | Validate that `plugin.json` (if present) and both `marketplace.json` files (root and `.claude-plugin/`) are valid JSON with matching `name` fields. Report any parse errors or mismatches. |
 | 6 | **SKILL.md Consistency** | Verify that the plugin copy (`plugins/coherence-plugin/skills/coherence/SKILL.md`) and the template copy (`template/.claude/skills/coherence/SKILL.md`) are identical. Report any differences. |
 
-#### Output Format
+##### Output Format
 
 Present results as a structured report:
 
@@ -69,11 +90,11 @@ After producing the report, stop. Do not proceed to Phase 0 or any wizard phases
 
 ---
 
-## Phase 0: Project Scan
+### Phase 0: Project Scan
 
 Before asking any questions, silently scan the project to inform your questions.
 
-### Scan checklist:
+#### Scan checklist:
 1. **Package/project files**: Look for `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `Gemfile`, `*.csproj`/`*.sln`, `Makefile`, `CMakeLists.txt`, `build.gradle`, `pom.xml`, `deno.json`, `bun.lockb`
 2. **Framework indicators**: Look for `next.config.*`, `nuxt.config.*`, `vite.config.*`, `astro.config.*`, `svelte.config.*`, `angular.json`, `remix.config.*`, `gatsby-config.*`, `django`, `flask`, `fastapi`, `express`, `rails`, `spring`
 3. **Content indicators**: Count `.md` files, look for `/blog/`, `/docs/`, `/content/`, `/posts/`, `/articles/`
@@ -87,7 +108,7 @@ Before asking any questions, silently scan the project to inform your questions.
 
 Use Glob and Read tools to perform this scan. Store the findings — you'll use them to pre-select answers.
 
-### Idempotency check
+#### Idempotency check
 
 If `.claude/` already exists:
 - Ask whether to **overwrite** (replace everything), **merge** (add missing files, keep existing), or **abort**
@@ -95,9 +116,9 @@ If `.claude/` already exists:
 
 ---
 
-## Phase 1: Project Classification
+### Phase 1: Project Classification
 
-### Q1: Project Type
+#### Q1: Project Type
 
 Ask using `AskUserQuestion`:
 
@@ -114,7 +135,7 @@ Options (pre-select based on scan):
 
 If scan clearly indicates a type (e.g., `next.config.js` exists → Web application), note this as "(detected)" in the description.
 
-### Q2: Stack Confirmation (conditional)
+#### Q2: Stack Confirmation (conditional)
 
 Based on Q1 + scan results, ask a confirmation/refinement question:
 
@@ -149,11 +170,11 @@ Based on Q1 + scan results, ask a confirmation/refinement question:
 
 ---
 
-## Phase 2: Constraint Discovery
+### Phase 2: Constraint Discovery
 
 Ask 2-3 questions adapted to the project type.
 
-### For Web Application
+#### For Web Application
 
 **Q3**: "What are the critical boundaries in your architecture?"
 - Frontend / backend separation (monorepo or separate)
@@ -173,7 +194,7 @@ Ask 2-3 questions adapted to the project type.
 - Suggested but not required
 - No test infrastructure yet
 
-### For API / Backend Service
+#### For API / Backend Service
 
 **Q3**: "What data boundaries matter?"
 - Multi-tenant data isolation
@@ -192,7 +213,7 @@ Ask 2-3 questions adapted to the project type.
 - Suggested but not required
 - No test infrastructure yet
 
-### For CLI Tool / Library
+#### For CLI Tool / Library
 
 **Q3**: "What boundaries matter most?"
 - Public API surface vs internals
@@ -205,7 +226,7 @@ Ask 2-3 questions adapted to the project type.
 - Suggested but not required
 - No test infrastructure yet
 
-### For Infrastructure / DevOps
+#### For Infrastructure / DevOps
 
 **Q3**: "What safety constraints matter?"
 - Environment separation (dev/staging/prod)
@@ -219,7 +240,7 @@ Ask 2-3 questions adapted to the project type.
 - Both
 - Warnings only, no blocking
 
-### For Writing / Content
+#### For Writing / Content
 
 **Q3**: "What consistency matters most?" (multi-select)
 - Terminology (product names, technical terms)
@@ -232,7 +253,7 @@ Ask 2-3 questions adapted to the project type.
 - Warn but allow (editorial suggestions)
 - Informational only (gentle nudges)
 
-### For Marketing / Brand
+#### For Marketing / Brand
 
 **Q3**: "What brand constraints exist?"
 - Specific terminology required (product names, taglines)
@@ -245,7 +266,7 @@ Ask 2-3 questions adapted to the project type.
 - Warn but allow
 - Informational only
 
-### For Research / Analysis
+#### For Research / Analysis
 
 **Q3**: "What rigor requirements apply?"
 - Citation format consistency
@@ -260,7 +281,7 @@ Ask 2-3 questions adapted to the project type.
 
 ---
 
-## Phase 3: Enforcement Preferences
+### Phase 3: Enforcement Preferences
 
 **Q6**: "Should I generate SPEC documents alongside the guardrails?"
 - Yes — generate SPEC templates for this project type
@@ -268,31 +289,29 @@ Ask 2-3 questions adapted to the project type.
 
 ---
 
-## Phase 4: Summary & Confirmation
+### Phase 4: Summary & Confirmation
 
 Present a summary of what will be generated:
 
 ```
 Based on your answers, I'll generate:
 
-📄 CLAUDE.md — Customized development guidelines
-⚙️ .claude/settings.local.json — Hook registrations
+CLAUDE.md — Customized development guidelines
+.claude/settings.local.json — Hook registrations
 
-🪝 Hooks:
+Hooks:
   - forbidden-imports.cjs (blocking) — prevents [specific things]
   - boundary-guard.cjs (blocking) — enforces [specific boundaries]
   - ...
 
-🤖 Agents:
+Agents:
   - architecture-reviewer.md — validates against CLAUDE.md principles
   - ...
 
-🎯 Skills:
-  - /check-drift — compare spec docs against codebase
-  - /check-architecture — run architecture review
-  - ...
+Skills:
+  - /coherence — unified guardrails command (init, check-drift, check-architecture, test)
 
-📋 SPEC Templates (if selected):
+SPEC Templates (if selected):
   - docs/SPEC-API-SURFACE.md
   - ...
 
@@ -303,7 +322,7 @@ Ask for confirmation before proceeding.
 
 ---
 
-## Phase 5: Generate Files
+### Phase 5: Generate Files
 
 Generate all files based on the archetype and user answers. Use the templates below as starting points, customizing based on the specific answers.
 
@@ -316,9 +335,9 @@ Generate all files based on the archetype and user answers. Use the templates be
 
 ---
 
-## Archetype Templates
+### Archetype Templates
 
-### TEMPLATE: settings.local.json
+#### TEMPLATE: settings.local.json
 
 Generate based on which hooks are selected. Structure:
 
@@ -359,7 +378,7 @@ Generate based on which hooks are selected. Structure:
 }
 ```
 
-### TEMPLATE: CLAUDE.md for Code Projects
+#### TEMPLATE: CLAUDE.md for Code Projects
 
 Use the template structure from the guardrails repo but fill in ALL placeholders with project-specific values. Key sections:
 
@@ -370,7 +389,7 @@ Use the template structure from the guardrails repo but fill in ALL placeholders
 - **Runtime Constraints**: Based on detected/confirmed runtime
 - **Testing**: Use detected test runner and commands
 
-### TEMPLATE: CLAUDE.md for Writing/Content Projects
+#### TEMPLATE: CLAUDE.md for Writing/Content Projects
 
 Adapt the structure for non-code projects:
 
@@ -404,7 +423,7 @@ Adapt the structure for non-code projects:
 [How content gets reviewed, who approves]
 ```
 
-### TEMPLATE: CLAUDE.md for Marketing/Brand Projects
+#### TEMPLATE: CLAUDE.md for Marketing/Brand Projects
 
 ```markdown
 # [Brand Name] - Content Guidelines
@@ -431,7 +450,7 @@ Adapt the structure for non-code projects:
 [Who reviews what]
 ```
 
-### TEMPLATE: CLAUDE.md for Research Projects
+#### TEMPLATE: CLAUDE.md for Research Projects
 
 ```markdown
 # [Project Name] - Research Guidelines
@@ -456,7 +475,7 @@ Adapt the structure for non-code projects:
 [Paper structure, report templates, presentation conventions]
 ```
 
-### TEMPLATE: Hook — forbidden-imports.cjs
+#### TEMPLATE: Hook — forbidden-imports.cjs
 
 Customize the `FORBIDDEN_PATTERNS` array based on the project's runtime:
 
@@ -468,7 +487,7 @@ Customize the `FORBIDDEN_PATTERNS` array based on the project's runtime:
 
 Set `SKIP_PATHS` based on detected project structure.
 
-### TEMPLATE: Hook — boundary-guard.cjs
+#### TEMPLATE: Hook — boundary-guard.cjs
 
 Customize `GUARDED_PATHS` based on user's boundary answers:
 
@@ -477,166 +496,89 @@ Customize `GUARDED_PATHS` based on user's boundary answers:
 - **Library**: Guard public API surface from internal imports, guard core from platform-specific code
 - **Infra**: Guard production configs from dev-only settings
 
-### TEMPLATE: Hook — state-flow.cjs
+#### TEMPLATE: Hook — state-flow.cjs
 
 Only generate for web applications with state management. Customize:
 - `STORE_PATHS`: Based on detected state management (Redux, Zustand, Pinia, Svelte stores, etc.)
 - `UI_PATHS`: Based on detected component structure
 - `MUTATION_PATTERNS`: Based on the state management library's patterns
 
-### TEMPLATE: Hook — data-isolation.cjs
+#### TEMPLATE: Hook — data-isolation.cjs
 
 Only generate for multi-tenant or user-scoped data applications. Customize:
 - `DB_CALL_PATTERN`: Based on detected ORM/database library (Prisma, Drizzle, Sequelize, SQLAlchemy, etc.)
 - `REQUIRED_FILTERS`: Based on user's isolation model (tenant_id, user_id, org_id, etc.)
 - `CHECK_PATHS`: Based on detected source structure
 
-### TEMPLATE: Hook — delegation-check.js
+#### TEMPLATE: Hook — delegation-check.js
 
 Only generate for API/backend projects. Customize:
 - Handler paths based on detected routing structure
 - Business logic indicators based on the framework
 
-### TEMPLATE: Hook — required-prefix.cjs
+#### TEMPLATE: Hook — required-prefix.cjs
 
 Only generate for API projects with route prefix conventions. Customize:
 - Prefix pattern based on the API structure (`/api/v1/`, `/v2/`, etc.)
 - Route file locations
 
-### TEMPLATE: Hook — test-gate.cjs
+#### TEMPLATE: Hook — test-gate.cjs
 
 Only generate if user chose strict test enforcement. Customize:
 - Test command based on detected test runner
 - Coverage thresholds if applicable
 
-### TEMPLATE: Hook — test-suggest.cjs
+#### TEMPLATE: Hook — test-suggest.cjs
 
 Generate for code projects. Customize:
 - `TEST_LOCATIONS` based on detected project structure
 - `TEST_COMMAND` based on detected test runner
 
-### TEMPLATE: Hook — change-suggest.cjs
+#### TEMPLATE: Hook — change-suggest.cjs
 
 Generate for code projects. Customize:
 - `WATCH_RULES` based on project-specific critical paths
 
-### TEMPLATE: Hook — terminology-check.cjs
+#### TEMPLATE: Hook — terminology-check.cjs
 
 Generate for writing, marketing, and brand projects. Customize:
 - `TERMINOLOGY_RULES` populated with terms from the user's answers
 - `CHECK_EXTENSIONS` based on content types
 - `ENFORCEMENT` based on strictness preference
 
-### TEMPLATE: Hook — style-guard.cjs
+#### TEMPLATE: Hook — style-guard.cjs
 
 Generate for writing, marketing, research, and content projects. Customize:
 - `STYLE_RULES` based on voice/tone requirements
 - `STRUCTURE_RULES` based on document conventions
 - `CITATION_RULES` for research projects
 
-### TEMPLATE: Agent — architecture-reviewer.md
+#### TEMPLATE: Agent — architecture-reviewer.md
 
 Generate for code projects. Customize:
 - Review categories based on the project type
 - Anti-patterns specific to the framework/stack
 
-### TEMPLATE: Agent — drift-detector.md
+#### TEMPLATE: Agent — drift-detector.md
 
 Generate for projects with SPEC documents. Customize:
 - SPEC document list based on what was generated
 
-### TEMPLATE: Agent — consistency-reviewer.md
+#### TEMPLATE: Agent — consistency-reviewer.md
 
 Generate for writing, marketing, and research projects. Customize:
 - Review categories based on content type
 - Consistency checks specific to the domain
 
-### TEMPLATE: Skill — check-drift/SKILL.md
+#### TEMPLATE: Skill — coherence/SKILL.md
 
-Generate for projects with SPEC documents. Customize:
-- Scope options based on project type
-- SPEC document table
+Generate a unified `/coherence` skill with sub-commands appropriate to the project type. For code projects, include `check-architecture`, `check-drift`, and `test` sub-commands. For writing projects, include `check-consistency` and `check-drift` sub-commands. Always include `init` and `help`.
 
-### TEMPLATE: Skill — check-architecture/SKILL.md
-
-Generate for code projects. Standard structure:
-
-```markdown
----
-name: check-architecture
-description: Run an architecture review against CLAUDE.md principles.
-user_invocable: true
-arguments: "[path or --staged]"
----
-
-# /check-architecture
-
-Run the architecture-reviewer agent to validate code against documented principles.
-
-## Usage
-/check-architecture              # Review recent changes
-/check-architecture src/api/     # Review specific path
-/check-architecture staged       # Review staged changes
-
-## Instructions
-Use the `architecture-reviewer` agent to perform the review. Pass the path argument.
-```
-
-### TEMPLATE: Skill — check-consistency/SKILL.md
-
-Generate for writing/marketing/research projects:
-
-```markdown
----
-name: check-consistency
-description: Review content for terminology, voice, and structural consistency.
-user_invocable: true
-arguments: "[path or --all]"
----
-
-# /check-consistency
-
-Run the consistency-reviewer agent to check content consistency.
-
-## Usage
-/check-consistency              # Review all content
-/check-consistency docs/        # Review specific directory
-/check-consistency staged       # Review staged changes
-
-## Instructions
-Use the `consistency-reviewer` agent to perform the review. Pass the path argument.
-```
-
-### TEMPLATE: Skill — test/SKILL.md
-
-Generate for code projects with test infrastructure:
-
-```markdown
----
-name: test
-description: Run tests with coverage reporting.
-user_invocable: true
-arguments: "[path or test name filter]"
----
-
-# /test
-
-Run the project's test suite.
-
-## Usage
-/test                    # Run all tests
-/test src/api/           # Run tests for specific path
-/test auth               # Run tests matching "auth"
-
-## Instructions
-Run the test command: `[DETECTED_TEST_COMMAND]`
-If a path is provided, filter to that path.
-Report results and any failures.
-```
+The generated skill should follow the same dispatcher pattern as this skill: parse the first argument to determine which sub-command to run.
 
 ---
 
-## Phase 6: Verify
+### Phase 6: Verify
 
 After generating all files:
 
@@ -646,17 +588,149 @@ After generating all files:
 4. **Report results** to the user
 
 Suggest next steps:
-- "Run `/check-architecture` to validate your codebase against the new principles"
-- "Run `/check-consistency` to review content against the new guidelines"
+- "Run `/coherence check-architecture` to validate your codebase against the new principles"
+- "Run `/coherence check-drift` to verify SPEC docs against the codebase"
 - "Edit `CLAUDE.md` to refine the principles for your specific needs"
 - "Review the hook configuration blocks (marked `// === CONFIGURATION ===`) to fine-tune patterns"
 - "Create SPEC documents in `docs/` for drift detection"
 
 ---
 
-## Error Handling
+### Error Handling
 
 - If scan finds nothing recognizable: ask the user to describe their project manually
 - If user picks "Other" for project type: ask them to describe it, then map to the closest archetype and customize
 - If a generated hook fails syntax check: fix it immediately and re-verify
 - If the project has an unusual structure: adapt paths in hooks rather than forcing a conventional structure
+
+---
+
+## Sub-command: check-architecture
+
+Runs an architecture compliance check against the principles documented in CLAUDE.md.
+
+### Usage
+
+```
+/coherence check-architecture              # Check staged changes
+/coherence check-architecture src/api/     # Check specific path
+/coherence check-architecture --all        # Check entire codebase
+```
+
+### Instructions
+
+Use the `architecture-reviewer` agent to perform a systematic review.
+
+#### Scope Resolution
+
+1. If no argument: check staged changes (`git diff --cached --name-only`)
+2. If path argument: check all files under that path
+3. If `--all`: check the entire `src/` directory
+
+#### What It Checks
+
+**Security Principles** — Input validation, data isolation, audit trails
+**Boundary Principles** — Handler delegation, module separation
+**Performance Principles** — Hot path awareness, runtime constraints
+**Propagation Principles** — State flow direction, explicit side effects
+
+### Output
+
+A structured compliance report with per-principle status and any violations with fix recommendations. See the `architecture-reviewer` agent for the full output format.
+
+---
+
+## Sub-command: check-drift
+
+Compare SPEC specification documents against the actual codebase to detect drift.
+
+### Usage
+
+```
+/coherence check-drift              # Check everything
+/coherence check-drift api          # Check API surface only
+/coherence check-drift models       # Check data models only
+/coherence check-drift stores       # Check frontend stores only
+/coherence check-drift all          # Check everything (same as no args)
+```
+
+### Instructions
+
+Use the `drift-detector` agent to perform the comparison. Pass the scope argument (default: `all`).
+
+The agent will:
+1. Read the relevant SPEC document(s) from `docs/SPEC-*.md`
+2. Scan the actual codebase
+3. Compare and produce a drift report
+
+### SPEC Documents
+
+Customize this table for your project:
+
+| Scope | SPEC Document | Codebase Source |
+|-------|--------------|-----------------|
+| api | `docs/SPEC-API-SURFACE.md` | Route definitions, handler files |
+| models | `docs/SPEC-DATA-MODELS.md` | Model/schema files |
+| stores | `docs/SPEC-FRONTEND.md` | Store/state files |
+
+### Output
+
+A structured markdown drift report showing:
+- Items that match spec (CURRENT)
+- Items that have drifted (DRIFTED)
+- Items in code but not in spec (UNDOCUMENTED)
+- Recommended actions to resolve drift
+
+---
+
+## Sub-command: test
+
+Run tests with flexible scope control.
+
+### Usage
+
+```
+/coherence test                         # Run all tests
+/coherence test api                     # All API tests
+/coherence test core                    # All core system tests
+/coherence test --filter <pattern>      # Run tests matching pattern
+/coherence test --all                   # Run all test suites
+```
+
+### Instructions
+
+#### Step 1: Parse Arguments
+
+| Argument | Command | Description |
+|----------|---------|-------------|
+| _(none)_ | `npm test` | All tests |
+| `api` | `npm test -- tests/api/` | API tests |
+| `core` | `npm test -- tests/core/` | Core tests |
+| `services` | `npm test -- tests/services/` | Service tests |
+| `--filter <pattern>` | `npm test -- --filter <pattern>` | Custom filter |
+| `--all` | `npm test` | Everything |
+
+Customize the commands above for your test runner (jest, vitest, pytest, etc.).
+
+#### Step 2: Run Tests
+
+Execute the appropriate test command.
+
+#### Step 3: Report Results
+
+1. **If all pass**: Report success with count
+2. **If failures**:
+   - Show failing test names and files
+   - Offer to investigate failures
+   - Suggest related code to review
+
+### Test Categories
+
+Customize this table for your project:
+
+| Category | Location | Description |
+|----------|----------|-------------|
+| **Unit** | `tests/` or `src/**/__tests__/` | Individual function tests |
+| **API** | `tests/api/` | API endpoint validation |
+| **Integration** | `tests/integration/` | Component interaction |
+| **E2E** | `tests/e2e/` | End-to-end tests |

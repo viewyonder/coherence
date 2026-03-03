@@ -113,4 +113,4 @@ These constraints are falsifiable — each can be verified mechanically.
 
 ---
 
-*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/check-drift` to detect discrepancies.*
+*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence check-drift` to detect discrepancies.*

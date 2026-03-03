@@ -53,7 +53,7 @@ Copy `docs/SPEC-TEMPLATE.md` for each architectural surface you want to track:
 - `SPEC-DATA-MODELS.md` — All models/schemas
 - `SPEC-FRONTEND.md` — All stores/state
 
-Fill in actual components. Run `/check-drift` to verify.
+Fill in actual components. Run `/coherence check-drift` to verify.
 
 ### 5. Remove Unused Hooks
 
@@ -88,7 +88,5 @@ Update `settings.local.json` to remove references to deleted hooks.
 │   └── security-auditor.md
 └── skills/
     ├── README.md              # Skill format docs
-    ├── check-drift/SKILL.md
-    ├── check-architecture/SKILL.md
-    └── test/SKILL.md
+    └── coherence/SKILL.md     # Unified: init, check-drift, check-architecture, test
 ```

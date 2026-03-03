@@ -212,7 +212,7 @@ import Base from '../layouts/Base.astro';
             <h3>5. Create your first SPEC</h3>
             <p>
               Copy a SPEC template from <code>docs/</code>, fill in your actual components,
-              and run <code>/check-drift</code> to verify.
+              and run <code>/coherence check-drift</code> to verify.
             </p>
           </div>
         </details>
@@ -242,7 +242,7 @@ import Base from '../layouts/Base.astro';
           </div>
           <div class="flow-arrow">&darr;</div>
           <div class="flow-step">
-            <div class="flow-label">On demand: run <code>/check-drift</code> or <code>/check-architecture</code></div>
+            <div class="flow-label">On demand: run <code>/coherence check-drift</code> or <code>/coherence check-architecture</code></div>
             <div class="flow-detail">Agents scan the full codebase against SPEC docs and principles.</div>
           </div>
         </div>
@@ -357,11 +357,11 @@ import Base from '../layouts/Base.astro';
 
         <div class="next-steps-list">
           <div class="next-step">
-            <code>/check-architecture</code>
+            <code>/coherence check-architecture</code>
             <p>Run immediately after setup to see how your current code measures against the generated principles.</p>
           </div>
           <div class="next-step">
-            <code>/check-drift</code>
+            <code>/coherence check-drift</code>
             <p>After creating SPEC documents, run this to verify they match reality.</p>
           </div>
           <div class="next-step">

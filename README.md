@@ -49,7 +49,7 @@ Then customize manually:
 
 1. **CLAUDE.md** — Replace `{{PLACEHOLDER}}` markers with your project's values
 2. **Hooks** — Edit the `// === CONFIGURATION ===` block at the top of each hook in `.claude/hooks/`. Remove hooks that don't apply and update `settings.local.json` accordingly.
-3. **SPEC docs** — Copy `docs/SPEC-TEMPLATE.md` to something like `docs/SPEC-API-SURFACE.md`, fill in your actual components, and run `/check-drift` to verify.
+3. **SPEC docs** — Copy `docs/SPEC-TEMPLATE.md` to something like `docs/SPEC-API-SURFACE.md`, fill in your actual components, and run `/coherence check-drift` to verify.
 
 ---
 
@@ -62,7 +62,7 @@ Then customize manually:
 | **Hooks** | Enforce known constraints (block, warn, suggest) | Every file edit/write/commit |
 | **Agents** | Detect drift and review architecture | On demand via skills |
 | **SPEC Docs** | Define what "correct" means (falsifiable claims) | Referenced by agents and humans |
-| **Skills** | Multi-step workflows with built-in compliance | User-invoked (`/check-drift`) |
+| **Skills** | Multi-step workflows with built-in compliance | User-invoked (`/coherence <sub-command>`) |
 
 ### Hooks (11 included)
 
@@ -90,14 +90,15 @@ Then customize manually:
 | `security-auditor` | OWASP-focused vulnerability detection |
 | `consistency-reviewer` | Terminology, voice, and structural consistency |
 
-### Skills (4 included)
+### Skills (1 unified command)
 
 | Command | What It Does |
 |---------|--------------|
-| `/coherence` | Interactive setup wizard — generates a customized guardrails system |
-| `/check-drift` | Invoke drift detector, compare specs against code |
-| `/check-architecture` | Compliance review of staged changes or a path |
-| `/test` | Run tests with flexible scope control |
+| `/coherence init [--reset]` | Interactive setup wizard — generates a customized guardrails system |
+| `/coherence check-drift [scope]` | Invoke drift detector, compare specs against code |
+| `/coherence check-architecture [path]` | Compliance review of staged changes or a path |
+| `/coherence test [scope]` | Run tests with flexible scope control |
+| `/coherence help` | Show available sub-commands |
 
 ---
 
@@ -127,7 +128,7 @@ The `examples/` directory shows how the template adapts to different stacks:
 
 **SPEC documents** are falsifiable descriptions of what the code currently does — not what it should do. They make claims like "we have 18 inspectors" that can be mechanically verified against the codebase.
 
-**Skills** are named multi-step workflows. `/check-drift` doesn't just run a grep — it invokes the drift-detector agent, which reads every SPEC document, compares against code, and produces a structured report.
+**Skills** are named multi-step workflows. `/coherence check-drift` doesn't just run a grep — it invokes the drift-detector agent, which reads every SPEC document, compares against code, and produces a structured report.
 
 See [the blog post](blog/entropy-at-velocity.md) for the full rationale behind this approach.
 

@@ -14,7 +14,7 @@ draft: false
 
 Here's a scenario that plays out constantly in drift detection.
 
-Your SPEC document says: *"All API endpoints validate input before processing."* You run `/check-drift`. The drift detector greps for `validate` across your route handlers. It finds three matches out of twelve endpoints. Nine endpoints are flagged as DRIFTED.
+Your SPEC document says: *"All API endpoints validate input before processing."* You run `/coherence check-drift`. The drift detector greps for `validate` across your route handlers. It finds three matches out of twelve endpoints. Nine endpoints are flagged as DRIFTED.
 
 But they aren't drifted. They *do* validate input. They just don't use the word "validate."
 
@@ -111,7 +111,7 @@ design decisions, and context across the project's markdown files.
 **Run a drift check:**
 
 ```
-/check-drift
+/coherence check-drift
 ```
 
 That's it. The drift detector and architecture reviewer agents detect QMD automatically at runtime. No configuration changes to the agents themselves, no flags to set. If QMD is there, they use it. If it's not, they don't.

@@ -67,4 +67,4 @@ The agent becomes available to Claude Code automatically.
 
 Agents are invoked via skills (see `skills/README.md`) or by Claude Code's agent system when the task matches the agent's description.
 
-Example: The `/check-drift` skill invokes the `drift-detector` agent.
+Example: `/coherence check-drift` invokes the `drift-detector` agent.

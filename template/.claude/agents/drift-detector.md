@@ -1,6 +1,6 @@
 ---
 name: drift-detector
-description: Compares SPEC documents against actual codebase to detect architectural drift. Use with /check-drift skill.
+description: Compares SPEC documents against actual codebase to detect architectural drift. Use with /coherence check-drift.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -64,7 +64,7 @@ Scope: {component type or "all"}
 
 ## Invocation
 
-This agent is invoked by the `/check-drift` skill. Arguments:
+This agent is invoked by `/coherence check-drift`. Arguments:
 - Specific component type (e.g., `api`, `models`, `stores`)
 - `all` (default) — Check everything
 

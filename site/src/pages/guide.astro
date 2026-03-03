@@ -107,7 +107,7 @@ import Base from '../layouts/Base.astro';
           <div class="layer-row">
             <div class="layer-name"><strong>Skills</strong></div>
             <div class="layer-purpose">Multi-step workflows with compliance built in</div>
-            <div class="layer-when">User-invoked (<code>/check-drift</code>, etc.)</div>
+            <div class="layer-when">User-invoked (<code>/coherence check-drift</code>, etc.)</div>
           </div>
         </div>
       </section>
@@ -138,7 +138,7 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-demand">on demand</div>
             <div class="lifecycle-detail">
               <strong>Skills run when you ask</strong>
-              <p>Run <code>/check-drift</code> to compare SPEC docs against reality. Run <code>/check-architecture</code> to audit code against your principles. Use these periodically or before major changes.</p>
+              <p>Run <code>/coherence check-drift</code> to compare SPEC docs against reality. Run <code>/coherence check-architecture</code> to audit code against your principles. Use these periodically or before major changes.</p>
             </div>
           </div>
         </div>
@@ -264,7 +264,7 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-scenario">existing code</div>
             <div class="lifecycle-detail">
               <strong>Cloned repo (someone else's code)</strong>
-              <p>You've <code>git clone</code>'d a project and want guardrails. Run <code>/coherence</code> &mdash; it scans the existing structure (package.json, frameworks, test setup) and generates constraints matched to what's already there. No SPEC files yet &mdash; that's fine. Hooks work immediately. Create SPECs later when you understand the architecture, then use <code>/check-drift</code> to verify them.</p>
+              <p>You've <code>git clone</code>'d a project and want guardrails. Run <code>/coherence init</code> &mdash; it scans the existing structure (package.json, frameworks, test setup) and generates constraints matched to what's already there. No SPEC files yet &mdash; that's fine. Hooks work immediately. Create SPECs later when you understand the architecture, then use <code>/coherence check-drift</code> to verify them.</p>
             </div>
           </div>
           <div class="lifecycle-step">
@@ -278,28 +278,28 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-scenario">first check</div>
             <div class="lifecycle-detail">
               <strong>First drift check (no SPECs yet)</strong>
-              <p>You've been developing with hooks active but haven't written SPEC docs. Run <code>/coherence</code> again and say "yes" to SPEC generation (Phase 3, Q6). Then run <code>/check-drift</code> to compare those SPECs against reality. This is your baseline &mdash; fix any gaps the first check surfaces.</p>
+              <p>You've been developing with hooks active but haven't written SPEC docs. Run <code>/coherence init</code> again and say "yes" to SPEC generation (Phase 3, Q6). Then run <code>/coherence check-drift</code> to compare those SPECs against reality. This is your baseline &mdash; fix any gaps the first check surfaces.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">feature branch</div>
             <div class="lifecycle-detail">
               <strong>Feature branch workflow</strong>
-              <p>Create a branch, build your feature with hooks enforcing constraints throughout. Before merging, run <code>/check-architecture</code> to validate against principles. Run <code>/check-drift</code> to make sure your changes haven't made SPECs stale. Merge with confidence.</p>
+              <p>Create a branch, build your feature with hooks enforcing constraints throughout. Before merging, run <code>/coherence check-architecture</code> to validate against principles. Run <code>/coherence check-drift</code> to make sure your changes haven't made SPECs stale. Merge with confidence.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">hotfix</div>
             <div class="lifecycle-detail">
               <strong>Quick fix straight to master</strong>
-              <p>Hooks still run on every edit &mdash; even a quick patch to master gets the same constraint checking. No ceremony needed. If you're making a small change, hooks catch violations inline. Run <code>/check-architecture</code> after if you want extra assurance.</p>
+              <p>Hooks still run on every edit &mdash; even a quick patch to master gets the same constraint checking. No ceremony needed. If you're making a small change, hooks catch violations inline. Run <code>/coherence check-architecture</code> after if you want extra assurance.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">worktree</div>
             <div class="lifecycle-detail">
               <strong>Working in a worktree</strong>
-              <p>Worktrees (via Claude Code's <code>/worktree</code> or <code>git worktree</code>) give you an isolated copy of the repo. Your <code>.claude/</code> directory is part of the repo, so hooks and settings travel with the worktree automatically. No extra setup needed &mdash; <code>/check-drift</code> and <code>/check-architecture</code> work the same in a worktree as in the main tree.</p>
+              <p>Worktrees (via Claude Code's <code>/worktree</code> or <code>git worktree</code>) give you an isolated copy of the repo. Your <code>.claude/</code> directory is part of the repo, so hooks and settings travel with the worktree automatically. No extra setup needed &mdash; <code>/coherence check-drift</code> and <code>/coherence check-architecture</code> work the same in a worktree as in the main tree.</p>
             </div>
           </div>
         </div>

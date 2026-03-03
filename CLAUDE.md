@@ -19,7 +19,7 @@ A template system for encoding architectural constraints into the Claude Code de
 | **Hooks** | `template/.claude/hooks/` | Enforce constraints (block/warn/inform) | Every file edit/write/commit via `settings.local.json` |
 | **Agents** | `template/.claude/agents/` | Review and detect drift (read-only) | On demand via skills |
 | **SPEC Docs** | `template/docs/` | Define "correct" via falsifiable claims | Referenced by agents |
-| **Skills** | `template/.claude/skills/` | Multi-step workflows with compliance built in | User-invoked (`/check-drift`, etc.) |
+| **Skills** | `template/.claude/skills/` | Multi-step workflows with compliance built in | User-invoked (`/coherence <sub-command>`) |
 
 ## Hook Protocol
 
@@ -47,4 +47,5 @@ No output = allowed. JSON output = blocked/warned.
 - Agents are read-only (Read, Grep, Glob, Bash only — no Write/Edit access)
 - SPEC documents make falsifiable claims ("we have 18 inspectors") not opinions ("our API is well-designed")
 - When adding a new hook: create the `.cjs` file, add a `// === CONFIGURATION ===` block, register it in `settings.local.json`
-- Running `/coherence` inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
+- All skill functionality is unified under `/coherence` with sub-commands: `init`, `check-architecture`, `check-drift`, `test`, `help`
+- Running `/coherence` (or `/coherence init`) inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
