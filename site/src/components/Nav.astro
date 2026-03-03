@@ -5,6 +5,7 @@
   <div class="container nav-inner">
     <a href="/" class="nav-logo">
       <span class="logo-bracket">[</span>Coherence<span class="logo-bracket">]</span>
+      <span class="logo-byline">by Viewyonder</span>
     </a>
     <div class="nav-links">
       <a href="/getting-started">Get Started</a>
@@ -66,10 +67,20 @@
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
   }
 
   .logo-bracket {
     color: var(--cyan);
+  }
+
+  .logo-byline {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
   }
 
   .nav-links {
