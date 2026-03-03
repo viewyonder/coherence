@@ -1,0 +1,723 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Why Coherence? — User Guide" description="The 5-minute version for someone who's never heard of Coherence. Why it exists, what it does, and how it works.">
+  <article class="container guide">
+    <header class="guide-header">
+      <a href="/" class="back-link">&larr; Home</a>
+      <p class="section-label">User Guide</p>
+      <h1>Why Coherence?</h1>
+      <p class="guide-subtitle">
+        The 5-minute version for someone who's never heard of it.
+      </p>
+    </header>
+
+    <nav class="toc">
+      <p class="toc-title">On this page</p>
+      <ul>
+        <li><a href="#why">Why</a></li>
+        <li><a href="#what">What</a></li>
+        <li><a href="#when">When</a></li>
+        <li><a href="#who">Who</a></li>
+        <li><a href="#how">How</a></li>
+      </ul>
+    </nav>
+
+    <div class="prose">
+
+      <!-- ============================================ -->
+      <section id="why" class="guide-section">
+        <h2>Why: <span class="h2-sub">AI removed the bottleneck, and revealed a harder one</span></h2>
+        <p>
+          For most of software engineering's history, the bottleneck was writing code. Not thinking about it &mdash; <em>writing</em> it. The mechanical act of translating intention into syntax, across files, tested, debugged, committed. That's where the clock burned.
+        </p>
+        <p>
+          AI-assisted development largely removes that bottleneck. What took an afternoon now takes minutes. You describe what you want, an agent produces it, you review and refine. The throughput increase isn't marginal &mdash; it's an order of magnitude.
+        </p>
+        <p>
+          But removing one bottleneck reveals the next. And the constraint that emerges when code flows freely is <em>coherence</em>: keeping a codebase internally consistent as it changes faster than any human can manually track. Every generated file is syntactically correct and locally sensible. But does it follow the conventions the rest of the codebase established? Does it know about the routing prefix every endpoint requires? Does it understand why the database queries need tenant filters?
+        </p>
+        <p>
+          This is entropy at velocity. The code compiles. The tests pass. And the problem doesn't surface until a customer reports they're seeing someone else's data. You need architecture encoded into the generation loop itself, not enforced after the fact.
+        </p>
+        <div class="callout">
+          <strong>Want the full story?</strong> Read <a href="/blog/entropy-at-velocity">Entropy at Velocity</a> &mdash; the deep version of this argument with examples, failure modes, and the four-layer solution in detail.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="what" class="guide-section">
+        <h2>What: <span class="h2-sub">Active guardrails inside the generation loop</span></h2>
+        <p>
+          Coherence is a system of hooks, agents, specs, and skills that encode your project's architectural constraints into the <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener noreferrer">Claude Code</a> development loop. Instead of writing rules in a document and hoping the AI follows them, you make the rules <em>active</em> &mdash; they run automatically, catch violations before they hit disk, and detect drift on demand.
+        </p>
+
+        <h3>How it compares</h3>
+        <div class="comparison-table">
+          <div class="comparison-row comparison-header">
+            <div class="comparison-approach">Approach</div>
+            <div class="comparison-detail">What it does</div>
+            <div class="comparison-limit">Where it falls short</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-approach"><code>CLAUDE.md</code> alone</div>
+            <div class="comparison-detail">Passive instructions the agent reads at session start</div>
+            <div class="comparison-limit">Agent can ignore, forget, or misinterpret mid-session</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-approach">Linters (ESLint, etc.)</div>
+            <div class="comparison-detail">Catch syntax-level patterns</div>
+            <div class="comparison-limit">Can't express architectural intent like "don't cross this boundary"</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-approach">Code review</div>
+            <div class="comparison-detail">Human catches violations</div>
+            <div class="comparison-limit">Happens <em>after</em> the work is done &mdash; rework is expensive</div>
+          </div>
+          <div class="comparison-row comparison-row-highlight">
+            <div class="comparison-approach"><strong>Coherence</strong></div>
+            <div class="comparison-detail">Active enforcement at the moment of generation, plus drift detection</div>
+            <div class="comparison-limit">Catches violations before they exist</div>
+          </div>
+        </div>
+
+        <h3>The four layers</h3>
+        <div class="layers-table">
+          <div class="layer-row layer-header">
+            <div class="layer-name">Layer</div>
+            <div class="layer-purpose">Purpose</div>
+            <div class="layer-when">When it runs</div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-name"><strong>Hooks</strong></div>
+            <div class="layer-purpose">Enforce constraints &mdash; block, warn, or inform</div>
+            <div class="layer-when">Every file edit, write, or commit</div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-name"><strong>Agents</strong></div>
+            <div class="layer-purpose">Review code and detect drift (read-only)</div>
+            <div class="layer-when">On demand via skills</div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-name"><strong>SPEC docs</strong></div>
+            <div class="layer-purpose">Define "correct" via falsifiable claims</div>
+            <div class="layer-when">Referenced by agents during checks</div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-name"><strong>Skills</strong></div>
+            <div class="layer-purpose">Multi-step workflows with compliance built in</div>
+            <div class="layer-when">User-invoked (<code>/check-drift</code>, etc.)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="when" class="guide-section">
+        <h2>When: <span class="h2-sub">Setup once, enforced on every edit, drift-checked on demand</span></h2>
+        <p>
+          Coherence works during development with Claude Code. Different parts activate at different times:
+        </p>
+
+        <div class="lifecycle">
+          <div class="lifecycle-step">
+            <div class="lifecycle-badge lifecycle-once">once</div>
+            <div class="lifecycle-detail">
+              <strong>Install &amp; setup</strong>
+              <p>Install the plugin and run <code>/coherence</code>. The wizard scans your project, asks a few questions, and generates everything &mdash; hooks, agents, skills, CLAUDE.md, and settings.</p>
+            </div>
+          </div>
+          <div class="lifecycle-step">
+            <div class="lifecycle-badge lifecycle-auto">automatic</div>
+            <div class="lifecycle-detail">
+              <strong>Hooks run on every edit</strong>
+              <p>No action needed. Every time Claude (or you) edits, writes, or commits a file, hooks check the change against your constraints. Violations are blocked or flagged instantly.</p>
+            </div>
+          </div>
+          <div class="lifecycle-step">
+            <div class="lifecycle-badge lifecycle-demand">on demand</div>
+            <div class="lifecycle-detail">
+              <strong>Skills run when you ask</strong>
+              <p>Run <code>/check-drift</code> to compare SPEC docs against reality. Run <code>/check-architecture</code> to audit code against your principles. Use these periodically or before major changes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Lifecycle summary:</strong> Install &rarr; Setup &rarr; Develop (hooks active) &rarr; Periodically check drift.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="who" class="guide-section">
+        <h2>Who: <span class="h2-sub">Anyone with conventions worth protecting</span></h2>
+        <p>
+          You're probably not just a coder. You might be an architect trying to keep a growing system consistent, a marketer protecting brand voice, or a writer enforcing terminology across a documentation set. Coherence adapts to what you're building &mdash; code projects get boundary guards and import blockers, writing projects get terminology and style checks. Same system, different constraints.
+        </p>
+
+        <div class="archetype-grid">
+          <div class="archetype-card card">
+            <h3>Web Application</h3>
+            <p>React, Next.js, Vue, Svelte, Astro, etc.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-block">forbidden-imports</span>
+              <span class="badge badge-block">boundary-guard</span>
+              <span class="badge badge-block">state-flow</span>
+              <span class="badge badge-warn">delegation-check</span>
+              <span class="badge badge-info">test-suggest</span>
+              <span class="badge badge-info">change-suggest</span>
+            </div>
+          </div>
+
+          <div class="archetype-card card">
+            <h3>API / Backend</h3>
+            <p>Express, FastAPI, Rails, Spring, etc.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-block">forbidden-imports</span>
+              <span class="badge badge-block">boundary-guard</span>
+              <span class="badge badge-block">required-prefix</span>
+              <span class="badge badge-warn">data-isolation</span>
+              <span class="badge badge-warn">delegation-check</span>
+              <span class="badge badge-info">test-suggest</span>
+            </div>
+          </div>
+
+          <div class="archetype-card card">
+            <h3>CLI / Library</h3>
+            <p>npm packages, CLIs, crates, pip packages.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-block">forbidden-imports</span>
+              <span class="badge badge-block">boundary-guard</span>
+              <span class="badge badge-block">test-gate</span>
+              <span class="badge badge-info">test-suggest</span>
+            </div>
+          </div>
+
+          <div class="archetype-card card">
+            <h3>Infrastructure</h3>
+            <p>Terraform, Pulumi, CDK, Docker, K8s.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-block">forbidden-imports</span>
+              <span class="badge badge-block">boundary-guard</span>
+              <span class="badge badge-info">change-suggest</span>
+            </div>
+          </div>
+
+          <div class="archetype-card card">
+            <h3>Writing / Content</h3>
+            <p>Docs, blogs, technical writing, research.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-warn">terminology-check</span>
+              <span class="badge badge-warn">style-guard</span>
+            </div>
+          </div>
+
+          <div class="archetype-card card">
+            <h3>Marketing / Brand</h3>
+            <p>Brand content, campaigns, social media.</p>
+            <div class="archetype-hooks">
+              <span class="badge badge-block">terminology-check</span>
+              <span class="badge badge-warn">style-guard</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="how" class="guide-section">
+        <h2>How: <span class="h2-sub">Two commands and a wizard versus doing it all by hand</span></h2>
+
+        <h3>Without Coherence</h3>
+        <div class="contrast-card contrast-without">
+          <ul>
+            <li>Write a <code>CLAUDE.md</code> and hope Claude reads it</li>
+            <li>Manually review every generated file for convention violations</li>
+            <li>Notice drift weeks later when something breaks in production</li>
+            <li>Keep specs updated by memory &mdash; forget, and they rot</li>
+            <li>Spend more time policing conventions than building features</li>
+          </ul>
+        </div>
+
+        <h3>With Coherence</h3>
+        <div class="contrast-card contrast-with">
+          <ul>
+            <li>2 commands to install, 1 command to set up</li>
+            <li>Hooks catch violations before they hit disk</li>
+            <li>Agents detect spec drift on demand</li>
+            <li>SPEC docs make falsifiable claims &mdash; verifiable, not aspirational</li>
+            <li>Architecture participates in code generation, not just code review</li>
+          </ul>
+        </div>
+
+        <h3>Get started in 30 seconds</h3>
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">Claude Code</span>
+          </div>
+          <div class="terminal-body">
+            <span class="comment"># Add the marketplace</span><br />
+            <span class="prompt">&gt;</span> /plugin marketplace add viewyonder/coherence<br />
+            <br />
+            <span class="comment"># Install the plugin</span><br />
+            <span class="prompt">&gt;</span> /plugin install coherence<br />
+            <br />
+            <span class="comment"># Run the wizard</span><br />
+            <span class="prompt">&gt;</span> /coherence
+          </div>
+        </div>
+
+        <div class="cta-block">
+          <a href="/getting-started" class="cta-link">Read the full Getting Started guide &rarr;</a>
+        </div>
+      </section>
+
+    </div>
+  </article>
+</Base>
+
+<style>
+  .guide {
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+  }
+
+  .guide-header {
+    margin-bottom: 3rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .guide-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    max-width: 50ch;
+  }
+
+  /* Table of contents */
+  .toc {
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .toc ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .toc li {
+    margin-bottom: 0.4rem;
+  }
+
+  .toc a {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .toc a:hover {
+    color: var(--cyan);
+    opacity: 1;
+  }
+
+  /* Sections */
+  .guide-section {
+    padding: 0;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .guide-section h2 {
+    margin-bottom: 1rem;
+  }
+
+  .h2-sub {
+    font-weight: 400;
+    color: var(--text-secondary);
+    font-size: 0.85em;
+  }
+
+  .guide-section h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--bg-mid);
+    border-left: 3px solid var(--cyan);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .callout strong {
+    color: var(--text-primary);
+  }
+
+  /* Comparison table */
+  .comparison-table {
+    margin: 1.5rem 0;
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 1fr;
+    border-bottom: 1px solid var(--bg-surface);
+  }
+
+  .comparison-row:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-header {
+    background: var(--bg-surface);
+  }
+
+  .comparison-header div {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .comparison-row div {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .comparison-approach {
+    color: var(--text-primary);
+  }
+
+  .comparison-row-highlight {
+    background: rgba(0, 255, 240, 0.05);
+  }
+
+  .comparison-row-highlight .comparison-limit {
+    color: var(--green) !important;
+  }
+
+  /* Layers table */
+  .layers-table {
+    margin: 1.5rem 0;
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .layer-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr;
+    border-bottom: 1px solid var(--bg-surface);
+  }
+
+  .layer-row:last-child {
+    border-bottom: none;
+  }
+
+  .layer-header {
+    background: var(--bg-surface);
+  }
+
+  .layer-header div {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .layer-row div {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .layer-name {
+    font-family: var(--font-mono);
+  }
+
+  /* Lifecycle */
+  .lifecycle {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .lifecycle-step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+  }
+
+  .lifecycle-badge {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25em 0.7em;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.15rem;
+  }
+
+  .lifecycle-once {
+    background: rgba(136, 136, 255, 0.12);
+    color: #88f;
+    border: 1px solid rgba(136, 136, 255, 0.3);
+  }
+
+  .lifecycle-auto {
+    background: rgba(0, 255, 136, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+  }
+
+  .lifecycle-demand {
+    background: rgba(255, 170, 0, 0.12);
+    color: var(--amber);
+    border: 1px solid rgba(255, 170, 0, 0.3);
+  }
+
+  .lifecycle-detail {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lifecycle-detail strong {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+  }
+
+  .lifecycle-detail p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+  }
+
+  /* Archetype grid */
+  .archetype-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--gap);
+    margin: 1.5rem 0;
+  }
+
+  .archetype-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .archetype-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .archetype-hooks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .archetype-hooks .badge {
+    font-size: 0.65rem;
+  }
+
+  /* Contrast cards (without/with) */
+  .contrast-card {
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .contrast-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .contrast-card li {
+    font-size: 0.9rem;
+    padding: 0.35rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .contrast-card li::before {
+    position: absolute;
+    left: 0;
+    font-family: var(--font-mono);
+  }
+
+  .contrast-without {
+    background: rgba(255, 60, 60, 0.06);
+    border: 1px solid rgba(255, 60, 60, 0.2);
+  }
+
+  .contrast-without li {
+    color: var(--text-muted);
+  }
+
+  .contrast-without li::before {
+    content: '\2717';
+    color: rgba(255, 60, 60, 0.6);
+  }
+
+  .contrast-with {
+    background: rgba(0, 255, 136, 0.06);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+  }
+
+  .contrast-with li {
+    color: var(--text-secondary);
+  }
+
+  .contrast-with li::before {
+    content: '\2713';
+    color: var(--green);
+  }
+
+  /* Terminal */
+  .terminal {
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+    max-width: 550px;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--bg-surface);
+  }
+
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .terminal-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .terminal-body {
+    padding: 1rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .terminal-body .prompt {
+    color: var(--cyan);
+    margin-right: 0.5rem;
+  }
+
+  .terminal-body .comment {
+    color: var(--text-muted);
+  }
+
+  /* CTA */
+  .cta-block {
+    margin-top: 2rem;
+  }
+
+  .cta-link {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  .cta-link:hover {
+    opacity: 0.85;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .comparison-row {
+      grid-template-columns: 1fr;
+    }
+
+    .comparison-row div:not(:last-child) {
+      padding-bottom: 0.25rem;
+    }
+
+    .comparison-header {
+      display: none;
+    }
+
+    .comparison-approach::before {
+      content: attr(data-label);
+    }
+
+    .layer-row {
+      grid-template-columns: 1fr;
+    }
+
+    .layer-header {
+      display: none;
+    }
+
+    .lifecycle-step {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .archetype-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
