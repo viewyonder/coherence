@@ -22,7 +22,7 @@ if (!prefersReducedMotion) {
 // === Typing Effect ===
 const typedEl = document.getElementById('typed-subtitle');
 if (typedEl) {
-  const text = 'The elastic between your plan and your actual.';
+  const text = 'Stop AI-generated code from breaking your architecture.';
 
   if (prefersReducedMotion) {
     typedEl.textContent = text;

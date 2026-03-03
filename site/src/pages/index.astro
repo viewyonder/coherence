@@ -9,6 +9,7 @@ import Examples from '../components/Examples.astro';
 import QuickStart from '../components/QuickStart.astro';
 import FAQ from '../components/FAQ.astro';
 import BlogCTA from '../components/BlogCTA.astro';
+import BottomCTA from '../components/BottomCTA.astro';
 ---
 
 <Base title="Coherence by Viewyonder — Architectural Enforcement for AI-Assisted Development">
@@ -18,11 +19,12 @@ import BlogCTA from '../components/BlogCTA.astro';
   <Hooks />
   <Agents />
   <Examples />
+  <BlogCTA />
   <QuickStart />
   <section class="container faq-section" id="faq">
     <p class="section-label">FAQ</p>
     <h2>Frequently Asked Questions</h2>
     <FAQ tag="general" limit={4} showAllLink={true} />
   </section>
-  <BlogCTA />
+  <BottomCTA />
 </Base>

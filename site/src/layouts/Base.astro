@@ -7,9 +7,22 @@ import '../styles/cyborg.css';
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
 
-const { title, description = 'Maintain architectural coherence when AI writes your code.' } = Astro.props;
+const {
+  title,
+  description = 'Maintain architectural coherence when AI writes your code.',
+  ogImage = '/images/coherence-og-logo.png',
+  ogType = 'website',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+const siteName = 'Coherence by Viewyonder';
+
+const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === '';
 ---
 
 <!doctype html>
@@ -19,6 +32,22 @@ const { title, description = 'Maintain architectural coherence when AI writes yo
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL.href} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content={ogType} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL.href} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,6 +55,30 @@ const { title, description = 'Maintain architectural coherence when AI writes yo
       rel="stylesheet"
     />
     <title>{title}</title>
+
+    {isHomepage && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Coherence",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "description": description,
+        "url": "https://coherence.viewyonder.com",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Viewyonder",
+          "url": "https://viewyonder.com"
+        },
+        "codeRepository": "https://github.com/viewyonder/coherence",
+        "license": "https://opensource.org/licenses/MIT"
+      })} />
+    )}
   </head>
   <body class="circuit-bg">
     <Nav />
