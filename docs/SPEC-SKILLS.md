@@ -10,7 +10,7 @@ All skill functionality is unified under a single `/coherence` command with sub-
 
 ## Components
 
-There is 1 skill with 9 sub-commands.
+There is 1 skill with 10 sub-commands.
 
 ### Sub-commands
 
@@ -22,6 +22,7 @@ There is 1 skill with 9 sub-commands.
 | `/coherence test [scope]` | None (runs test command directly) | Run tests with flexible scope |
 | `/coherence hook` | None (reads config files) | List installed hooks with enforcement levels and status |
 | `/coherence spec` | None (reads SPEC files) | List SPEC documents with verification metadata |
+| `/coherence config` | None (reads config files) | Show local project configuration overview |
 | `/coherence status [--prune]` | None (reads config files) | Show install state and registry contents |
 | `/coherence uninstall [--force]` | None (modifies config files) | Remove Coherence from current repo (and optionally global) |
 | `/coherence help` | None | Show available sub-commands |

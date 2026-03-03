@@ -74,7 +74,7 @@ This is deliberate. The existing sub-commands already cover modification: `init`
 
 ## The Sub-command Count
 
-With `hook` and `spec`, Coherence now has nine sub-commands:
+With `hook` and `spec`, Coherence now has ten sub-commands:
 
 | Command | What It Does |
 |---------|--------------|
@@ -84,6 +84,7 @@ With `hook` and `spec`, Coherence now has nine sub-commands:
 | `test` | Run tests |
 | `hook` | List installed hooks |
 | `spec` | List SPEC documents |
+| `config` | Show project configuration |
 | `status` | Show install state |
 | `uninstall` | Remove Coherence |
 | `help` | Show available commands |

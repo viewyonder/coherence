@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-03-03
+
+### Added
+
+- **`/coherence config` sub-command.** Read-only overview of the full local project configuration — hooks (with active/orphaned/missing status), agents, skills, SPEC documents, and project files. Cross-references hook files on disk against `settings.local.json` registrations.
+- "The Whole Picture" blog post explaining the rationale for the config sub-command
+
+### Changed
+
+- Updated SPEC-SKILLS.md sub-command count from 9 to 10
+- Updated blog post sub-command counts and tables
+- Bump version to 1.5.0
+
 ## [1.4.0] - 2026-03-03
 
 ### Added

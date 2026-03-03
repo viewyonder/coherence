@@ -3,6 +3,11 @@
  * Edit the `text` fields to be human-friendly — these are displayed as-is.
  */
 export const changelog = [
+  // --- 2026-03-03 (v1.5.0) ---
+  { date: '2026-03-03', text: 'Add /coherence config sub-command — unified overview of local project configuration' },
+  { date: '2026-03-03', text: 'Add "The Whole Picture" blog post on the config sub-command' },
+  { date: '2026-03-03', text: 'Bump version to 1.5.0' },
+
   // --- 2026-03-03 (v1.4.0) ---
   { date: '2026-03-03', text: 'Add /coherence hook sub-command — list installed hooks with enforcement levels and file status' },
   { date: '2026-03-03', text: 'Add /coherence spec sub-command — list SPEC documents with verification metadata' },
