@@ -40,7 +40,7 @@ The first three groups give you clarity. The fourth gives you confidence. Togeth
 
 These are lifecycle sub-commands. They tell you where you stand in the install → use → remove arc.
 
-`init` sets up the guardrails system — hooks, agents, skills, CLAUDE.md, and settings — customized to your project. `status` reports where Coherence is installed across your machine, whether each installation is healthy, and whether any registered repos have gone stale. `uninstall` removes Coherence from a repo cleanly, handling the difference between "I'm done with this repo" and "I'm done with Coherence entirely."
+`init` sets up the guardrails system — hooks, agents, skills, CLAUDE.md, and settings — customized to your project. `status` reports where Coherence is installed across your machine, whether each installation is healthy, and whether any registered repos have gone stale. `uninstall` removes Coherence from a repo cleanly, handling the difference between "I'm done with this repo" and "I'm done with Coherence entirely." Add `--force` for global cleanup regardless of other repos, or `--purge` to also delete project files (hooks, agents, skills, SPEC docs).
 
 The lifecycle story is covered in detail in [Clean Exits](clean-exits.md). The short version: if you respect your users enough to build a setup wizard, you should respect them enough to build a teardown.
 

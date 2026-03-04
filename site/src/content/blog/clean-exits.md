@@ -65,7 +65,9 @@ The main event. Running `/coherence uninstall` in a repo does three things:
 
 If this was the last repo (or you pass `--force`), it also cleans global configuration: `enabledPlugins`, `extraKnownMarketplaces`, and MCP server entries.
 
-What it does *not* touch: `.claude/hooks/`, `.claude/agents/`, `.claude/skills/`, or `CLAUDE.md`. Those contain your customized guardrails — code you've reviewed, tuned, and made your own. Deleting generated configuration is cleanup. Deleting user-authored configuration is data loss.
+What it does *not* touch by default: `.claude/hooks/`, `.claude/agents/`, `.claude/skills/`, or `CLAUDE.md`. Those contain your customized guardrails — code you've reviewed, tuned, and made your own. Deleting generated configuration is cleanup. Deleting user-authored configuration is data loss.
+
+Unless you pass `--purge`. Then it also removes hooks, agents, the coherence skill directory, SPEC documents, and log files — after asking you to confirm. Even then, `CLAUDE.md` is left intact because it may contain non-Coherence content. The distinction: `--force` controls *global* scope (remove plugin config even if other repos exist), `--purge` controls *local* scope (remove project files, not just registrations).
 
 ## The Decision Boundary
 

@@ -18,6 +18,7 @@ Unified entry point for the Coherence guardrails system.
 | `REGISTRY_VERSION` | `1` | Schema version for the registry file |
 | `PLUGIN_NAME` | `coherence` | Plugin name used in `enabledPlugins` and MCP entries |
 | `MARKETPLACE_PATTERN` | `viewyonder/coherence` or `viewyonder-coherence` | Patterns to match in `enabledPlugins` and `extraKnownMarketplaces` |
+| `PLUGIN_CACHE_DIR` | `~/.claude/plugins/cache/viewyonder-coherence` | Cached plugin directory to remove on global cleanup |
 
 ## Sub-commands
 
@@ -32,7 +33,7 @@ Unified entry point for the Coherence guardrails system.
 | `/coherence config` | Show local project configuration — hooks, agents, skills, SPEC docs |
 | `/coherence history [options]` | View activity log, enable/disable logging |
 | `/coherence status [--prune]` | Show install state and registry contents |
-| `/coherence uninstall [--force]` | Remove Coherence from current repo (and optionally global) |
+| `/coherence uninstall [--force] [--purge]` | Remove Coherence from current repo (and optionally global + project files) |
 | `/coherence help` | Show this help |
 
 ## Dispatch
@@ -1191,13 +1192,17 @@ Remove Coherence hook registrations from the current repo and optionally clean u
 ### Usage
 
 ```
-/coherence uninstall           # Remove from current repo
-/coherence uninstall --force   # Remove from current repo + global cleanup regardless of other repos
+/coherence uninstall                  # Remove from current repo
+/coherence uninstall --force          # Remove from current repo + global cleanup regardless of other repos
+/coherence uninstall --purge          # Remove from current repo + delete all Coherence project files
+/coherence uninstall --force --purge  # Full removal: global cleanup + delete project files
 ```
 
 ### Important
 
-Uninstall does **NOT** delete `.claude/hooks/`, `.claude/agents/`, `.claude/skills/`, or `CLAUDE.md` — those contain user-customized content. It only cleans `settings.local.json` hook registrations and global config entries.
+Without `--purge`, uninstall does **NOT** delete `.claude/hooks/`, `.claude/agents/`, `.claude/skills/coherence/`, or Coherence sections in `CLAUDE.md` — those contain user-customized content. It only cleans `settings.local.json` hook registrations and global config entries.
+
+With `--purge`, these project files are also deleted after confirmation.
 
 ### Instructions
 
@@ -1247,10 +1252,34 @@ Only reached when no repos remain in the registry, or `--force` was passed.
 1. **`~/.claude/settings.json`**: Remove any `enabledPlugins` entry matching `MARKETPLACE_PATTERN`. Remove any `extraKnownMarketplaces` entry matching `MARKETPLACE_PATTERN`. If either array becomes empty, remove the key. Write back.
 2. **`~/.claude.json`**: Remove any MCP server entries containing `PLUGIN_NAME`. Write back.
 3. **Registry**: Delete `REGISTRY_FILE` and `REGISTRY_DIR` (only if directory is empty after file deletion).
+4. **Plugin cache**: Remove `PLUGIN_CACHE_DIR` (`~/.claude/plugins/cache/viewyonder-coherence`) if it exists.
 
 Report each action taken.
 
-#### Step 7: Summary
+#### Step 7: Purge Project Files (--purge only)
+
+Only executed when `--purge` is passed. Runs after local cleanup (Step 3) regardless of whether global cleanup (Step 6) was reached.
+
+**Confirmation**: Before deleting anything, list the files/directories that will be removed and ask the user to confirm: "This will permanently delete Coherence project files. Continue? (yes/no)"
+
+If confirmed, delete the following from the current repo root:
+
+1. **`.claude/hooks/`** — All Coherence-generated hook scripts. Delete the entire directory.
+2. **`.claude/agents/`** — All Coherence agent definitions. Delete the entire directory.
+3. **`.claude/skills/coherence/`** — The Coherence skill directory. Delete the skill subdirectory only, not `.claude/skills/` itself (other skills may exist).
+4. **`docs/SPEC-*.md`** — All SPEC documents except `SPEC-TEMPLATE.md`. List each file deleted.
+5. **`.claude/coherence.log`** — Activity log file, if present.
+6. **`.claude/coherence-log-enabled`** — Logging flag file, if present.
+
+**Do NOT delete**:
+- `CLAUDE.md` — may contain non-Coherence content the user added. Instead, inform: "CLAUDE.md was left intact. Remove Coherence sections manually if desired."
+- `.claude/settings.local.json` — already handled in Step 3.
+- `.claude/` itself — other tools may use it.
+- `docs/` itself — may contain non-SPEC documents.
+
+Report each file/directory deleted.
+
+#### Step 8: Summary
 
 Present a structured summary:
 
@@ -1267,9 +1296,23 @@ Global:
   extraKnownMarketplaces: removed / skipped
   MCP servers:          removed / skipped
   Registry:             deleted / skipped
+  Plugin cache:         removed / not found / skipped
 
+Purge:
+  .claude/hooks/             deleted (N files) / skipped
+  .claude/agents/            deleted (N files) / skipped
+  .claude/skills/coherence/  deleted / skipped
+  docs/SPEC-*.md             deleted (N files) / skipped
+  .claude/coherence.log      deleted / not found / skipped
+  CLAUDE.md                  left intact (remove Coherence sections manually)
+```
+
+If `--purge` was not passed, omit the Purge section and append:
+
+```
 Note: .claude/hooks/, .claude/agents/, .claude/skills/, and CLAUDE.md were
 left intact — they contain your customized guardrails configuration.
+Use --purge to remove these files.
 ```
 
 #### Edge Cases
@@ -1278,3 +1321,5 @@ left intact — they contain your customized guardrails configuration.
 - **Missing or corrupt registry**: Proceed with local cleanup. Create a fresh registry if needed for removal tracking, or skip registry steps with a warning.
 - **Already-clean entries**: If `settings.local.json` has no Coherence hooks, report "already clean" rather than failing.
 - **`--force` with stale warnings**: Show stale entries that were pruned as part of the summary.
+- **`--purge` with no project files**: If `.claude/hooks/` etc. don't exist, report "not found" per item rather than failing.
+- **`--purge` declined**: If the user declines the confirmation prompt, skip all purge deletions and report "purge cancelled by user" in the summary.

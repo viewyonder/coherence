@@ -306,7 +306,7 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-scenario">cleanup</div>
             <div class="lifecycle-detail">
               <strong>Removing Coherence from a repo</strong>
-              <p>Run <code>/coherence uninstall</code> to clean hook registrations from <code>settings.local.json</code> and remove the repo from the global registry. Your <code>.claude/hooks/</code>, agents, skills, and <code>CLAUDE.md</code> are left intact &mdash; they're your customized content. If this was the last repo using Coherence, global plugin config is cleaned up too. Use <code>/coherence status</code> first to see what's installed where.</p>
+              <p>Run <code>/coherence uninstall</code> to clean hook registrations from <code>settings.local.json</code> and remove the repo from the global registry. Your <code>.claude/hooks/</code>, agents, skills, and <code>CLAUDE.md</code> are left intact &mdash; they're your customized content. Add <code>--force</code> to also remove global plugin config regardless of other repos. Add <code>--purge</code> to delete all Coherence project files (hooks, agents, skills, SPEC docs) after confirmation. Use <code>/coherence status</code> first to see what's installed where.</p>
             </div>
           </div>
         </div>

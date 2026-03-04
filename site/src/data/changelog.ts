@@ -3,6 +3,12 @@
  * Edit the `text` fields to be human-friendly — these are displayed as-is.
  */
 export const changelog = [
+  // --- 2026-03-04 (v1.7.0) ---
+  { date: '2026-03-04', text: 'Add --purge flag to /coherence uninstall — delete all Coherence project files after confirmation' },
+  { date: '2026-03-04', text: 'Add plugin cache cleanup to global uninstall (removes ~/.claude/plugins/cache/viewyonder-coherence)' },
+  { date: '2026-03-04', text: 'Update site pages to document --force and --purge flags on uninstall' },
+  { date: '2026-03-04', text: 'Bump version to 1.7.0' },
+
   // --- 2026-03-03 (v1.5.0) ---
   { date: '2026-03-03', text: 'Add /coherence config sub-command — unified overview of local project configuration' },
   { date: '2026-03-03', text: 'Add "The Whole Picture" blog post on the config sub-command' },

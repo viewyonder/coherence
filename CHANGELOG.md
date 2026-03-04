@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-03-04
+
+### Added
+
+- **`--purge` flag for `/coherence uninstall`.** Deletes all Coherence project files (hooks, agents, skills, SPEC docs, log files) after user confirmation. `CLAUDE.md` is left intact since it may contain non-Coherence content.
+- **`--force` flag documented across site.** Updated wtf page, Agents component, and blog posts to reflect both `--force` and `--purge` flags.
+- **Plugin cache cleanup on global uninstall.** `~/.claude/plugins/cache/viewyonder-coherence` is now removed during Step 6 (Global Cleanup).
+
+### Changed
+
+- Bump version to 1.7.0
+
 ## [1.6.1] - 2026-03-03
 
 ### Changed
