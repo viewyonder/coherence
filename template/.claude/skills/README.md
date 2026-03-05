@@ -41,6 +41,12 @@ All functionality is unified under a single `/coherence` command with sub-comman
 | `/coherence config` | Show local project configuration |
 | `/coherence help` | Show available sub-commands |
 
+### Plugin vs Project-Local Invocation
+
+When installed as a **plugin** (via marketplace), commands use colon syntax: `/coherence:check-drift`, `/coherence:init`, etc. This is because the plugin exposes each sub-command as a separate skill.
+
+When installed as a **project-local skill** (via `/coherence:init` or manual copy), commands use space syntax: `/coherence check-drift`, `/coherence init`, etc. The project-local skill uses sub-command dispatch within a single `/coherence` skill.
+
 ## Creating Your Own Skill
 
 1. Create `skills/<name>/SKILL.md`

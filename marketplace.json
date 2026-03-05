@@ -5,8 +5,8 @@
   "plugins": [
     {
       "name": "coherence",
-      "description": "Interactive setup wizard that generates a complete .claude/ guardrails system customized to your project.",
-      "version": "1.7.0",
+      "description": "Architectural guardrails for Claude Code — init wizard, drift detection, architecture review, test runner, and more.",
+      "version": "1.8.0",
       "source": "./plugins/coherence-plugin",
       "homepage": "https://coherence.viewyonder.com"
     }

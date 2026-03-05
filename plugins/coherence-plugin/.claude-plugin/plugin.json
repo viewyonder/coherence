@@ -1,7 +1,7 @@
 {
   "name": "coherence",
   "description": "Interactive setup wizard that generates a complete .claude/ guardrails system customized to your project — hooks, agents, skills, CLAUDE.md, and settings.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "author": {
     "name": "View Yonder",
     "email": "hello@viewyonder.com"
@@ -9,5 +9,6 @@
   "homepage": "https://coherence.viewyonder.com",
   "repository": "https://github.com/viewyonder/coherence",
   "license": "MIT",
-  "keywords": ["guardrails", "setup", "hooks", "architecture", "constraints"]
+  "keywords": ["guardrails", "setup", "hooks", "architecture", "constraints"],
+  "skills": "./skills/"
 }
