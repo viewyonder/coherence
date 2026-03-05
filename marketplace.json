@@ -1,12 +1,12 @@
 {
-  "name": "View Yonder Plugins",
+  "name": "Viewyonder Plugins",
   "description": "Architectural guardrails for Claude Code",
-  "owner": { "name": "View Yonder", "url": "https://viewyonder.com" },
+  "owner": { "name": "Viewyonder", "url": "https://viewyonder.com" },
   "plugins": [
     {
       "name": "coherence",
       "description": "Architectural guardrails for Claude Code — init wizard, drift detection, architecture review, test runner, and more.",
-      "version": "1.8.1",
+      "version": "1.8.2",
       "source": "./plugins/coherence-plugin",
       "homepage": "https://coherence.viewyonder.com"
     }

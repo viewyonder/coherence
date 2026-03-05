@@ -297,4 +297,4 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-Built by [View Yonder](https://viewyonder.com). Inspired by the patterns we developed while building software with Claude Code as a primary development tool.
+Built by [Viewyonder](https://viewyonder.com). Inspired by the patterns we developed while building software with Claude Code as a primary development tool.

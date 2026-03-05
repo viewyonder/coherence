@@ -2,7 +2,7 @@
   "name": "viewyonder-coherence",
   "description": "Guardrails plugins for Claude Code — hooks, agents, skills, and SPEC documents that enforce architectural constraints.",
   "owner": {
-    "name": "View Yonder",
+    "name": "Viewyonder",
     "email": "hello@viewyonder.com"
   },
   "plugins": [
