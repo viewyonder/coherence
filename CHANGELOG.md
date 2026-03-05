@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2026-03-05
+
+### Changed
+
+- **Revert plugin to monolithic skill.** The v1.8.0 split into individual skills (`/init`, `/check-drift`, etc.) polluted the Claude Code command namespace. The plugin now uses the same single `skills/coherence/SKILL.md` with sub-command dispatch as the template. All sub-commands are accessed via `/coherence <sub-command>`.
+
+### Removed
+
+- 11 individual skill directories under `plugins/coherence-plugin/skills/` (`init/`, `check-principles/`, `check-drift/`, `test-runner/`, `hook/`, `spec/`, `config/`, `history/`, `status/`, `uninstall/`, `help/`)
+
 ## [1.7.0] - 2026-03-04
 
 ### Added

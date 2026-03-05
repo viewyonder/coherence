@@ -19,7 +19,7 @@ A template system for encoding architectural constraints into the Claude Code de
 | **Hooks** | `template/.claude/hooks/` | Enforce constraints (block/warn/inform) | Every file edit/write/commit via `settings.local.json` |
 | **Agents** | `template/.claude/agents/` | Review and detect drift (read-only) | On demand via skills |
 | **SPEC Docs** | `template/docs/` | Define "correct" via falsifiable claims | Referenced by agents |
-| **Skills** | `template/.claude/skills/` | Multi-step workflows with compliance built in | User-invoked (`/coherence <sub-command>` locally, `/coherence:<sub-command>` via plugin) |
+| **Skills** | `template/.claude/skills/` | Multi-step workflows with compliance built in | User-invoked (`/coherence <sub-command>`) |
 
 ## Hook Protocol
 
@@ -47,6 +47,5 @@ No output = allowed. JSON output = blocked/warned.
 - Agents are read-only (Read, Grep, Glob, Bash only — no Write/Edit access)
 - SPEC documents make falsifiable claims ("we have 18 inspectors") not opinions ("our API is well-designed")
 - When adding a new hook: create the `.cjs` file, add a `// === CONFIGURATION ===` block, register it in `settings.local.json`
-- **Plugin skills** (in `plugins/coherence-plugin/skills/`) are split into individual skills: `init`, `check-principles`, `check-drift`, `test-runner`, `hook`, `spec`, `config`, `history`, `status`, `uninstall`, `help`. Invoked as `/coherence:init`, `/coherence:check-drift`, etc.
-- **Template skill** (in `template/.claude/skills/coherence/`) remains a single monolithic skill with sub-command dispatch. Invoked as `/coherence init`, `/coherence check-drift`, etc. This is what gets installed into user projects.
-- Running `/coherence:init` (or `/coherence init` locally) inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
+- **Plugin skill** and **template skill** both use the same monolithic approach: a single `skills/coherence/SKILL.md` with sub-command dispatch. Invoked as `/coherence <sub-command>` (e.g., `/coherence init`, `/coherence check-drift`).
+- Running `/coherence init` inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
