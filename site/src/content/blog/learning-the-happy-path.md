@@ -296,4 +296,6 @@ The Coherence setup took one session. The hooks, agents, and SPECs it generated 
 
 ---
 
-*[Coherence](https://github.com/viewyonder/coherence) is a Claude Code plugin for encoding architectural constraints. [Injectionator](https://github.com/viewyonder/injectionator) is a prompt injection detection toolkit. [OpenClaw](https://github.com/openclaw/openclaw) is a multi-channel AI gateway.*
+- [Coherence](https://coherence.viewyonder.com) — Claude Code plugin for encoding architectural constraints
+- [Injectionator](https://injectionator.com) — prompt injection detection toolkit
+- [OpenClaw](https://openclaw.ai) — multi-channel AI gateway
