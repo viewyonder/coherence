@@ -6,12 +6,6 @@ author: "Injectionator"
 draft: false
 ---
 
-# Learning the Happy Path
-
-*Building an OpenClaw plugin with Coherence — how we taught Claude the rules before writing a single line of code.*
-
----
-
 ## Contributing to Someone Else's Codebase
 
 We're building [Injectionator](https://github.com/viewyonder/injectionator) as an OpenClaw plugin to detect prompt injection attacks across all messaging channels. But before we wrote a single line of plugin code, we spent a session teaching Claude how the OpenClaw project works — using Coherence to generate architectural guardrails, specification documents, and enforcement hooks that keep Claude operating within the project's boundaries.
