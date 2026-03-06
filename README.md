@@ -6,6 +6,8 @@ A system of hooks, agents, skills, and specification documents that encode your 
 
 Website: [coherence.viewyonder.com](https://coherence.viewyonder.com) | [Getting Started](https://coherence.viewyonder.com/getting-started) | [Entropy at Velocity](https://coherence.viewyonder.com/blog/entropy-at-velocity) (blog post)
 
+**Docs:** [SPEC — Hooks](docs/SPEC-HOOKS.md) | [SPEC — Skills](docs/SPEC-SKILLS.md) | [SPEC — Agents](docs/SPEC-AGENTS.md) | [SPEC — Template](docs/SPEC-TEMPLATE.md) | [Reference (file map + uninstall)](docs/REFERENCE.md)
+
 ---
 
 ## Install

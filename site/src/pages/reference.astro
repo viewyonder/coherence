@@ -1,0 +1,655 @@
+---
+import Base from '../layouts/Base.astro';
+import BottomCTA from '../components/BottomCTA.astro';
+---
+
+<Base title="Reference — Coherence by Viewyonder" description="Complete file map and uninstall guide for Coherence. Every file it touches, organized by scope.">
+  <article class="container guide">
+    <header class="guide-header">
+      <a href="/" class="back-link">&larr; Home</a>
+      <p class="section-label">Reference</p>
+      <h1>File Map & Uninstall</h1>
+      <p class="guide-subtitle">
+        Every file Coherence touches, organized by scope — plus step-by-step removal instructions.
+      </p>
+    </header>
+
+    <nav class="toc">
+      <p class="toc-title">On this page</p>
+      <ul>
+        <li><a href="#plugin-files">Plugin files</a></li>
+        <li><a href="#template-files">Template files</a></li>
+        <li><a href="#project-files">Per-project files</a></li>
+        <li><a href="#global-files">Global files</a></li>
+        <li><a href="#uninstall">Uninstall guide</a></li>
+      </ul>
+    </nav>
+
+    <div class="prose">
+
+      <!-- ============================================ -->
+      <section id="plugin-files" class="guide-section">
+        <h2>Plugin Files</h2>
+        <p>
+          Source repo files that power the Coherence plugin. Users don't edit these directly.
+        </p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>.claude-plugin/marketplace.json</code></td>
+                <td>Marketplace listing metadata</td>
+              </tr>
+              <tr>
+                <td><code>plugins/coherence-plugin/.claude-plugin/plugin.json</code></td>
+                <td>Plugin metadata (name, version, description)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Plugin Skills <span class="count-badge">10 skills</span></h3>
+        <p>Each skill lives in <code>plugins/coherence-plugin/skills/&lt;name&gt;/SKILL.md</code>.</p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>Skill</th><th>Command</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>init</td><td><code>/coherence:init</code></td><td>Scaffold a project</td></tr>
+              <tr><td>check-principles</td><td><code>/coherence:check-principles</code></td><td>Validate CLAUDE.md principles</td></tr>
+              <tr><td>check-drift</td><td><code>/coherence:check-drift</code></td><td>Detect architectural drift</td></tr>
+              <tr><td>test-runner</td><td><code>/coherence:test-runner</code></td><td>Run tests with compliance checks</td></tr>
+              <tr><td>hook</td><td><code>/coherence:hook</code></td><td>Manage hooks</td></tr>
+              <tr><td>spec</td><td><code>/coherence:spec</code></td><td>Manage SPEC documents</td></tr>
+              <tr><td>config</td><td><code>/coherence:config</code></td><td>View/edit configuration</td></tr>
+              <tr><td>history</td><td><code>/coherence:history</code></td><td>View activity log</td></tr>
+              <tr><td>status</td><td><code>/coherence:status</code></td><td>Show installation status</td></tr>
+              <tr><td>help</td><td><code>/coherence:help</code></td><td>Usage reference</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="template-files" class="guide-section">
+        <h2>Template Files</h2>
+        <p>
+          Source templates that <code>/coherence:init</code> copies and customizes into user projects.
+        </p>
+
+        <h3>Hooks <span class="count-badge">11 hooks + 1 utility</span></h3>
+        <p>Located in <code>template/.claude/hooks/</code>.</p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File</th><th>Type</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>_log.cjs</code></td><td><span class="badge badge-util">utility</span></td><td>Shared logging helper (not a hook itself)</td></tr>
+              <tr><td><code>forbidden-imports.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Prevents use of banned imports/packages</td></tr>
+              <tr><td><code>required-prefix.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Enforces file path prefixes for new files</td></tr>
+              <tr><td><code>boundary-guard.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Blocks cross-boundary imports between layers</td></tr>
+              <tr><td><code>test-gate.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Requires tests before allowing certain changes</td></tr>
+              <tr><td><code>data-isolation.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on direct DB access outside data layer</td></tr>
+              <tr><td><code>delegation-check.js</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns when tasks should be delegated to agents</td></tr>
+              <tr><td><code>style-guard.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on style/convention violations</td></tr>
+              <tr><td><code>terminology-check.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on use of non-standard terminology</td></tr>
+              <tr><td><code>test-suggest.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Suggests tests for changed code</td></tr>
+              <tr><td><code>change-suggest.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Suggests related changes</td></tr>
+              <tr><td><code>state-flow.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Reports state transition information</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Agents <span class="count-badge">5 agents</span></h3>
+        <p>Located in <code>template/.claude/agents/</code>. All agents are read-only.</p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>code-reviewer.md</code></td><td>General code review</td></tr>
+              <tr><td><code>consistency-reviewer.md</code></td><td>Cross-file consistency checks</td></tr>
+              <tr><td><code>security-auditor.md</code></td><td>Security vulnerability scanning</td></tr>
+              <tr><td><code>architecture-reviewer.md</code></td><td>Architecture compliance review</td></tr>
+              <tr><td><code>drift-detector.md</code></td><td>Detects drift from SPEC documents</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Other Template Files</h3>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>template/CLAUDE.md</code></td><td>Project instructions with <code>{"{{PLACEHOLDER}}"}</code> markers</td></tr>
+              <tr><td><code>template/.claude/.gitignore</code></td><td>Gitignore for <code>.claude/</code> directory</td></tr>
+              <tr><td><code>template/.claude/skills/coherence/SKILL.md</code></td><td>Monolithic dispatcher (<code>/coherence &lt;sub-command&gt;</code>)</td></tr>
+              <tr><td><code>template/docs/SPEC-TEMPLATE.md</code></td><td>Blank SPEC document template</td></tr>
+              <tr><td><code>template/docs/MEMORY.md</code></td><td>Memory document template</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="project-files" class="guide-section">
+        <h2>Per-Project Files</h2>
+        <p>
+          Created by <code>/coherence:init</code> in the user's project repository.
+        </p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File / Directory</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>.claude/settings.local.json</code></td><td>Hook registrations (PreToolUse/PostToolUse matchers)</td></tr>
+              <tr><td><code>.claude/hooks/</code></td><td>Selected hooks, customized with project-specific config</td></tr>
+              <tr><td><code>.claude/agents/</code></td><td>Agent definitions</td></tr>
+              <tr><td><code>.claude/skills/coherence/SKILL.md</code></td><td>Monolithic dispatcher skill</td></tr>
+              <tr><td><code>.claude/.gitignore</code></td><td>Keeps generated files out of version control</td></tr>
+              <tr><td><code>CLAUDE.md</code></td><td>Filled-in project instructions (placeholders replaced)</td></tr>
+              <tr><td><code>docs/SPEC-*.md</code></td><td>Optional SPEC documents defining architectural constraints</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="global-files" class="guide-section">
+        <h2>Global Files</h2>
+        <p>
+          User-wide files that affect all repos and Claude Code sessions. Stored outside any project.
+        </p>
+
+        <div class="callout callout-warn">
+          <strong>These are shared.</strong> Modifying or deleting global files affects every project and every Claude Code session on your machine.
+        </div>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr><th>File / Directory</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>~/.claude/settings.json</code></td><td><code>enabledPlugins</code> + <code>extraKnownMarketplaces</code> entries</td></tr>
+              <tr><td><code>~/.claude/coherence/repos.json</code></td><td>Registry of all repos where Coherence is installed</td></tr>
+              <tr><td><code>~/.claude/coherence-log-enabled</code></td><td>Marker file that enables activity logging</td></tr>
+              <tr><td><code>~/.claude/plugins/cache/viewyonder-coherence/</code></td><td>Cached plugin files</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <section id="uninstall" class="guide-section">
+        <h2>Uninstall Guide</h2>
+        <p>
+          Coherence touches both global and per-project files. Follow all steps for a complete removal.
+        </p>
+
+        <div class="callout callout-warn">
+          <strong>Read <code>repos.json</code> first.</strong> Before deleting global files, check <code>~/.claude/coherence/repos.json</code> for the list of repos that need per-project cleanup.
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-detail">
+              <h3>Disable the plugin</h3>
+              <p>In Claude Code:</p>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">Claude Code</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="prompt">&gt;</span> /plugin disable coherence
+                </div>
+              </div>
+              <p>This stops the plugin from running but does not remove its files.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-detail">
+              <h3>Uninstall the plugin</h3>
+              <p>In Claude Code:</p>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">Claude Code</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="prompt">&gt;</span> /plugin uninstall coherence
+                </div>
+              </div>
+              <p>Alternatively, use the plugin management UI in Claude Code settings.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-detail">
+              <h3>Remove marketplace entry</h3>
+              <p>
+                Edit <code>~/.claude/settings.json</code> and remove the Coherence entry from
+                <code>extraKnownMarketplaces</code>. Also remove it from <code>enabledPlugins</code>
+                if the uninstall step didn't already.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-detail">
+              <h3>Clean global files</h3>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">bash</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="comment"># Coherence registry</span><br />
+                  <span class="prompt">$</span> rm -rf ~/.claude/coherence/<br />
+                  <br />
+                  <span class="comment"># Activity logging marker</span><br />
+                  <span class="prompt">$</span> rm -f ~/.claude/coherence-log-enabled<br />
+                  <br />
+                  <span class="comment"># Cached plugin files</span><br />
+                  <span class="prompt">$</span> rm -rf ~/.claude/plugins/cache/viewyonder-coherence/
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-detail">
+              <h3>Clean per-project files</h3>
+              <p>
+                Repeat for each repo listed in <code>repos.json</code> (from step 4).
+              </p>
+
+              <h4>Safe to delete</h4>
+              <p>Generated by Coherence, no user content:</p>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">bash</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="prompt">$</span> rm -f .claude/settings.local.json<br />
+                  <span class="prompt">$</span> rm -rf .claude/hooks/<br />
+                  <span class="prompt">$</span> rm -rf .claude/agents/<br />
+                  <span class="prompt">$</span> rm -rf .claude/skills/coherence/<br />
+                  <span class="prompt">$</span> rm -f .claude/.gitignore
+                </div>
+              </div>
+              <p>
+                If <code>.claude/settings.local.json</code> contains non-Coherence settings,
+                edit it manually instead of deleting.
+              </p>
+
+              <h4>Review before deleting</h4>
+              <p>These may contain your own content:</p>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">bash</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="prompt">$</span> rm -f CLAUDE.md<br />
+                  <span class="prompt">$</span> rm -f docs/SPEC-*.md<br />
+                  <span class="prompt">$</span> rm -f docs/MEMORY.md
+                </div>
+              </div>
+
+              <p>Finally, remove the empty <code>.claude/</code> directory if nothing else remains:</p>
+              <div class="terminal">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">bash</span>
+                </div>
+                <div class="terminal-body">
+                  <span class="prompt">$</span> rmdir .claude 2>/dev/null
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </article>
+  <BottomCTA />
+</Base>
+
+<style>
+  .guide {
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+  }
+
+  .guide-header {
+    margin-bottom: 3rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .guide-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    max-width: 50ch;
+  }
+
+  /* Table of contents */
+  .toc {
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .toc ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .toc li {
+    margin-bottom: 0.4rem;
+  }
+
+  .toc a {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .toc a:hover {
+    color: var(--cyan);
+    opacity: 1;
+  }
+
+  /* Sections */
+  .guide-section {
+    padding: 0;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .guide-section h2 {
+    margin-bottom: 1rem;
+  }
+
+  .guide-section h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-section h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+
+  .guide-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  /* Count badge next to headings */
+  .count-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 0.15em 0.6em;
+    border-radius: var(--radius-sm);
+    vertical-align: middle;
+    margin-left: 0.5rem;
+  }
+
+  /* Reference tables */
+  .ref-table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--bg-surface);
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .ref-table thead {
+    background: var(--bg-surface);
+  }
+
+  .ref-table th {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 0.6rem 1rem;
+  }
+
+  .ref-table td {
+    padding: 0.55rem 1rem;
+    border-top: 1px solid var(--bg-surface);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  .ref-table td:first-child {
+    white-space: nowrap;
+  }
+
+  .ref-table code {
+    font-size: 0.8rem;
+    background: rgba(0, 255, 240, 0.06);
+    color: var(--text-primary);
+  }
+
+  .ref-table .badge {
+    font-size: 0.6rem;
+    padding: 0.15em 0.5em;
+  }
+
+  .badge-util {
+    background: rgba(136, 136, 170, 0.15);
+    color: var(--text-muted);
+    border: 1px solid rgba(136, 136, 170, 0.3);
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--bg-mid);
+    border-left: 3px solid var(--cyan);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .callout strong {
+    color: var(--text-primary);
+  }
+
+  .callout-warn {
+    border-left-color: var(--amber, #ffa600);
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--cyan);
+    border: 1px solid rgba(0, 255, 240, 0.3);
+    border-radius: 4px;
+  }
+
+  .step-detail {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .step-detail h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .step-detail h4 {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-detail p {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .step-detail p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Terminal blocks (reused from getting-started) */
+  .terminal {
+    background: var(--bg-deep);
+    border: 1px solid var(--bg-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 0.75rem 0 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .terminal-header {
+    background: var(--bg-surface);
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .terminal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  .terminal-title {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .terminal-body {
+    padding: 1rem;
+    line-height: 1.8;
+  }
+
+  .terminal-body .prompt {
+    color: var(--cyan);
+    user-select: none;
+    margin-right: 0.5rem;
+  }
+
+  .terminal-body .comment {
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .ref-table td:first-child {
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .step {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>
