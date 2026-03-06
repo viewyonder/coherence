@@ -1,0 +1,231 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Contact — Coherence by Viewyonder" description="Get in touch with the Coherence team at Viewyonder.">
+  <article class="container guide">
+    <header class="guide-header">
+      <a href="/" class="back-link">&larr; Home</a>
+      <p class="section-label">Contact</p>
+      <h1>Get in Touch</h1>
+      <p class="guide-subtitle">
+        Questions, feedback, or just want to say hello? We'd love to hear from you.
+      </p>
+    </header>
+
+    <form id="contact-form" class="contact-form" novalidate>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAACnIDZzVT6kSuQGn" data-theme="dark"></div>
+
+      <button type="submit" class="submit-btn" disabled>Send Message</button>
+
+      <p id="form-status" class="form-status" aria-live="polite"></p>
+    </form>
+
+    <p class="contact-alt">
+      You can also find us on
+      <a href="https://github.com/viewyonder/coherence" target="_blank" rel="noopener noreferrer">GitHub</a>
+      — open an issue or start a discussion.
+    </p>
+  </article>
+</Base>
+
+<style>
+  .guide {
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+  }
+
+  .guide-header {
+    margin-bottom: 3rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .guide-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    max-width: 50ch;
+  }
+
+  .contact-form {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-group label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: var(--bg-surface);
+    border: 1px solid rgba(0, 255, 240, 0.15);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.65rem 0.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--cyan);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .cf-turnstile {
+    margin-top: 0.25rem;
+  }
+
+  .submit-btn {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--bg-deep);
+    background: var(--cyan);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    min-height: 1.2em;
+  }
+
+  .form-status.success {
+    color: var(--green);
+  }
+
+  .form-status.error {
+    color: var(--red);
+  }
+
+  .contact-alt {
+    margin-top: 3rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .contact-alt a {
+    color: var(--cyan);
+  }
+</style>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  const WORKER_URL = 'https://coherence-contact.steve-chambers.workers.dev';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const btn = form.querySelector('.submit-btn') as HTMLButtonElement;
+  const status = document.getElementById('form-status') as HTMLParagraphElement;
+
+  // Enable submit once Turnstile is solved
+  const observer = new MutationObserver(() => {
+    const token = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]');
+    if (token?.value) {
+      btn.disabled = false;
+      observer.disconnect();
+    }
+  });
+  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['value'] });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.textContent = '';
+    status.className = 'form-status';
+
+    const token = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value;
+    if (!token) {
+      status.textContent = 'Please complete the verification.';
+      status.classList.add('error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    const data = {
+      name: (form.querySelector('#name') as HTMLInputElement).value.trim(),
+      email: (form.querySelector('#email') as HTMLInputElement).value.trim(),
+      message: (form.querySelector('#message') as HTMLTextAreaElement).value.trim(),
+      token,
+    };
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        status.textContent = 'Message sent — thanks!';
+        status.classList.add('success');
+        form.reset();
+        btn.textContent = 'Sent';
+      } else {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'Something went wrong.');
+      }
+    } catch (err: any) {
+      status.textContent = err.message || 'Failed to send. Please try again.';
+      status.classList.add('error');
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    }
+  });
+</script>
