@@ -2,7 +2,7 @@
 
 > **Last verified**: {{YYYY-MM-DD}}
 > **Verified by**: {{person or agent}}
-> **Verification method**: {{manual review | /check-drift | automated}}
+> **Verification method**: {{manual review | /coherence | automated}}
 
 ## Overview
 
@@ -46,4 +46,4 @@ ComponentA -> ComponentB -> ComponentC
 
 ---
 
-*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence check-drift` to detect discrepancies.*
+*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence` to detect discrepancies.*

@@ -44,10 +44,10 @@ Review agents should be read-only. They observe and report; they don't change co
 
 | Agent | Role | Tools | Use When |
 |-------|------|-------|----------|
-| `architecture-reviewer` | Compliance check against CLAUDE.md principles | Read-only | After changes, before PRs |
-| `drift-detector` | Compare SPEC docs against codebase | Read-only | Periodically, after features |
+| `drift-detector` | Compare SPEC docs + principles against codebase | Read-only | `/coherence` (drift mode) |
+| `spec-reviewer` | Review plans against SPEC constraints | Read-only | `/coherence plan` |
 | `code-reviewer` | Quality, security, best practices | Read-only | After significant changes |
-| `consistency-reviewer` | Terminology, voice, and structural consistency | Read-only | Content/documentation review |
+| `consistency-reviewer` | Terminology, voice, structural consistency | Read-only | Content/documentation review |
 | `security-auditor` | OWASP-focused vulnerability detection | Read-only | Security-critical code |
 
 ## Creating Your Own Agent
@@ -56,7 +56,7 @@ Review agents should be read-only. They observe and report; they don't change co
 2. Add front matter with name, description, tools
 3. Write the system prompt with:
    - Role description
-   - What to check/do (reference CLAUDE.md principles)
+   - What to check/do (reference CLAUDE.md principles or SPEC docs)
    - Step-by-step process
    - Output format (structured markdown)
 4. Reference key files the agent should consult
@@ -65,6 +65,6 @@ The agent becomes available to Claude Code automatically.
 
 ## Invoking Agents
 
-Agents are invoked via skills (see `skills/README.md`) or by Claude Code's agent system when the task matches the agent's description.
+Agents are invoked via the `/coherence` skill or by Claude Code's agent system when the task matches the agent's description.
 
-Example: `/coherence check-drift` invokes the `drift-detector` agent.
+Example: `/coherence` in drift mode invokes the `drift-detector` agent. `/coherence plan` invokes the `spec-reviewer` agent.

@@ -16,10 +16,10 @@ A template system for encoding architectural constraints into the Claude Code de
 
 | Layer | Directory | Purpose | When It Runs |
 |-------|-----------|---------|--------------|
-| **Hooks** | `template/.claude/hooks/` | Enforce constraints (block/warn/inform) | Every file edit/write/commit via `settings.local.json` |
-| **Agents** | `template/.claude/agents/` | Review and detect drift (read-only) | On demand via skills |
+| **Hooks** | `template/.claude/hooks/` | Nudge on drift (informational) | Every file edit/write via `settings.local.json` |
+| **Agents** | `template/.claude/agents/` | Review and detect drift (read-only) | On demand via `/coherence` |
 | **SPEC Docs** | `template/docs/` | Define "correct" via falsifiable claims | Referenced by agents |
-| **Skills** | `template/.claude/skills/` | Multi-step workflows with compliance built in | User-invoked (`/coherence <sub-command>` locally, `/coherence:<sub-command>` via plugin) |
+| **Skills** | `template/.claude/skills/` | Auto-detecting workflow | User-invoked (`/coherence` locally or via plugin) |
 
 ## Hook Protocol
 
@@ -28,17 +28,17 @@ Hooks are Node.js scripts (`.cjs`/`.js`) that read JSON from stdin and communica
 - **Warn**: `{ "message": "..." }` — tool proceeds, agent sees warning
 - **Allow**: no output, exit 0
 
-Each hook has a `// === CONFIGURATION ===` block at the top with project-specific constants. Hooks are registered in `settings.local.json` under `PreToolUse` (Edit/Write/Bash matchers) or `PostToolUse`.
+Each hook has a `// === CONFIGURATION ===` block at the top with project-specific constants. Hooks are registered in `settings.local.json` under `PostToolUse`.
 
-Three enforcement levels: 4 blocking hooks (forbidden-imports, required-prefix, boundary-guard, test-gate), 4 warning hooks (data-isolation, delegation-check, terminology-check, style-guard), 3 informational hooks (test-suggest, change-suggest, state-flow).
+The template ships with 1 hook (spec-drift-nudge) and 1 utility (_journal.cjs for JSONL logging).
 
 ## Testing Hooks
 
 ```bash
-echo '{"tool_input":{"file_path":"/src/test.ts","content":"require(\"fs\")"}}' | node template/.claude/hooks/forbidden-imports.cjs
+echo '{"tool_input":{"file_path":"/src/test.ts","content":"hello"}}' | node template/.claude/hooks/spec-drift-nudge.cjs
 ```
 
-No output = allowed. JSON output = blocked/warned.
+No output = allowed. JSON output = warned.
 
 ## Blog Posts
 
@@ -50,8 +50,6 @@ No output = allowed. JSON output = blocked/warned.
 - Hooks are self-contained — no external config files, all configuration via constants at the top of each file
 - Agents are read-only (Read, Grep, Glob, Bash only — no Write/Edit access)
 - SPEC documents make falsifiable claims ("we have 18 inspectors") not opinions ("our API is well-designed")
-- When adding a new hook: create the `.cjs` file, add a `// === CONFIGURATION ===` block, register it in `settings.local.json`
-- **Plugin skills** (in `plugins/coherence-plugin/skills/`) are split into individual skills: `init`, `check-principles`, `check-drift`, `test-runner`, `hook`, `spec`, `config`, `history`, `status`, `help`. Invoked as `/coherence:init`, `/coherence:check-drift`, etc.
-- **Template skill** (in `template/.claude/skills/coherence/`) remains a single monolithic skill with sub-command dispatch. Invoked as `/coherence init`, `/coherence check-drift`, etc. This is what gets installed into user projects.
-- Running `/coherence:init` (or `/coherence init` locally) inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
-- **Version bumps** must update all three locations: `plugins/coherence-plugin/.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and a `v<version>` git tag on the release commit
+- There is 1 unified skill (`/coherence`) with auto-detecting flow — both plugin and template copies are identical
+- Running `/coherence` inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
+- **Version bumps** must update all three locations: `plugins/coherence-plugin/.claude-plugin/plugin.json`, `marketplace.json`, and a `v<version>` git tag on the release commit

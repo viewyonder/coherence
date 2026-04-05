@@ -1,7 +1,7 @@
 {
   "name": "coherence",
-  "description": "Interactive setup wizard that generates a complete .claude/ guardrails system customized to your project — hooks, agents, skills, CLAUDE.md, and settings.",
-  "version": "1.12.4",
+  "description": "Architectural guardrails for Claude Code — auto-detecting scaffold, drift check, and plan review with SPEC documents.",
+  "version": "1.13.0",
   "author": {
     "name": "Viewyonder",
     "email": "hello@viewyonder.com"

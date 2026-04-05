@@ -1,6 +1,6 @@
 # SPEC-AGENTS: Agent System
 
-> **Last verified**: 2026-02-25
+> **Last verified**: 2026-04-05
 > **Verified by**: manual review
 > **Verification method**: file listing + source inspection
 
@@ -14,8 +14,8 @@ There are 5 agents. All are read-only (no Write or Edit access).
 
 | Agent | File | Model | Invoked By |
 |-------|------|-------|------------|
-| architecture-reviewer | `template/.claude/agents/architecture-reviewer.md` | sonnet | `/coherence check-principles` |
-| drift-detector | `template/.claude/agents/drift-detector.md` | sonnet | `/coherence check-drift` |
+| drift-detector | `template/.claude/agents/drift-detector.md` | sonnet | `/coherence` (drift mode) |
+| spec-reviewer | `template/.claude/agents/spec-reviewer.md` | sonnet | `/coherence plan` |
 | code-reviewer | `template/.claude/agents/code-reviewer.md` | sonnet | Automatic (significant code changes) |
 | consistency-reviewer | `template/.claude/agents/consistency-reviewer.md` | sonnet | Manual invocation / content review |
 | security-auditor | `template/.claude/agents/security-auditor.md` | sonnet | Manual invocation (security-critical code) |
@@ -44,11 +44,11 @@ model: sonnet
 
 ## Role Summaries
 
-### architecture-reviewer
-Validates code against architectural principles defined in CLAUDE.md. Checks boundary rules, state flow principles, security constraints, and runtime limitations. Use proactively when reviewing changes or before merging PRs.
-
 ### drift-detector
-Compares SPEC documents against the actual codebase to detect architectural drift. Reads every SPEC document, verifies falsifiable claims against code, and produces a CURRENT/DRIFTED/UNDOCUMENTED report. Used by `/coherence check-drift`.
+Compares SPEC documents — including SPEC-PRINCIPLES.md — against the actual codebase to detect architectural drift. Reads every SPEC document, verifies falsifiable claims and principle check methods against code, and produces a CURRENT/DRIFTED/UNDOCUMENTED report. Used by `/coherence` in drift mode.
+
+### spec-reviewer
+Reviews plans against SPEC constraints and architectural principles. Reads all SPEC documents, extracts constraints, compares against the current plan file, and classifies each constraint as ALIGNED/AT_RISK/VIOLATED. Used by `/coherence plan`.
 
 ### code-reviewer
 Expert code review specialist. Reviews for quality, security vulnerabilities, and best practices. Use proactively after significant code changes.
@@ -70,4 +70,4 @@ These constraints are falsifiable — each can be verified mechanically.
 
 ---
 
-*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence check-drift` to detect discrepancies.*
+*This is a SPEC document. It describes what the code **does**, not what it should do. If the code contradicts this document, either the code has drifted or this document needs updating. Run `/coherence` to detect discrepancies.*
