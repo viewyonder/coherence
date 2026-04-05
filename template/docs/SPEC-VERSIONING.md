@@ -38,11 +38,21 @@ Release tags are clean semver with `v` prefix — no descriptive suffixes.
 
 ## When to Bump
 
+This project follows [Semantic Versioning](https://semver.org/) (SemVer). The version format is **MAJOR.MINOR.PATCH**:
+
 | Change Type | Bump | Examples |
 |-------------|------|----------|
-| Bug fix, typo, minor correction | **Patch** (0.0.+1) | Fix crash, correct docs |
-| New feature, backward-compatible | **Minor** (0.+1.0) | Add endpoint, new option |
-| Breaking change, major rework | **Major** (+1.0.0) | Remove API, restructure |
+| Bug fix, typo, minor correction | **Patch** (0.0.+1) | Fix crash, correct docs, patch dependency |
+| New feature, backward-compatible | **Minor** (0.+1.0) | Add endpoint, new option, deprecate old API |
+| Breaking change, incompatible API | **Major** (+1.0.0) | Remove/rename API, change data format, drop support |
+
+**Key SemVer rules:**
+- Patch releases MUST NOT change public API behavior
+- Minor releases MUST be backward-compatible — existing consumers should not break
+- Major releases signal that consumers need to adapt
+- Pre-1.0.0 versions (0.x.y) are for initial development — anything may change
+
+Further reading: [semver.org](https://semver.org/) | [SemVer FAQ](https://semver.org/#faq)
 
 Run `/coherence version` to bump — it reads this document, updates all locations, commits, and tags.
 
