@@ -88,6 +88,14 @@ cp {{ENV_TEMPLATE}} {{ENV_FILE}}        # Copy environment template
 
 ---
 
+## Versioning
+
+- **Source of truth**: `{{VERSION_SOURCE_FILE}}`
+- **Bump process**: Update all locations in SPEC-VERSIONING.md, commit, tag `v<version>`
+- **Tag format**: `vX.Y.Z` (always v-prefixed, semver, no suffixes on releases)
+
+---
+
 ## Runtime Constraints
 
 **DO**: {{DO_1}} · {{DO_2}} · {{DO_3}} · Use env vars via `{{ENV_ACCESS_PATTERN}}`
@@ -112,6 +120,7 @@ SPEC docs are the **authoritative source of truth**. They take precedence over o
 | Spec | Purpose |
 |------|---------|
 | SPEC-PRINCIPLES.md | Architectural principles — checked by `/coherence` |
+| SPEC-VERSIONING.md | Version locations and tag conventions — checked by `/coherence` |
 | SPEC-{{SPEC_1}}.md | {{SPEC_1_PURPOSE}} |
 | SPEC-{{SPEC_2}}.md | {{SPEC_2_PURPOSE}} |
 

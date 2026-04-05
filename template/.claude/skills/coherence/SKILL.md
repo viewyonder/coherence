@@ -28,6 +28,7 @@ Single entry point for the Coherence guardrails system. Auto-detects what to do 
 | `plan` | Plan review mode — invoke spec-reviewer agent |
 | `fix` | Drift mode + auto-apply fixes |
 | `scaffold` | Force scaffold mode even if SPEC files exist |
+| `version` | Version bump workflow — guided bump, commit, and tag |
 | `--verbose` | Show all CURRENT items, not just drift |
 
 ## Auto-detecting Flow
@@ -54,7 +55,8 @@ b. No SPEC files found → SCAFFOLD MODE
 c. SPEC files found, but CLAUDE.md lacks coherence refs → SETUP MODE
 d. Argument is "plan" → PLAN REVIEW MODE
 e. Argument is "scaffold" → SCAFFOLD MODE (forced)
-f. Otherwise → DRIFT MODE
+f. Argument is "version" → VERSION MODE
+g. Otherwise → DRIFT MODE
 ```
 
 "Coherence refs" means CLAUDE.md contains the text "SPEC-" or "/coherence" or "Specification Documents".
@@ -75,7 +77,7 @@ This is a read-only validation of the coherence repo's own templates, hooks, exa
 | 4 | **Example Consistency** | For each example in `examples/`: run `node -c` on all `.cjs`/`.js` hooks, verify `CLAUDE.md` has zero `{{PLACEHOLDER}}` markers. Report PASS/FAIL per example. |
 | 5 | **Plugin Structure** | Validate that `plugin.json` and `marketplace.json` are valid JSON with matching `name` fields. Report parse errors or mismatches. |
 | 6 | **SKILL.md Consistency** | Verify that the plugin copy (`plugins/coherence-plugin/skills/coherence/SKILL.md`) and the template copy (`template/.claude/skills/coherence/SKILL.md`) are identical. Report differences. |
-| 7 | **Version Consistency** | Read version from `marketplace.json`, `plugins/coherence-plugin/.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and `site/src/components/Footer.astro`. Report PASS if all match, FAIL with the mismatched values. |
+| 7 | **Version Consistency** | Read version from `marketplace.json`, `plugins/coherence-plugin/.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and `site/src/components/Footer.astro`. Also check that a git tag `v<version>` exists for the current version. Report PASS if all files match and tag exists, FAIL with details of any mismatches or missing tag. |
 
 ### Output Format
 
@@ -89,7 +91,7 @@ Coherence Dogfood Validation Report
 4. Example Consistency ...... PASS | FAIL (N issues)
 5. Plugin Structure ......... PASS | FAIL (N issues)
 6. SKILL.md Consistency ..... PASS | FAIL
-7. Version Consistency ...... PASS | FAIL (expected X.Y.Z, found mismatches)
+7. Version Consistency ...... PASS | FAIL (expected X.Y.Z, found mismatches or missing tag)
 
 Issues:
 - [list any failures with details]
@@ -121,6 +123,7 @@ Before asking questions, silently scan the project:
 6. **Test setup**: `jest.config.*`, `vitest.config.*`, `pytest.ini`, `*.test.*`, `__tests__/`, `tests/`
 7. **Source structure**: `src/`, `lib/`, `app/`, `pages/`, `components/`, `api/`, `services/`
 8. **Language/runtime**: Infer from file extensions and config files
+9. **Version sources**: Look for version declarations in `package.json` (`.version`), `Cargo.toml` (`[package] version`), `pyproject.toml` (`[project] version`), `setup.cfg` (`version`), `*.csproj` (`<Version>`), `version.txt`, `deno.json` (`.version`). Note the file and access path for SPEC-VERSIONING generation.
 
 #### Idempotency check
 
@@ -155,7 +158,7 @@ Ask 2-3 questions adapted to project type:
 ### Phase 3: Enforcement Preferences
 
 **"Should I generate SPEC documents alongside the guardrails?"**
-- Yes — generate SPEC templates including SPEC-PRINCIPLES.md
+- Yes — generate SPEC templates including SPEC-PRINCIPLES.md and SPEC-VERSIONING.md (if version source detected)
 - No — just CLAUDE.md and coherence config
 
 ### Phase 4: Summary & Confirmation
@@ -172,6 +175,7 @@ CLAUDE.md — Customized development guidelines
 
 SPEC Templates (if selected):
   - docs/SPEC-PRINCIPLES.md — Architectural principles
+  - docs/SPEC-VERSIONING.md — Version locations and tag conventions (if version source detected)
   - docs/SPEC-{OTHER}.md — Project-specific specs
 
 Total: N files
@@ -281,6 +285,107 @@ After presenting the drift report, automatically apply fixes:
 ### If `--verbose` was passed
 
 Include all CURRENT items in the report, not just drifted/undocumented ones.
+
+### Version nudge
+
+After presenting the drift report, if `docs/SPEC-VERSIONING.md` (or `doc/SPEC-VERSIONING.md`) exists:
+
+1. Read the current version from the declared source of truth
+2. Check if a `v<version>` git tag exists
+3. Append a version status line to the report:
+
+```
+Version: X.Y.Z (tagged ✓ | untagged ✗)
+```
+
+4. If there are DRIFTED or UNDOCUMENTED items, add:
+
+```
+If these changes warrant a release, run: /coherence version
+```
+
+---
+
+## VERSION MODE
+
+Guided version bump workflow. Reads SPEC-VERSIONING.md to know where versions live, then bumps, commits, and tags.
+
+### Prerequisites
+
+If `docs/SPEC-VERSIONING.md` (or `doc/SPEC-VERSIONING.md`) does not exist, tell the user:
+- "No SPEC-VERSIONING.md found. Run `/coherence scaffold` or create one manually to declare your version locations."
+- Stop.
+
+### Step 1: Show current state
+
+1. Read the source of truth file declared in SPEC-VERSIONING.md
+2. Extract the current version
+3. Check all version locations for consistency
+4. Check if the current version has a git tag
+5. Show a brief summary:
+
+```
+Current version: X.Y.Z
+Tag: vX.Y.Z (exists ✓ | missing ✗)
+Locations: N files (all in sync ✓ | M out of sync ✗)
+```
+
+If locations are out of sync, show which ones and offer to fix them first.
+
+### Step 2: Ask bump type
+
+Ask using `AskUserQuestion`:
+
+**"What kind of version bump is this?"**
+
+- **Patch** (X.Y.Z → X.Y.Z+1) — Bug fixes, minor corrections, no new functionality
+- **Minor** (X.Y.Z → X.Y+1.0) — New features, backward-compatible changes
+- **Major** (X.Y.Z → X+1.0.0) — Breaking changes, major rework
+- **Custom** — Enter a specific version
+- **Skip** — Don't bump right now
+
+If Skip → stop.
+
+### Step 3: Update all version locations
+
+1. Calculate the new version from the bump type
+2. For each file in the SPEC-VERSIONING.md "Version Locations" table:
+   - Read the file
+   - Update the version using the declared access method
+   - Write the file back
+3. Update the "Current version" field in SPEC-VERSIONING.md itself
+4. Report what was updated:
+
+```
+Updated X.Y.Z → A.B.C in:
+  ✓ package.json
+  ✓ src/config.ts
+  ✓ SPEC-VERSIONING.md
+```
+
+### Step 4: Commit and tag
+
+Ask using `AskUserQuestion`:
+
+**"Commit and tag now?"**
+
+Show the proposed commit message: `vA.B.C — <user provides summary>`
+
+- **Yes** — Ask for a one-line summary, then:
+  1. Stage the modified version files
+  2. Commit with message: `vA.B.C — <summary>`
+  3. Create tag: `git tag vA.B.C`
+  4. Report success and remind: `Push when ready: git push && git push --tags`
+- **No** — Files are already updated. Remind user to commit and tag manually.
+
+### Step 5: Journal
+
+Append JSONL entry:
+```javascript
+journal('version-bump', 'skill', 'Bumped X.Y.Z → A.B.C', {
+  details: { from: 'X.Y.Z', to: 'A.B.C', filesUpdated: [...], tagged: true|false }
+});
+```
 
 ---
 

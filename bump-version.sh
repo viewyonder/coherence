@@ -22,6 +22,12 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   exit 1
 fi
 
+# Check if tag already exists
+if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+  echo "Error: Tag v$VERSION already exists"
+  exit 1
+fi
+
 CURRENT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('marketplace.json','utf8')).plugins[0].version)")
 echo "Bumping: $CURRENT → $VERSION"
 
@@ -57,6 +63,8 @@ sed -i '' "s/v${CURRENT}/v${VERSION}/g" site/src/components/Footer.astro
 echo "  ✓ Footer.astro"
 
 echo ""
-echo "Done. Remember to:"
+echo "Files updated ($CURRENT → $VERSION). Now:"
 echo "  1. Update site/src/data/changelog.ts with release notes"
-echo "  2. Commit and tag: git tag v$VERSION"
+echo "  2. git add -A && git commit -m 'v$VERSION — <summary>'"
+echo "  3. git tag v$VERSION"
+echo "  4. git push && git push --tags"

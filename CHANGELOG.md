@@ -1,5 +1,7 @@
 # Changelog
 
+> **Note**: This file is no longer maintained. The canonical changelog is [`site/src/data/changelog.ts`](site/src/data/changelog.ts), which drives the website's changelog page.
+
 All notable changes to this project will be documented in this file.
 
 ## [1.7.0] - 2026-03-04

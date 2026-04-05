@@ -72,6 +72,32 @@ Scope: {component type or "all"}
 3. ...
 ```
 
+## Special Handling: SPEC-VERSIONING.md
+
+If a `SPEC-VERSIONING.md` exists, perform targeted version alignment checks in addition to the standard claim extraction:
+
+### 1. Extract Source of Truth
+
+Read the "Source of Truth" table to find the primary version file and access path. Read that file and extract the current version string.
+
+### 2. Check All Version Locations
+
+For each row in the "Version Locations" table:
+- Read the file at the declared path
+- Use the described access method to extract the version string
+- Compare against the source of truth version
+- Mark as CURRENT if they match, DRIFTED if they don't
+
+### 3. Check Tag Convention
+
+Run `git tag --sort=-v:refname | head -10` to inspect recent tags. Check whether they conform to the format declared in the "Tag Convention" table (default: `vX.Y.Z`). Flag non-conforming release tags as DRIFTED.
+
+### 4. Check Tag Alignment
+
+Compare the source-of-truth version against existing tags. If `vX.Y.Z` (where X.Y.Z is the current version) does not exist as a git tag, report as DRIFTED with a note that the current version is untagged.
+
+Include all version findings in the standard Drift Report output format.
+
 ## Invocation
 
 This agent is invoked by `/coherence` in drift mode. Arguments:
