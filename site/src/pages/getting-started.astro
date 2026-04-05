@@ -241,6 +241,7 @@ import Base from '../layouts/Base.astro';
           <div class="file-tree-item depth-0"><span class="file-icon">&#128193;</span> docs/</div>
           <div class="file-tree-item depth-1">SPEC-PRINCIPLES.md <span class="file-desc">— architectural principles</span></div>
           <div class="file-tree-item depth-1">SPEC-TEMPLATE.md <span class="file-desc">— template for project-specific SPECs</span></div>
+          <div class="file-tree-item depth-1">SPEC-VERSIONING.md <span class="file-desc">— version locations and bump process</span></div>
         </div>
       </section>
 
@@ -271,6 +272,10 @@ import Base from '../layouts/Base.astro';
           <div class="next-step">
             <code>/coherence fix</code>
             <p>Drift detection plus auto-apply — fixes issues it finds without manual intervention.</p>
+          </div>
+          <div class="next-step">
+            <code>/coherence version</code>
+            <p>Bump your project version following SemVer. Updates all declared version locations, commits, and tags.</p>
           </div>
           <div class="next-step">
             <span class="next-step-label">Edit CLAUDE.md</span>
