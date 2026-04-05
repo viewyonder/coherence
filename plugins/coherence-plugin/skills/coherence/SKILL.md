@@ -75,6 +75,7 @@ This is a read-only validation of the coherence repo's own templates, hooks, exa
 | 4 | **Example Consistency** | For each example in `examples/`: run `node -c` on all `.cjs`/`.js` hooks, verify `CLAUDE.md` has zero `{{PLACEHOLDER}}` markers. Report PASS/FAIL per example. |
 | 5 | **Plugin Structure** | Validate that `plugin.json` and `marketplace.json` are valid JSON with matching `name` fields. Report parse errors or mismatches. |
 | 6 | **SKILL.md Consistency** | Verify that the plugin copy (`plugins/coherence-plugin/skills/coherence/SKILL.md`) and the template copy (`template/.claude/skills/coherence/SKILL.md`) are identical. Report differences. |
+| 7 | **Version Consistency** | Read version from `marketplace.json`, `plugins/coherence-plugin/.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and `site/src/components/Footer.astro`. Report PASS if all match, FAIL with the mismatched values. |
 
 ### Output Format
 
@@ -88,6 +89,7 @@ Coherence Dogfood Validation Report
 4. Example Consistency ...... PASS | FAIL (N issues)
 5. Plugin Structure ......... PASS | FAIL (N issues)
 6. SKILL.md Consistency ..... PASS | FAIL
+7. Version Consistency ...... PASS | FAIL (expected X.Y.Z, found mismatches)
 
 Issues:
 - [list any failures with details]

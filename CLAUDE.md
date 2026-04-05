@@ -52,4 +52,4 @@ No output = allowed. JSON output = warned.
 - SPEC documents make falsifiable claims ("we have 18 inspectors") not opinions ("our API is well-designed")
 - There is 1 unified skill (`/coherence`) with auto-detecting flow — both plugin and template copies are identical
 - Running `/coherence` inside this repo triggers dogfood mode — a read-only validation of templates, hooks, examples, and documentation accuracy
-- **Version bumps** must update all three locations: `plugins/coherence-plugin/.claude-plugin/plugin.json`, `marketplace.json`, and a `v<version>` git tag on the release commit
+- **Version bumps**: Run `./bump-version.sh <version>` to update all 4 files, then add changelog entries to `site/src/data/changelog.ts`, commit, and tag with `git tag v<version>`
