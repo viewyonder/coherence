@@ -50,7 +50,7 @@ import Base from '../layouts/Base.astro';
       <section id="what" class="guide-section">
         <h2>What: <span class="h2-sub">Active guardrails inside the generation loop</span></h2>
         <p>
-          Coherence is a system of hooks, agents, specs, and skills that encode your project's architectural constraints into the <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener noreferrer">Claude Code</a> development loop. Instead of writing rules in a document and hoping the AI follows them, you make the rules <em>active</em> &mdash; they run automatically, catch violations before they hit disk, and detect drift on demand.
+          Coherence is a system of SPEC documents, agents, a nudge hook, and a single auto-detecting skill that encode your project's architectural constraints into the <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener noreferrer">Claude Code</a> development loop. Instead of writing rules in a document and hoping the AI follows them, you make the rules <em>active</em> &mdash; SPEC docs define what's correct, agents detect drift, and a hook nudges you when it's time to check.
         </p>
 
         <h3>How it compares</h3>
@@ -77,8 +77,8 @@ import Base from '../layouts/Base.astro';
           </div>
           <div class="comparison-row comparison-row-highlight">
             <div class="comparison-approach"><strong>Coherence</strong></div>
-            <div class="comparison-detail">Active enforcement at the moment of generation, plus drift detection</div>
-            <div class="comparison-limit">Catches violations before they exist</div>
+            <div class="comparison-detail">SPEC-based drift detection plus nudge reminders during development</div>
+            <div class="comparison-limit">Catches drift before it compounds</div>
           </div>
         </div>
 
@@ -91,13 +91,13 @@ import Base from '../layouts/Base.astro';
           </div>
           <div class="layer-row">
             <div class="layer-name"><strong>Hooks</strong></div>
-            <div class="layer-purpose">Enforce constraints &mdash; block, warn, or inform</div>
-            <div class="layer-when">Every file edit, write, or commit</div>
+            <div class="layer-purpose">Nudge when edits accumulate without a drift check</div>
+            <div class="layer-when">PostToolUse on edits and writes</div>
           </div>
           <div class="layer-row">
             <div class="layer-name"><strong>Agents</strong></div>
             <div class="layer-purpose">Review code and detect drift (read-only)</div>
-            <div class="layer-when">On demand via skills</div>
+            <div class="layer-when">Invoked by <code>/coherence</code> or directly</div>
           </div>
           <div class="layer-row">
             <div class="layer-name"><strong>SPEC docs</strong></div>
@@ -106,15 +106,15 @@ import Base from '../layouts/Base.astro';
           </div>
           <div class="layer-row">
             <div class="layer-name"><strong>Skills</strong></div>
-            <div class="layer-purpose">Multi-step workflows with compliance built in</div>
-            <div class="layer-when">User-invoked (<code>/coherence:check-drift</code>, etc.)</div>
+            <div class="layer-purpose">Single auto-detecting entry point for drift, plans, and fixes</div>
+            <div class="layer-when">User-invoked (<code>/coherence</code>)</div>
           </div>
         </div>
       </section>
 
       <!-- ============================================ -->
       <section id="when" class="guide-section">
-        <h2>When: <span class="h2-sub">Setup once, enforced on every edit, drift-checked on demand</span></h2>
+        <h2>When: <span class="h2-sub">Setup once, nudged during development, drift-checked on demand</span></h2>
         <p>
           Coherence works during development with Claude Code. Different parts activate at different times:
         </p>
@@ -124,21 +124,21 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-once">once</div>
             <div class="lifecycle-detail">
               <strong>Install &amp; setup</strong>
-              <p>Install the plugin and run <code>/coherence:init</code>. The wizard scans your project, asks a few questions, and generates everything &mdash; hooks, agents, skills, CLAUDE.md, and settings.</p>
+              <p>Install the plugin and run <code>/coherence</code>. It auto-detects a fresh project and scaffolds everything &mdash; CLAUDE.md, SPEC docs, agents, and a nudge hook.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-auto">automatic</div>
             <div class="lifecycle-detail">
-              <strong>Hooks run on every edit</strong>
-              <p>No action needed. Every time Claude (or you) edits, writes, or commits a file, hooks check the change against your constraints. Violations are blocked or flagged instantly.</p>
+              <strong>Nudge hook tracks edits</strong>
+              <p>No action needed. The <code>spec-drift-nudge</code> hook counts edits and elapsed time. After 50 edits or 7 days, it nudges you to run <code>/coherence</code>. Non-blocking, non-intrusive.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-demand">on demand</div>
             <div class="lifecycle-detail">
-              <strong>Skills run when you ask</strong>
-              <p>Run <code>/coherence:check-drift</code> to compare SPEC docs against reality. Run <code>/coherence:check-principles</code> to audit code against your principles. Use these periodically or before major changes.</p>
+              <strong>Run /coherence when you're ready</strong>
+              <p>Run <code>/coherence</code> to detect drift against your SPECs. Run <code>/coherence plan</code> to review a plan against constraints. Use <code>/coherence fix</code> to auto-apply corrections.</p>
             </div>
           </div>
         </div>
@@ -152,75 +152,11 @@ import Base from '../layouts/Base.astro';
       <section id="who" class="guide-section">
         <h2>Who: <span class="h2-sub">Anyone with conventions worth protecting</span></h2>
         <p>
-          You're probably not just a coder. You might be an architect trying to keep a growing system consistent, a marketer protecting brand voice, or a writer enforcing terminology across a documentation set. Coherence adapts to what you're building &mdash; code projects get boundary guards and import blockers, writing projects get terminology and style checks. Same system, different constraints.
+          You're probably not just a coder. You might be an architect trying to keep a growing system consistent, a marketer protecting brand voice, or a writer enforcing terminology across a documentation set. Coherence works for any project with architectural conventions worth protecting &mdash; web apps, APIs, CLIs, infrastructure, content, and more.
         </p>
-
-        <div class="archetype-grid">
-          <div class="archetype-card card">
-            <h3>Web Application</h3>
-            <p>React, Next.js, Vue, Svelte, Astro, etc.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">state-flow</span>
-              <span class="badge badge-warn">delegation-check</span>
-              <span class="badge badge-info">test-suggest</span>
-              <span class="badge badge-info">change-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>API / Backend</h3>
-            <p>Express, FastAPI, Rails, Spring, etc.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">required-prefix</span>
-              <span class="badge badge-warn">data-isolation</span>
-              <span class="badge badge-warn">delegation-check</span>
-              <span class="badge badge-info">test-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>CLI / Library</h3>
-            <p>npm packages, CLIs, crates, pip packages.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">test-gate</span>
-              <span class="badge badge-info">test-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Infrastructure</h3>
-            <p>Terraform, Pulumi, CDK, Docker, K8s.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-info">change-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Writing / Content</h3>
-            <p>Docs, blogs, technical writing, research.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-warn">terminology-check</span>
-              <span class="badge badge-warn">style-guard</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Marketing / Brand</h3>
-            <p>Brand content, campaigns, social media.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">terminology-check</span>
-              <span class="badge badge-warn">style-guard</span>
-            </div>
-          </div>
-        </div>
+        <p>
+          The single <code>/coherence</code> skill auto-detects your stack and generates SPEC documents and CLAUDE.md content tailored to what you're building. The same hook and agents work across all project types &mdash; what changes is the content of your SPECs, not the tooling.
+        </p>
       </section>
 
       <!-- ============================================ -->
@@ -242,7 +178,7 @@ import Base from '../layouts/Base.astro';
         <div class="contrast-card contrast-with">
           <ul>
             <li>2 commands to install, 1 command to set up</li>
-            <li>Hooks catch violations before they hit disk</li>
+            <li>A nudge hook reminds you when it's time to check for drift</li>
             <li>Agents detect spec drift on demand</li>
             <li>SPEC docs make falsifiable claims &mdash; verifiable, not aspirational</li>
             <li>Architecture participates in code generation, not just code review</li>
@@ -257,56 +193,49 @@ import Base from '../layouts/Base.astro';
             <div class="lifecycle-badge lifecycle-scenario">fresh start</div>
             <div class="lifecycle-detail">
               <strong>New blank repo</strong>
-              <p>You're starting from scratch. Run <code>/coherence:init</code> &mdash; the wizard detects an empty project, asks what you're building, and generates everything. Hooks are active from your very first file.</p>
+              <p>You're starting from scratch. Run <code>/coherence</code> &mdash; it detects an empty project, scaffolds everything (CLAUDE.md, SPEC docs, agents, nudge hook), and you're ready to go.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">existing code</div>
             <div class="lifecycle-detail">
               <strong>Cloned repo (someone else's code)</strong>
-              <p>You've <code>git clone</code>'d a project and want guardrails. Run <code>/coherence:init</code> &mdash; it scans the existing structure (package.json, frameworks, test setup) and generates constraints matched to what's already there. No SPEC files yet &mdash; that's fine. Hooks work immediately. Create SPECs later when you understand the architecture, then use <code>/coherence:check-drift</code> to verify them.</p>
+              <p>You've <code>git clone</code>'d a project and want guardrails. Run <code>/coherence</code> &mdash; it scans the existing structure and scaffolds SPEC docs matched to what's there. Create SPECs when you understand the architecture, then run <code>/coherence</code> again to verify them.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">your project</div>
             <div class="lifecycle-detail">
               <strong>Your own existing repo</strong>
-              <p>You've been building this for a while. Run <code>/coherence:init</code> &mdash; it detects your stack and asks about the boundaries you already know matter. If you already have a <code>.claude/</code> directory, it asks whether to overwrite, merge, or abort. Use <code>--reset</code> to skip the prompt.</p>
-            </div>
-          </div>
-          <div class="lifecycle-step">
-            <div class="lifecycle-badge lifecycle-scenario">first check</div>
-            <div class="lifecycle-detail">
-              <strong>First drift check (no SPECs yet)</strong>
-              <p>You've been developing with hooks active but haven't written SPEC docs. Run <code>/coherence:init</code> again and say "yes" to SPEC generation (Phase 3, Q6). Then run <code>/coherence:check-drift</code> to compare those SPECs against reality. This is your baseline &mdash; fix any gaps the first check surfaces.</p>
+              <p>You've been building this for a while. Run <code>/coherence</code> &mdash; it detects your stack and generates SPECs. If you already have a <code>.claude/</code> directory, it asks whether to overwrite, merge, or abort.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">feature branch</div>
             <div class="lifecycle-detail">
               <strong>Feature branch workflow</strong>
-              <p>Create a branch, build your feature with hooks enforcing constraints throughout. Before merging, run <code>/coherence:check-principles</code> to validate against principles. Run <code>/coherence:check-drift</code> to make sure your changes haven't made SPECs stale. Merge with confidence.</p>
+              <p>Create a branch, build your feature with the nudge hook tracking your progress. Before merging, run <code>/coherence</code> to check drift and <code>/coherence plan</code> to validate your approach. Merge with confidence.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">hotfix</div>
             <div class="lifecycle-detail">
               <strong>Quick fix straight to master</strong>
-              <p>Hooks still run on every edit &mdash; even a quick patch to master gets the same constraint checking. No ceremony needed. If you're making a small change, hooks catch violations inline. Run <code>/coherence:check-principles</code> after if you want extra assurance.</p>
+              <p>The nudge hook still runs on every edit &mdash; even a quick patch to master is tracked. No ceremony needed. Run <code>/coherence</code> after if you want extra assurance.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">worktree</div>
             <div class="lifecycle-detail">
               <strong>Working in a worktree</strong>
-              <p>Worktrees (via Claude Code's <code>/worktree</code> or <code>git worktree</code>) give you an isolated copy of the repo. Your <code>.claude/</code> directory is part of the repo, so hooks and settings travel with the worktree automatically. No extra setup needed &mdash; <code>/coherence:check-drift</code> and <code>/coherence:check-principles</code> work the same in a worktree as in the main tree.</p>
+              <p>Worktrees (via Claude Code's <code>/worktree</code> or <code>git worktree</code>) give you an isolated copy of the repo. Your <code>.claude/</code> directory is part of the repo, so hooks and settings travel with the worktree automatically. <code>/coherence</code> works the same in a worktree as in the main tree.</p>
             </div>
           </div>
           <div class="lifecycle-step">
             <div class="lifecycle-badge lifecycle-scenario">cleanup</div>
             <div class="lifecycle-detail">
               <strong>Removing Coherence from a repo</strong>
-              <p>Use Claude Code's built-in plugin management: <code>/plugin uninstall coherence</code> removes the plugin. To clean up generated files (<code>.claude/hooks/</code>, agents, skills, <code>settings.local.json</code>), delete them directly or ask Claude to help. Use <code>/coherence:status</code> first to see what's installed where.</p>
+              <p>Use Claude Code's built-in plugin management: <code>/plugin uninstall coherence</code> removes the plugin. To clean up generated files (<code>.claude/hooks/</code>, agents, skills, <code>settings.local.json</code>), delete them directly or ask Claude to help.</p>
             </div>
           </div>
         </div>
@@ -326,15 +255,15 @@ import Base from '../layouts/Base.astro';
             <span class="comment"># Install the plugin (accept the default "user" scope)</span><br />
             <span class="prompt">&gt;</span> /plugin install coherence<br />
             <br />
-            <span class="comment"># Run the wizard in any project</span><br />
-            <span class="prompt">&gt;</span> /coherence:init
+            <span class="comment"># Run in any project — auto-detects and scaffolds</span><br />
+            <span class="prompt">&gt;</span> /coherence
           </div>
         </div>
 
         <div class="callout callout-warn">
           <strong>Scope matters.</strong>
           When prompted for a scope, choose <code>user</code> (the default).
-          Coherence is a multi-repo tool &mdash; you install the plugin once at user scope, then run <code>/coherence:init</code> in each project to generate per-project guardrails.
+          Coherence is a multi-repo tool &mdash; you install the plugin once at user scope, then run <code>/coherence</code> in each project to generate per-project guardrails.
           Installing with <code>local</code> scope locks the plugin to a single project. You'll get an "already installed" error when you try to add it to a second repo.
         </div>
 

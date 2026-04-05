@@ -7,9 +7,10 @@ interface Props {
   subtitle?: string;
   date: Date;
   author: string;
+  legacyVersion?: boolean;
 }
 
-const { title, subtitle, date, author } = Astro.props;
+const { title, subtitle, date, author, legacyVersion } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -32,6 +33,13 @@ const formattedDate = date.toLocaleDateString('en-US', {
         <span>{author}</span>
       </div>
     </header>
+    {legacyVersion && (
+      <div class="version-banner">
+        <strong>Earlier version.</strong> This post describes a previous version of Coherence.
+        Since v1.13.0, Coherence uses a single auto-detecting <code>/coherence</code> skill
+        and one informational hook. <a href="/changelog">See the changelog</a>.
+      </div>
+    )}
     <div class="prose">
       <slot />
     </div>
@@ -78,6 +86,32 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
   .meta-sep {
     margin: 0 0.5rem;
+  }
+
+  .version-banner {
+    background: rgba(255, 170, 0, 0.08);
+    border: 1px solid rgba(255, 170, 0, 0.25);
+    border-left: 3px solid var(--amber, #ffa600);
+    border-radius: 0 var(--radius, 8px) var(--radius, 8px) 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .version-banner strong {
+    color: var(--amber, #ffa600);
+  }
+
+  .version-banner code {
+    font-size: 0.85rem;
+  }
+
+  .version-banner a {
+    color: var(--cyan);
   }
 
   @media (max-width: 480px) {

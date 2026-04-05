@@ -1,15 +1,15 @@
 ---
 const agents = [
   {
-    name: 'Architecture Reviewer',
+    name: 'Drift Detector',
     type: 'Review',
-    desc: 'Systematic compliance check against CLAUDE.md principles. Structured report with per-principle status.',
+    desc: 'Compares SPEC documents and SPEC-PRINCIPLES against codebase. Reports CURRENT / DRIFTED / UNDOCUMENTED status.',
     access: 'Read-only',
   },
   {
-    name: 'Drift Detector',
+    name: 'Spec Reviewer',
     type: 'Review',
-    desc: 'Compares SPEC documents against codebase. Reports CURRENT / DRIFTED / UNDOCUMENTED status.',
+    desc: 'Reviews plans and implementation proposals against SPEC constraints. Reports ALIGNED / AT_RISK / VIOLATED.',
     access: 'Read-only',
   },
   {
@@ -32,46 +32,31 @@ const agents = [
   },
 ];
 
-const skills = [
+const modes = [
   {
-    command: '/coherence:init',
-    desc: 'Interactive setup wizard — generates hooks, agents, skills, CLAUDE.md',
+    mode: 'Scaffold',
+    trigger: 'No SPEC files found',
+    desc: 'Generates CLAUDE.md, SPEC docs, hooks, and agents',
   },
   {
-    command: '/coherence:check-principles',
-    desc: 'Check code against the Architectural Principles in your CLAUDE.md',
+    mode: 'Setup',
+    trigger: 'SPECs exist but CLAUDE.md lacks references',
+    desc: 'Wires existing SPECs into your CLAUDE.md',
   },
   {
-    command: '/coherence:check-drift',
-    desc: 'Compare SPEC docs against codebase reality',
+    mode: 'Drift',
+    trigger: 'Default when SPECs exist',
+    desc: 'Compares every SPEC claim against codebase reality',
   },
   {
-    command: '/coherence:test-runner',
-    desc: 'Run tests with flexible scope control',
+    mode: 'Plan Review',
+    trigger: '/coherence plan',
+    desc: 'Reviews plan docs via spec-reviewer agent',
   },
   {
-    command: '/coherence:hook',
-    desc: 'List installed hooks with enforcement levels and status',
-  },
-  {
-    command: '/coherence:spec',
-    desc: 'List SPEC documents with verification metadata',
-  },
-  {
-    command: '/coherence:config',
-    desc: 'Show local project configuration — hooks, agents, skills, SPEC docs',
-  },
-  {
-    command: '/coherence:history',
-    desc: 'View activity log, enable/disable logging',
-  },
-  {
-    command: '/coherence:status',
-    desc: 'Show install state and registered repos',
-  },
-  {
-    command: '/coherence:help',
-    desc: 'Show available skills',
+    mode: 'Fix',
+    trigger: '/coherence fix',
+    desc: 'Drift detection + auto-applies fixes',
   },
 ];
 ---
@@ -80,10 +65,10 @@ const skills = [
   <div class="container">
     <div class="reveal">
       <p class="section-label">Layers 2 & 4</p>
-      <h2 class="section-title">Agents & Skills</h2>
+      <h2 class="section-title">Agents & Modes</h2>
       <p class="section-desc">
         Agents are specialized personas with defined tools and output formats.
-        Skills are named workflows that invoke agents and enforce process.
+        <code>/coherence</code> auto-detects the right mode and invokes the right agents.
       </p>
 
       <div class="agents-grid grid-2">
@@ -98,12 +83,16 @@ const skills = [
         ))}
       </div>
 
-      <h3 class="skills-title">Skills</h3>
-      <div class="skills-list">
-        {skills.map((skill) => (
-          <div class="skill-item">
-            <code class="skill-cmd">{skill.command}</code>
-            <span class="skill-desc">{skill.desc}</span>
+      <h3 class="modes-title">Auto-Detected Modes</h3>
+      <p class="modes-desc">
+        One command — <code>/coherence</code> — examines your project and picks the right mode automatically.
+      </p>
+      <div class="modes-list">
+        {modes.map((m) => (
+          <div class="mode-item">
+            <code class="mode-name">{m.mode}</code>
+            <span class="mode-trigger">{m.trigger}</span>
+            <span class="mode-desc">{m.desc}</span>
           </div>
         ))}
       </div>
@@ -128,21 +117,28 @@ const skills = [
     font-size: 0.95rem;
   }
 
-  .skills-title {
+  .modes-title {
     margin-top: 3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     color: var(--cyan);
   }
 
-  .skills-list {
+  .modes-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modes-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    max-width: 600px;
+    max-width: 700px;
   }
 
-  .skill-item {
-    display: flex;
+  .mode-item {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
     align-items: baseline;
     gap: 1rem;
     padding: 0.75rem 1rem;
@@ -151,16 +147,30 @@ const skills = [
     border: 1px solid var(--bg-surface);
   }
 
-  .skill-cmd {
+  .mode-name {
     font-size: 0.9rem;
     white-space: nowrap;
     color: var(--green);
     background: none;
     padding: 0;
+    font-weight: 600;
   }
 
-  .skill-desc {
+  .mode-trigger {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .mode-desc {
     color: var(--text-secondary);
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .mode-item {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
   }
 </style>

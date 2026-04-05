@@ -9,8 +9,7 @@ This is the template directory. Copy its contents into your project to adopt the
 cp -r template/.claude /path/to/your/project/
 cp template/CLAUDE.md /path/to/your/project/
 mkdir -p /path/to/your/project/docs
-cp template/docs/SPEC-TEMPLATE.md /path/to/your/project/docs/
-cp template/docs/MEMORY.md /path/to/your/project/docs/
+cp template/docs/*.md /path/to/your/project/docs/
 ```
 
 ## Customization Checklist
@@ -24,27 +23,19 @@ Replace all `{{PLACEHOLDER}}` markers with your project's values:
 - `{{DEPLOYMENT}}` — e.g., AWS Lambda, Vercel, Cloudflare, Docker
 - Architectural principles — Edit the 4 principle categories to match your project's boundaries and conventions
 
-### 2. Hooks (5 min per hook)
+### 2. Hook (2 min)
 
-Each hook has a `// === CONFIGURATION ===` block at the top. Edit these constants:
+The single hook has a `// === CONFIGURATION ===` block at the top. Edit these constants:
 
 | Hook | What to Configure |
 |------|-------------------|
-| `forbidden-imports.cjs` | `FORBIDDEN_PATTERNS` — APIs not available in your runtime. `SKIP_PATHS` — Directories exempt from checks. |
-| `required-prefix.cjs` | `REQUIRED_PREFIX` — Your route prefix (e.g., `/api/v1`). `ROUTE_FILE_PATTERNS` — Where routes are defined. |
-| `boundary-guard.cjs` | `GUARDED_PATHS` — Module boundaries to enforce (paths + forbidden patterns). |
-| `data-isolation.cjs` | `DB_CALL_PATTERN` — Your ORM/DB call syntax. `REQUIRED_FILTERS` — Tenant ID field names. |
-| `state-flow.cjs` | `STORE_PATHS`, `UI_PATHS` — Where stores and views live. |
-| `delegation-check.js` | `HANDLER_PATHS` — Where API handlers live. `DB_PATTERNS` — Your DB access patterns. |
-| `test-gate.cjs` | `SOURCE_DIRS` — Directories requiring tests. `TEST_LOCATIONS` — Where tests live. |
-| `test-suggest.cjs` | `TEST_LOCATIONS` — Same as test-gate. `TEST_COMMAND` — Your test runner. |
-| `change-suggest.cjs` | `WATCH_RULES` — Paths to watch and what to suggest. |
+| `spec-drift-nudge.cjs` | `EDITS_THRESHOLD` — Number of edits before nudging (default: 50). `DAYS_THRESHOLD` — Days before nudging (default: 7). `THROTTLE_MS` — Minimum time between nudges (default: 30 min). |
 
 ### 3. Agents (2 min)
 
-The 4 agents are project-agnostic. They reference your CLAUDE.md principles.
+The 5 agents are project-agnostic. They reference your CLAUDE.md principles and SPEC documents.
 
-Optional: Add domain-specific agents (e.g., `inspector-generator.md` for plugin-based architectures).
+Optional: Add domain-specific agents for your project's unique needs.
 
 ### 4. SPEC Documents (10 min per spec)
 
@@ -53,40 +44,25 @@ Copy `docs/SPEC-TEMPLATE.md` for each architectural surface you want to track:
 - `SPEC-DATA-MODELS.md` — All models/schemas
 - `SPEC-FRONTEND.md` — All stores/state
 
-Fill in actual components. Run `/coherence check-drift` to verify.
-
-### 5. Remove Unused Hooks
-
-Not every project needs every hook. Delete hooks that don't apply:
-- No frontend stores? Remove `state-flow.cjs`
-- No route prefix requirement? Remove `required-prefix.cjs`
-- No multi-tenancy? Remove `data-isolation.cjs`
-
-Update `settings.local.json` to remove references to deleted hooks.
+Fill in actual components. Run `/coherence` to verify.
 
 ## What's Included
 
 ```
 .claude/
-├── settings.local.json        # Hook registrations
+├── settings.local.json           # Hook registration
 ├── hooks/
-│   ├── README.md              # Hook protocol documentation
-│   ├── forbidden-imports.cjs  # Block forbidden APIs (blocking)
-│   ├── required-prefix.cjs    # Enforce route prefix (blocking)
-│   ├── boundary-guard.cjs     # Enforce module boundaries (blocking)
-│   ├── data-isolation.cjs     # Warn on unfiltered queries (warning)
-│   ├── state-flow.cjs         # Enforce unidirectional state (blocking/warning)
-│   ├── delegation-check.js    # Warn on inline business logic (warning)
-│   ├── test-gate.cjs          # Block commits without tests (blocking)
-│   ├── test-suggest.cjs       # Suggest running tests (informational)
-│   └── change-suggest.cjs     # Suggest related actions (informational)
+│   ├── README.md                 # Hook protocol documentation
+│   ├── spec-drift-nudge.cjs      # Nudge after 50 edits or 7 days (informational)
+│   └── _journal.cjs              # JSONL activity logging utility
 ├── agents/
-│   ├── README.md              # Agent definition format
-│   ├── architecture-reviewer.md
-│   ├── drift-detector.md
-│   ├── code-reviewer.md
-│   └── security-auditor.md
+│   ├── README.md                 # Agent definition format
+│   ├── drift-detector.md         # Compare SPEC docs vs codebase
+│   ├── spec-reviewer.md          # Review plans against SPEC constraints
+│   ├── code-reviewer.md          # Code quality and security review
+│   ├── consistency-reviewer.md   # Content consistency (terminology, voice)
+│   └── security-auditor.md       # OWASP-focused vulnerability detection
 └── skills/
-    ├── README.md              # Skill format docs
-    └── coherence/SKILL.md     # Unified: init, check-drift, check-principles, test-runner
+    ├── README.md                 # Skill format docs
+    └── coherence/SKILL.md        # Single /coherence skill, auto-detecting
 ```

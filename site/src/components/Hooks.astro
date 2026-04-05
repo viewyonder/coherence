@@ -1,94 +1,46 @@
 ---
-const hooks = [
-  {
-    name: 'forbidden-imports',
-    tier: 'block',
-    desc: 'Block runtime-inappropriate APIs',
-    example: 'require("fs") in a Cloudflare Worker',
-  },
-  {
-    name: 'required-prefix',
-    tier: 'block',
-    desc: 'Enforce route path prefix',
-    example: 'Routes missing /alpha/ prefix',
-  },
-  {
-    name: 'boundary-guard',
-    tier: 'block',
-    desc: 'Enforce module boundaries',
-    example: 'Inspector mutating ticket state',
-  },
-  {
-    name: 'test-gate',
-    tier: 'block',
-    desc: 'Block commits without tests',
-    example: 'git commit with untested source files',
-  },
-  {
-    name: 'data-isolation',
-    tier: 'warn',
-    desc: 'Warn on unfiltered DB queries',
-    example: 'D1 query missing tenant filter',
-  },
-  {
-    name: 'delegation-check',
-    tier: 'warn',
-    desc: 'Warn on inline business logic',
-    example: 'Handler with 50+ lines of logic',
-  },
-  {
-    name: 'test-suggest',
-    tier: 'info',
-    desc: 'Suggest running related tests',
-    example: 'Edited src/foo.ts → run tests/foo.test.ts',
-  },
-  {
-    name: 'change-suggest',
-    tier: 'info',
-    desc: 'Suggest related follow-up actions',
-    example: 'Edited inspector → run benchmarks',
-  },
-  {
-    name: 'state-flow',
-    tier: 'info',
-    desc: 'Enforce unidirectional state flow',
-    example: 'Store setter missing notify()',
-  },
-];
 ---
 
 <section id="hooks">
   <div class="container">
     <div class="reveal">
       <p class="section-label">Layer 1</p>
-      <h2 class="section-title">9 Hooks, 3 Enforcement Tiers</h2>
+      <h2 class="section-title">One Hook, Zero Friction</h2>
       <p class="section-desc">
-        Hooks run before a tool executes. They see the content before it hits disk
-        and can block, warn, or inform.
+        A single informational hook tracks your edits and nudges you to run
+        <code>/coherence</code> when drift is likely. No blocking, no warnings —
+        just a timely reminder.
       </p>
 
-      <div class="hooks-grid">
-        {hooks.map((hook) => (
-          <div class="hook-item">
-            <div class="hook-header">
-              <span class={`badge badge-${hook.tier}`}>{hook.tier}</span>
-              <code class="hook-name">{hook.name}</code>
-            </div>
-            <p class="hook-desc">{hook.desc}</p>
-            <p class="hook-example">{hook.example}</p>
+      <div class="hook-card card">
+        <div class="hook-header">
+          <code class="hook-name">spec-drift-nudge</code>
+          <span class="badge badge-info">informational</span>
+        </div>
+        <p class="hook-desc">
+          Watches for accumulated edits and elapsed time since your last drift check.
+          When either threshold is reached, it nudges you to run <code>/coherence</code>.
+        </p>
+        <div class="hook-thresholds">
+          <div class="threshold">
+            <span class="threshold-value">50</span>
+            <span class="threshold-label">edits</span>
           </div>
-        ))}
+          <div class="threshold-or">or</div>
+          <div class="threshold">
+            <span class="threshold-value">7</span>
+            <span class="threshold-label">days</span>
+          </div>
+          <div class="threshold-then">then nudge</div>
+        </div>
+        <p class="hook-throttle">30-minute throttle between nudges</p>
       </div>
 
       <div class="hook-demo">
-        <p class="demo-label">Example: Boundary guard in action</p>
+        <p class="demo-label">Example: Nudge after threshold</p>
         <div class="hook-output">
-          Inspector boundary violation:<br />
-          1. Direct mutation: <code>ticket.payload = ...</code> — Inspectors return<br />
-          &nbsp;&nbsp;&nbsp;verdicts; they must not mutate ticket state. Return a clip<br />
-          &nbsp;&nbsp;&nbsp;with Verdict.MODIFY and the modified content instead.<br /><br />
-          Principle: "Inspectors return verdicts; Switchboard executes."<br />
-          (CLAUDE.md)
+          53 edits since last drift check (threshold: 50).<br />
+          Consider running <code>/coherence</code> to check for spec drift.
         </div>
       </div>
     </div>
@@ -96,53 +48,83 @@ const hooks = [
 </section>
 
 <style>
-  .hooks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1rem;
-    margin-bottom: 3rem;
-  }
-
-  .hook-item {
-    background: var(--bg-mid);
-    border: 1px solid var(--bg-surface);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    transition: border-color 0.3s;
-  }
-
-  .hook-item:hover {
-    border-color: rgba(0, 255, 240, 0.2);
+  .hook-card {
+    max-width: 550px;
+    margin-bottom: 2rem;
+    border-top: 3px solid var(--amber);
   }
 
   .hook-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .hook-name {
-    font-size: 0.85rem;
+    font-size: 1rem;
     background: none;
     padding: 0;
     color: var(--text-primary);
   }
 
   .hook-desc {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
   }
 
-  .hook-example {
+  .hook-thresholds {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .threshold {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1.25rem;
+    min-width: 80px;
+  }
+
+  .threshold-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--amber);
+  }
+
+  .threshold-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .threshold-or, .threshold-then {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--text-muted);
   }
 
+  .threshold-then {
+    color: var(--cyan);
+  }
+
+  .hook-throttle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
   .hook-demo {
-    max-width: 700px;
+    max-width: 550px;
   }
 
   .demo-label {
@@ -152,8 +134,20 @@ const hooks = [
     margin-bottom: 0.75rem;
   }
 
-  .hook-demo code {
-    background: rgba(255, 68, 68, 0.1);
-    color: var(--red);
+  .hook-output {
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-surface);
+    border-left: 3px solid var(--amber);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .hook-output code {
+    color: var(--cyan);
+    background: rgba(0, 255, 240, 0.08);
   }
 </style>

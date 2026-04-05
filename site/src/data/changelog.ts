@@ -3,6 +3,15 @@
  * Edit the `text` fields to be human-friendly — these are displayed as-is.
  */
 export const changelog = [
+  // --- 2026-04-05 (v1.13.0) ---
+  { date: '2026-04-05', text: 'Consolidate 10 skills into 1 auto-detecting /coherence skill with modes: Scaffold, Setup, Drift, Plan Review, Fix' },
+  { date: '2026-04-05', text: 'Replace 11 enforcement hooks with 1 informational spec-drift-nudge hook + 1 utility (_journal.cjs)' },
+  { date: '2026-04-05', text: 'Remove architecture-reviewer agent, add spec-reviewer agent' },
+  { date: '2026-04-05', text: 'Remove project archetypes and per-type hook selection — single hook works for all projects' },
+  { date: '2026-04-05', text: 'Remove enforcement tiers (block/warn/info) — all feedback is now informational nudges' },
+  { date: '2026-04-05', text: 'Add SPEC-PRINCIPLES.md template for documenting architectural principles' },
+  { date: '2026-04-05', text: 'Update all site pages, components, and FAQs to reflect the simplified architecture' },
+
   // --- 2026-03-05 (v1.11.0) ---
   { date: '2026-03-05', text: 'Remove /coherence:uninstall skill — uninstalling is now handled through Claude Code\'s built-in plugin management UI' },
   { date: '2026-03-05', text: 'Split plugin into individual /coherence:* skills (colon syntax replaces space-separated sub-commands for plugin users)' },

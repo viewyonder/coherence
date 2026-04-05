@@ -2,16 +2,16 @@
 const layers = [
   {
     name: 'Hooks',
-    icon: '⛔',
-    desc: 'Enforce known constraints at the moment of creation. Block, warn, or inform.',
-    when: 'Every file edit / write / commit',
-    color: 'var(--red)',
+    icon: '💡',
+    desc: 'Nudge when it\'s time for a drift check. Informational, never blocking.',
+    when: 'PostToolUse on edits and writes',
+    color: 'var(--amber)',
   },
   {
     name: 'Agents',
     icon: '🔍',
     desc: 'Detect drift and review architecture. Read-only investigation and reporting.',
-    when: 'On demand via skills',
+    when: 'Invoked by /coherence or directly',
     color: 'var(--amber)',
   },
   {
@@ -24,7 +24,7 @@ const layers = [
   {
     name: 'Skills',
     icon: '⚡',
-    desc: 'Multi-step workflows with compliance built in. Architecture by construction.',
+    desc: 'Single auto-detecting entry point. Scaffolds, detects drift, reviews plans, and applies fixes.',
     when: 'User-invoked (/coherence)',
     color: 'var(--cyan)',
   },

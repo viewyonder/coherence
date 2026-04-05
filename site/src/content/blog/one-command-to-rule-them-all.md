@@ -4,6 +4,7 @@ subtitle: "Why we consolidated four slash commands into /coherence with sub-comm
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — Four separate slash commands meant four things to remember and no way to discover them from the inside. We consolidated everything under `/coherence` with sub-commands — one entry point, self-documenting, and a single generated skill file instead of three.

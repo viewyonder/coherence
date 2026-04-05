@@ -12,7 +12,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What happens if I already have a .claude/ directory?",
-    answer: `The <code>/coherence</code> wizard detects existing <code>.claude/</code> directories and asks whether to <strong>overwrite</strong>, <strong>merge</strong>, or <strong>abort</strong>. Your existing settings and hooks are never silently replaced. Use <code>/coherence --reset</code> to skip the prompt and do a clean overwrite.`,
+    answer: `<code>/coherence</code> detects existing <code>.claude/</code> directories and asks whether to <strong>overwrite</strong>, <strong>merge</strong>, or <strong>abort</strong>. Your existing settings and hooks are never silently replaced. Use <code>/coherence scaffold</code> to force a fresh scaffold.`,
     tags: ["general"],
   },
   {
@@ -21,13 +21,13 @@ export const faqs: FAQ[] = [
     tags: ["general", "plugins"],
   },
   {
-    question: "Which hooks does my project type get?",
-    answer: `It depends on your project archetype. Web apps get <code>forbidden-imports</code>, <code>boundary-guard</code>, <code>state-flow</code>, and more. APIs get <code>data-isolation</code> and <code>required-prefix</code>. Writing projects get <code>terminology-check</code> and <code>style-guard</code>. The <code>/coherence</code> wizard selects the right set based on your stack.`,
+    question: "What does the hook do?",
+    answer: `Coherence ships a single hook: <code>spec-drift-nudge</code>. It tracks how many edits have been made and how long since the last drift check. After 50 edits or 7 days, it nudges you to run <code>/coherence</code>. It's purely informational — it never blocks or warns.`,
     tags: ["hooks"],
   },
   {
-    question: "Are hooks blocking or advisory?",
-    answer: `Both. Hooks use three enforcement levels: <strong>blocking</strong> (prevents the edit entirely), <strong>warning</strong> (edit proceeds but Claude sees a warning), and <strong>informational</strong> (suggestions that don't interrupt workflow). You control the level for each hook in the <code>// === CONFIGURATION ===</code> block.`,
+    question: "Does Coherence block my edits?",
+    answer: `No. The single hook is purely informational — it nudges you to run <code>/coherence</code> when enough edits have accumulated, but it never prevents any edit from proceeding. All enforcement happens through SPEC documents and agents, which you invoke on demand.`,
     tags: ["hooks"],
   },
   {
@@ -37,7 +37,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "Can I create custom hooks?",
-    answer: `Yes. Hooks are standalone Node.js scripts (<code>.cjs</code>) that read JSON from stdin and output a decision. Create a new <code>.cjs</code> file in <code>.claude/hooks/</code>, add a <code>// === CONFIGURATION ===</code> block at the top, and register it in <code>settings.local.json</code>. No external dependencies needed.`,
+    answer: `Yes. Hooks are standalone Node.js scripts (<code>.cjs</code>) that read JSON from stdin and output a decision. Coherence ships one hook (<code>spec-drift-nudge</code>), but you can add your own. Create a <code>.cjs</code> file in <code>.claude/hooks/</code> and register it in <code>settings.local.json</code>. No external dependencies needed.`,
     tags: ["hooks"],
   },
   {

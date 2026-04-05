@@ -4,6 +4,7 @@ subtitle: "A new /coherence history sub-command that logs hook decisions and let
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — Guardrails that can't prove they ran are guardrails that get questioned. Coherence hooks now log every BLOCK and WARN decision, and `/coherence history` surfaces the patterns — so you can tell whether your hooks are doing real work or just creating noise.

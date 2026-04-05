@@ -21,7 +21,7 @@ import BottomCTA from '../components/BottomCTA.astro';
         <li><a href="#marketplace">1. Add the marketplace</a></li>
         <li><a href="#install">2. Install the plugin</a></li>
         <li><a href="#restart">3. Restart Claude Code</a></li>
-        <li><a href="#init">4. Run /coherence:init</a></li>
+        <li><a href="#init">4. Run /coherence</a></li>
         <li><a href="#other-sessions">5. Other sessions</a></li>
         <li><a href="#other-repos">6. A different repo</a></li>
         <li><a href="#teammates">7. Teammates</a></li>
@@ -138,7 +138,7 @@ import BottomCTA from '../components/BottomCTA.astro';
 
       <!-- ============================================ -->
       <section id="init" class="guide-section">
-        <h2>4. Run <code>/coherence:init</code></h2>
+        <h2>4. Run <code>/coherence</code></h2>
         <p class="scope-tag"><span class="scope-badge scope-badge-project">PROJECT</span> scope</p>
 
         <div class="terminal">
@@ -149,7 +149,7 @@ import BottomCTA from '../components/BottomCTA.astro';
             <span class="terminal-title">Claude Code</span>
           </div>
           <div class="terminal-body">
-            <span class="prompt">&gt;</span> /coherence:init
+            <span class="prompt">&gt;</span> /coherence
           </div>
         </div>
 
@@ -172,7 +172,7 @@ import BottomCTA from '../components/BottomCTA.astro';
         <p>If you open a second terminal in the same repo:</p>
 
         <ul class="check-list">
-          <li><strong>Plugin skills</strong> (<code>/coherence:check-drift</code>, etc.) work immediately if the plugin is installed and that session has loaded it (started after steps 2&ndash;3).</li>
+          <li><strong>The plugin skill</strong> (<code>/coherence</code>) works immediately if the plugin is installed and that session has loaded it (started after steps 2&ndash;3).</li>
           <li><strong>Hooks</strong> activate automatically &mdash; they're registered in <code>.claude/settings.local.json</code>, which every session reads from the repo.</li>
           <li><strong>If skills are missing</strong>, restart that session. The plugin registry is loaded at session start.</li>
         </ul>
@@ -183,9 +183,9 @@ import BottomCTA from '../components/BottomCTA.astro';
         <h2>6. A Different Repo</h2>
 
         <p>
-          The plugin is installed at user scope, so <code>/coherence:init</code>,
-          <code>/coherence:help</code>, and other plugin skills are available in any repo.
-          But no hooks, agents, or SPEC docs exist until you run <code>/coherence:init</code>
+          The plugin is installed at user scope, so <code>/coherence</code>
+          is available in any repo.
+          But no hooks, agents, or SPEC docs exist until you run <code>/coherence</code>
           in that repo.
         </p>
       </section>
@@ -197,7 +197,7 @@ import BottomCTA from '../components/BottomCTA.astro';
         <p>
           Teammates install the plugin independently (steps 1&ndash;3). If your team commits
           the <code>.claude/</code> directory, they get hooks and agents immediately. If
-          <code>.claude/</code> is gitignored, each teammate runs <code>/coherence:init</code>
+          <code>.claude/</code> is gitignored, each teammate runs <code>/coherence</code>
           in their own checkout.
         </p>
         <p>
@@ -231,7 +231,7 @@ import BottomCTA from '../components/BottomCTA.astro';
                 <td>Loads updated plugin registry</td>
               </tr>
               <tr>
-                <td><code>/coherence:init</code></td>
+                <td><code>/coherence</code></td>
                 <td><span class="scope-badge scope-badge-project">PROJECT</span></td>
                 <td>Creates <code>.claude/</code>, <code>CLAUDE.md</code>, <code>docs/</code> &mdash; this repo only</td>
               </tr>
@@ -268,14 +268,14 @@ import BottomCTA from '../components/BottomCTA.astro';
 
           <div class="faq-item">
             <h3>"I ran init in one repo but my other project doesn't have hooks."</h3>
-            <p><code>/coherence:init</code> is project-scoped. Run it in each repo that needs Coherence.</p>
+            <p><code>/coherence</code> is project-scoped. Run it in each repo that needs Coherence.</p>
           </div>
 
           <div class="faq-item">
             <h3>"Should I install as user scope or project scope?"</h3>
             <p>
               User scope (the default). This makes plugin skills available everywhere.
-              The project-specific files are created by <code>/coherence:init</code>,
+              The project-specific files are created by <code>/coherence</code>,
               not by the plugin install.
             </p>
           </div>

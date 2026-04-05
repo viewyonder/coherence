@@ -4,6 +4,7 @@ subtitle: "Why we renamed check-architecture to check-principles — and what th
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — We renamed `check-architecture` to `check-principles` — one string, 18 files, zero behavioral change. Why bother? Because in a system where the command name *is* the interface, a misleading name sends users to the wrong tool. Drift detection is forensic; principles checking is evaluative. The old name hid that distinction.

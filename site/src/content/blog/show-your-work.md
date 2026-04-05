@@ -4,6 +4,7 @@ subtitle: "Two new /coherence sub-commands that answer 'what's installed?' witho
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — If you can't see what's installed without reading JSON, you'll eventually forget what you have. Two new read-only sub-commands — `/coherence hook` and `/coherence spec` — show your active hooks and SPEC documents at a glance, including orphans and missing files.

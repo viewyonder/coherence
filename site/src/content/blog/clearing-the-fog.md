@@ -4,6 +4,7 @@ subtitle: "How ten skills answer the four questions every AI-assisted project ev
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — Fast tooling that doesn't report back creates fog, not velocity. Coherence's ten skills aren't a feature list — they're an instrument panel answering four questions: *Where am I? What do I have? What happened? Am I still on track?* Here's how they fit together.

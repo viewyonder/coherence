@@ -4,6 +4,7 @@ subtitle: "A new /coherence config sub-command that shows everything installed i
 date: 2026-03-03
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — "What does my Coherence setup actually look like?" One command, one view. `/coherence config` cross-references hook files against `settings.local.json`, surfaces orphans and missing registrations, and shows every agent, skill, and SPEC document in your project.

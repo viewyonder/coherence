@@ -31,9 +31,9 @@ import Base from '../layouts/Base.astro';
         <div class="path-badge path-badge-recommended">Recommended</div>
         <h2>Install</h2>
         <p>
-          The Coherence plugin adds <code>/coherence:*</code> skills to Claude Code.
-          It scans your project, asks a few questions, and generates a complete guardrails system —
-          hooks, agents, skills, <code>CLAUDE.md</code>, and <code>settings.local.json</code> —
+          The Coherence plugin adds a single <code>/coherence</code> skill to Claude Code.
+          It auto-detects your project state and generates a complete guardrails system —
+          <code>CLAUDE.md</code>, SPEC docs, agents, and a nudge hook —
           customized to your stack.
         </p>
 
@@ -66,12 +66,12 @@ import Base from '../layouts/Base.astro';
         <div class="callout callout-warn">
           <strong>Use user scope (the default).</strong>
           When Claude Code prompts you for a scope, choose <code>user</code> — or just press Enter to accept the default.
-          Coherence is designed to work across all your projects: you install the plugin once, then run <code>/coherence:init</code> in each repo to generate project-specific guardrails.
+          Coherence is designed to work across all your projects: you install the plugin once, then run <code>/coherence</code> in each repo to generate project-specific guardrails.
           If you install with <code>local</code> scope, the plugin is locked to a single project and you'll get an "already installed" error when you try to install it elsewhere.
           See <a href="/plugins#installing">Plugin scopes</a> for details.
         </div>
 
-        <h3>3. Run <code>/coherence:init</code></h3>
+        <h3>3. Run <code>/coherence</code></h3>
         <p>Open Claude Code in your project and run:</p>
         <div class="terminal">
           <div class="terminal-header">
@@ -81,76 +81,44 @@ import Base from '../layouts/Base.astro';
             <span class="terminal-title">Claude Code</span>
           </div>
           <div class="terminal-body">
-            <span class="prompt">&gt;</span> /coherence:init
+            <span class="prompt">&gt;</span> /coherence
           </div>
         </div>
 
-        <h3>4. Answer the questions</h3>
+        <h3>4. Auto-detect in action</h3>
         <p>
-          The wizard runs in 7 phases. Most projects need 5-8 answers total.
+          Coherence examines your project and picks the right mode automatically.
         </p>
 
         <div class="phase-list">
           <div class="phase">
-            <div class="phase-num">0</div>
-            <div class="phase-detail">
-              <strong>Project Scan</strong>
-              <span class="phase-auto">automatic</span>
-              <p>Detects your language, framework, test runner, package manager, and project structure. No input needed.</p>
-            </div>
-          </div>
-          <div class="phase">
             <div class="phase-num">1</div>
             <div class="phase-detail">
-              <strong>Project Classification</strong>
-              <span class="phase-questions">1-2 questions</span>
-              <p>Confirms your project type (web app, API, CLI, infrastructure, writing, marketing, research) and stack details.</p>
+              <strong>Detect</strong>
+              <span class="phase-auto">automatic</span>
+              <p>Scans for existing SPEC files, CLAUDE.md references, language, framework, and project structure. Determines whether to scaffold, set up, or check drift.</p>
             </div>
           </div>
           <div class="phase">
             <div class="phase-num">2</div>
             <div class="phase-detail">
-              <strong>Constraint Discovery</strong>
-              <span class="phase-questions">2-3 questions</span>
-              <p>Asks about architectural boundaries, runtime constraints, data isolation, or content rules — depending on your project type.</p>
+              <strong>Confirm</strong>
+              <span class="phase-questions">review</span>
+              <p>Shows what it plans to do. Nothing is written until you confirm.</p>
             </div>
           </div>
           <div class="phase">
             <div class="phase-num">3</div>
             <div class="phase-detail">
-              <strong>Enforcement Preferences</strong>
-              <span class="phase-questions">1-2 questions</span>
-              <p>How strict should enforcement be? Should SPEC documents be generated?</p>
-            </div>
-          </div>
-          <div class="phase">
-            <div class="phase-num">4</div>
-            <div class="phase-detail">
-              <strong>Summary &amp; Confirmation</strong>
-              <span class="phase-auto">review</span>
-              <p>Shows exactly what files will be created. Nothing is written until you confirm.</p>
-            </div>
-          </div>
-          <div class="phase">
-            <div class="phase-num">5</div>
-            <div class="phase-detail">
-              <strong>Generate</strong>
+              <strong>Execute</strong>
               <span class="phase-auto">automatic</span>
-              <p>Writes all files — hooks, agents, skills, CLAUDE.md, settings — customized to your project.</p>
-            </div>
-          </div>
-          <div class="phase">
-            <div class="phase-num">6</div>
-            <div class="phase-detail">
-              <strong>Verify</strong>
-              <span class="phase-auto">automatic</span>
-              <p>Syntax-checks every hook, cross-references settings, confirms no placeholder markers remain.</p>
+              <p>Writes all files — CLAUDE.md, SPEC docs, agents, nudge hook, and settings — customized to your project.</p>
             </div>
           </div>
         </div>
 
         <div class="callout">
-          <strong>Idempotent.</strong> If you already have a <code>.claude/</code> directory, the wizard will ask whether to overwrite, merge, or abort. Use <code>/coherence:init --reset</code> to skip the prompt and overwrite.
+          <strong>Idempotent.</strong> If you already have a <code>.claude/</code> directory, Coherence asks whether to overwrite, merge, or abort. Use <code>/coherence scaffold</code> to force a fresh scaffold.
         </div>
       </section>
 
@@ -212,7 +180,7 @@ import Base from '../layouts/Base.astro';
             <h3>5. Create your first SPEC</h3>
             <p>
               Copy a SPEC template from <code>docs/</code>, fill in your actual components,
-              and run <code>/coherence:check-drift</code> to verify.
+              and run <code>/coherence</code> to verify.
             </p>
           </div>
         </details>
@@ -228,22 +196,22 @@ import Base from '../layouts/Base.astro';
 
         <div class="flow-diagram">
           <div class="flow-step">
-            <div class="flow-label">You (or Claude) edit a file</div>
+            <div class="flow-label">You (or Claude) edit files</div>
           </div>
           <div class="flow-arrow">&darr;</div>
           <div class="flow-step">
-            <div class="flow-label">Hooks run automatically</div>
-            <div class="flow-detail">Block violations, warn about concerns, suggest tests</div>
+            <div class="flow-label">Nudge hook tracks edits</div>
+            <div class="flow-detail">After 50 edits or 7 days, nudges you to check for drift</div>
           </div>
           <div class="flow-arrow">&darr;</div>
           <div class="flow-step">
-            <div class="flow-label">Claude sees the feedback inline</div>
-            <div class="flow-detail">Blocked edits are rejected. Warnings appear in context.</div>
+            <div class="flow-label">Run <code>/coherence</code></div>
+            <div class="flow-detail">Agents scan the full codebase against SPEC docs and principles</div>
           </div>
           <div class="flow-arrow">&darr;</div>
           <div class="flow-step">
-            <div class="flow-label">On demand: run <code>/coherence check-drift</code> or <code>/coherence check-principles</code></div>
-            <div class="flow-detail">Agents scan the full codebase against SPEC docs and principles.</div>
+            <div class="flow-label">Fix any drift found</div>
+            <div class="flow-detail">Or run <code>/coherence fix</code> to auto-apply corrections</div>
           </div>
         </div>
       </section>
@@ -260,95 +228,31 @@ import Base from '../layouts/Base.astro';
           <div class="file-tree-header">your-project/</div>
           <div class="file-tree-item depth-0"><span class="file-icon">&#128196;</span> CLAUDE.md <span class="file-desc">— project guidelines, populated</span></div>
           <div class="file-tree-item depth-0"><span class="file-icon">&#128193;</span> .claude/</div>
-          <div class="file-tree-item depth-1"><span class="file-icon">&#9881;</span> settings.local.json <span class="file-desc">— hook registrations</span></div>
+          <div class="file-tree-item depth-1"><span class="file-icon">&#9881;</span> settings.local.json <span class="file-desc">— hook registration</span></div>
           <div class="file-tree-item depth-1"><span class="file-icon">&#128193;</span> hooks/</div>
-          <div class="file-tree-item depth-2">forbidden-imports.cjs <span class="file-desc">— block wrong-runtime APIs</span></div>
-          <div class="file-tree-item depth-2">boundary-guard.cjs <span class="file-desc">— enforce module boundaries</span></div>
-          <div class="file-tree-item depth-2">test-suggest.cjs <span class="file-desc">— nudge toward testing</span></div>
-          <div class="file-tree-item depth-2"><span class="file-muted">...more based on project type</span></div>
+          <div class="file-tree-item depth-2">spec-drift-nudge.cjs <span class="file-desc">— nudge after 50 edits or 7 days</span></div>
+          <div class="file-tree-item depth-2">_journal.cjs <span class="file-desc">— JSONL activity logging utility</span></div>
           <div class="file-tree-item depth-1"><span class="file-icon">&#128193;</span> agents/</div>
-          <div class="file-tree-item depth-2">architecture-reviewer.md <span class="file-desc">— validate against principles</span></div>
-          <div class="file-tree-item depth-2">drift-detector.md <span class="file-desc">— compare spec vs code</span></div>
+          <div class="file-tree-item depth-2">drift-detector.md <span class="file-desc">— compare SPEC vs code</span></div>
+          <div class="file-tree-item depth-2">spec-reviewer.md <span class="file-desc">— review plans against SPECs</span></div>
+          <div class="file-tree-item depth-2"><span class="file-muted">+ code-reviewer, consistency-reviewer, security-auditor</span></div>
           <div class="file-tree-item depth-1"><span class="file-icon">&#128193;</span> skills/</div>
-          <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> coherence/ <span class="file-desc">— /coherence command + sub-commands</span></div>
-          <div class="file-tree-item depth-3 file-muted">init &middot; check-principles &middot; check-drift &middot; test-runner &middot; status &middot; help</div>
+          <div class="file-tree-item depth-2"><span class="file-icon">&#128193;</span> coherence/ <span class="file-desc">— single /coherence skill, auto-detecting</span></div>
+          <div class="file-tree-item depth-0"><span class="file-icon">&#128193;</span> docs/</div>
+          <div class="file-tree-item depth-1">SPEC-PRINCIPLES.md <span class="file-desc">— architectural principles</span></div>
+          <div class="file-tree-item depth-1">SPEC-TEMPLATE.md <span class="file-desc">— template for project-specific SPECs</span></div>
         </div>
       </section>
 
       <!-- ============================================ -->
       <section id="project-types" class="guide-section">
-        <h2>Supported Project Types</h2>
+        <h2>Works with Any Project</h2>
         <p>
-          <code>/coherence:init</code> adapts its output based on your project type.
-          Each archetype generates different hooks, agents, and CLAUDE.md sections.
+          <code>/coherence</code> auto-detects your language, framework, and project structure.
+          It generates SPEC documents and CLAUDE.md content tailored to your stack —
+          whether you're building a web app, API, CLI, infrastructure, or writing content.
+          The same single hook and agents work across all project types.
         </p>
-
-        <div class="archetype-grid">
-          <div class="archetype-card card">
-            <h3>Web Application</h3>
-            <p>React, Next.js, Vue, Svelte, Astro, etc.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">state-flow</span>
-              <span class="badge badge-warn">delegation-check</span>
-              <span class="badge badge-info">test-suggest</span>
-              <span class="badge badge-info">change-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>API / Backend</h3>
-            <p>Express, FastAPI, Rails, Spring, etc.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">required-prefix</span>
-              <span class="badge badge-warn">data-isolation</span>
-              <span class="badge badge-warn">delegation-check</span>
-              <span class="badge badge-info">test-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>CLI / Library</h3>
-            <p>npm packages, CLIs, crates, pip packages.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-block">test-gate</span>
-              <span class="badge badge-info">test-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Infrastructure</h3>
-            <p>Terraform, Pulumi, CDK, Docker, K8s.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">forbidden-imports</span>
-              <span class="badge badge-block">boundary-guard</span>
-              <span class="badge badge-info">change-suggest</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Writing / Content</h3>
-            <p>Docs, blogs, technical writing, research.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-warn">terminology-check</span>
-              <span class="badge badge-warn">style-guard</span>
-            </div>
-          </div>
-
-          <div class="archetype-card card">
-            <h3>Marketing / Brand</h3>
-            <p>Brand content, campaigns, social media.</p>
-            <div class="archetype-hooks">
-              <span class="badge badge-block">terminology-check</span>
-              <span class="badge badge-warn">style-guard</span>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- ============================================ -->
@@ -357,20 +261,16 @@ import Base from '../layouts/Base.astro';
 
         <div class="next-steps-list">
           <div class="next-step">
-            <code>/coherence:check-principles</code>
-            <p>Check your code against the principles defined in the <code>## Architectural Principles</code> section of your <code>CLAUDE.md</code>. Run any time &mdash; after setup, after changes, or as a periodic audit. To update your principles, edit that section directly.</p>
+            <code>/coherence</code>
+            <p>Run any time to check for drift. Coherence compares every SPEC claim against your codebase and reports what's current, drifted, or undocumented.</p>
           </div>
           <div class="next-step">
-            <code>/coherence:check-drift</code>
-            <p>After creating SPEC documents, run this to verify they match reality.</p>
+            <code>/coherence plan</code>
+            <p>Before implementing a plan, run this to review it against your SPEC constraints.</p>
           </div>
           <div class="next-step">
-            <code>/coherence:status</code>
-            <p>See where Coherence is installed, check for stale registry entries, and verify global config.</p>
-          </div>
-          <div class="next-step">
-            <span class="next-step-label">Review hook configs</span>
-            <p>Open each <code>.cjs</code> file and check the <code>// === CONFIGURATION ===</code> block. Tweak patterns, paths, and thresholds for your project.</p>
+            <code>/coherence fix</code>
+            <p>Drift detection plus auto-apply — fixes issues it finds without manual intervention.</p>
           </div>
           <div class="next-step">
             <span class="next-step-label">Edit CLAUDE.md</span>

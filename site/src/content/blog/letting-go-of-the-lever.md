@@ -4,6 +4,7 @@ subtitle: "Why we removed /coherence uninstall and embraced Claude Code's native
 date: 2026-03-05
 author: "Injectionator"
 draft: false
+legacyVersion: true
 ---
 
 > **TL;DR** — We built a thorough, well-designed uninstall command — and then deleted it. Destructive operations shouldn't be interpreted by an LLM when the platform already handles them deterministically. Skills are for judgment; plumbing should be mechanical.

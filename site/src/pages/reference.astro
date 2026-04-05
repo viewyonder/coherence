@@ -52,25 +52,19 @@ import BottomCTA from '../components/BottomCTA.astro';
           </table>
         </div>
 
-        <h3>Plugin Skills <span class="count-badge">10 skills</span></h3>
-        <p>Each skill lives in <code>plugins/coherence-plugin/skills/&lt;name&gt;/SKILL.md</code>.</p>
+        <h3>Plugin Skill <span class="count-badge">1 skill</span></h3>
+        <p>Lives in <code>plugins/coherence-plugin/skills/coherence/SKILL.md</code>.</p>
 
         <div class="ref-table-wrap">
           <table class="ref-table">
             <thead>
-              <tr><th>Skill</th><th>Command</th><th>Purpose</th></tr>
+              <tr><th>Command</th><th>Mode</th><th>Purpose</th></tr>
             </thead>
             <tbody>
-              <tr><td>init</td><td><code>/coherence:init</code></td><td>Scaffold a project</td></tr>
-              <tr><td>check-principles</td><td><code>/coherence:check-principles</code></td><td>Validate CLAUDE.md principles</td></tr>
-              <tr><td>check-drift</td><td><code>/coherence:check-drift</code></td><td>Detect architectural drift</td></tr>
-              <tr><td>test-runner</td><td><code>/coherence:test-runner</code></td><td>Run tests with compliance checks</td></tr>
-              <tr><td>hook</td><td><code>/coherence:hook</code></td><td>Manage hooks</td></tr>
-              <tr><td>spec</td><td><code>/coherence:spec</code></td><td>Manage SPEC documents</td></tr>
-              <tr><td>config</td><td><code>/coherence:config</code></td><td>View/edit configuration</td></tr>
-              <tr><td>history</td><td><code>/coherence:history</code></td><td>View activity log</td></tr>
-              <tr><td>status</td><td><code>/coherence:status</code></td><td>Show installation status</td></tr>
-              <tr><td>help</td><td><code>/coherence:help</code></td><td>Usage reference</td></tr>
+              <tr><td><code>/coherence</code></td><td>Auto-detect</td><td>Detects project state and runs the appropriate mode</td></tr>
+              <tr><td><code>/coherence plan</code></td><td>Plan Review</td><td>Review plans against SPEC constraints via spec-reviewer agent</td></tr>
+              <tr><td><code>/coherence fix</code></td><td>Fix</td><td>Drift detection + auto-apply corrections</td></tr>
+              <tr><td><code>/coherence scaffold</code></td><td>Scaffold</td><td>Force scaffold mode (fresh setup)</td></tr>
             </tbody>
           </table>
         </div>
@@ -80,10 +74,10 @@ import BottomCTA from '../components/BottomCTA.astro';
       <section id="template-files" class="guide-section">
         <h2>Template Files</h2>
         <p>
-          Source templates that <code>/coherence:init</code> copies and customizes into user projects.
+          Source templates that <code>/coherence</code> copies and customizes into user projects.
         </p>
 
-        <h3>Hooks <span class="count-badge">11 hooks + 1 utility</span></h3>
+        <h3>Hooks <span class="count-badge">1 hook + 1 utility</span></h3>
         <p>Located in <code>template/.claude/hooks/</code>.</p>
 
         <div class="ref-table-wrap">
@@ -92,18 +86,8 @@ import BottomCTA from '../components/BottomCTA.astro';
               <tr><th>File</th><th>Type</th><th>Purpose</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>_log.cjs</code></td><td><span class="badge badge-util">utility</span></td><td>Shared logging helper (not a hook itself)</td></tr>
-              <tr><td><code>forbidden-imports.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Prevents use of banned imports/packages</td></tr>
-              <tr><td><code>required-prefix.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Enforces file path prefixes for new files</td></tr>
-              <tr><td><code>boundary-guard.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Blocks cross-boundary imports between layers</td></tr>
-              <tr><td><code>test-gate.cjs</code></td><td><span class="badge badge-block">block</span></td><td>Requires tests before allowing certain changes</td></tr>
-              <tr><td><code>data-isolation.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on direct DB access outside data layer</td></tr>
-              <tr><td><code>delegation-check.js</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns when tasks should be delegated to agents</td></tr>
-              <tr><td><code>style-guard.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on style/convention violations</td></tr>
-              <tr><td><code>terminology-check.cjs</code></td><td><span class="badge badge-warn">warn</span></td><td>Warns on use of non-standard terminology</td></tr>
-              <tr><td><code>test-suggest.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Suggests tests for changed code</td></tr>
-              <tr><td><code>change-suggest.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Suggests related changes</td></tr>
-              <tr><td><code>state-flow.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Reports state transition information</td></tr>
+              <tr><td><code>spec-drift-nudge.cjs</code></td><td><span class="badge badge-info">info</span></td><td>Nudges after 50 edits or 7 days without a drift check</td></tr>
+              <tr><td><code>_journal.cjs</code></td><td><span class="badge badge-util">utility</span></td><td>JSONL activity logging (not a hook itself)</td></tr>
             </tbody>
           </table>
         </div>
@@ -117,11 +101,11 @@ import BottomCTA from '../components/BottomCTA.astro';
               <tr><th>File</th><th>Purpose</th></tr>
             </thead>
             <tbody>
+              <tr><td><code>drift-detector.md</code></td><td>Compares SPEC docs + SPEC-PRINCIPLES against code</td></tr>
+              <tr><td><code>spec-reviewer.md</code></td><td>Reviews plans against SPEC constraints</td></tr>
               <tr><td><code>code-reviewer.md</code></td><td>General code review</td></tr>
               <tr><td><code>consistency-reviewer.md</code></td><td>Cross-file consistency checks</td></tr>
               <tr><td><code>security-auditor.md</code></td><td>Security vulnerability scanning</td></tr>
-              <tr><td><code>architecture-reviewer.md</code></td><td>Architecture compliance review</td></tr>
-              <tr><td><code>drift-detector.md</code></td><td>Detects drift from SPEC documents</td></tr>
             </tbody>
           </table>
         </div>
@@ -136,7 +120,7 @@ import BottomCTA from '../components/BottomCTA.astro';
             <tbody>
               <tr><td><code>template/CLAUDE.md</code></td><td>Project instructions with <code>{"{{PLACEHOLDER}}"}</code> markers</td></tr>
               <tr><td><code>template/.claude/.gitignore</code></td><td>Gitignore for <code>.claude/</code> directory</td></tr>
-              <tr><td><code>template/.claude/skills/coherence/SKILL.md</code></td><td>Monolithic dispatcher (<code>/coherence &lt;sub-command&gt;</code>)</td></tr>
+              <tr><td><code>template/.claude/skills/coherence/SKILL.md</code></td><td>Auto-detecting entry point (<code>/coherence</code>)</td></tr>
               <tr><td><code>template/docs/SPEC-TEMPLATE.md</code></td><td>Blank SPEC document template</td></tr>
               <tr><td><code>template/docs/MEMORY.md</code></td><td>Memory document template</td></tr>
             </tbody>
@@ -148,7 +132,7 @@ import BottomCTA from '../components/BottomCTA.astro';
       <section id="project-files" class="guide-section">
         <h2>Per-Project Files</h2>
         <p>
-          Created by <code>/coherence:init</code> in the user's project repository.
+          Created by <code>/coherence</code> in the user's project repository.
         </p>
 
         <div class="ref-table-wrap">
@@ -157,10 +141,10 @@ import BottomCTA from '../components/BottomCTA.astro';
               <tr><th>File / Directory</th><th>Purpose</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>.claude/settings.local.json</code></td><td>Hook registrations (PreToolUse/PostToolUse matchers)</td></tr>
-              <tr><td><code>.claude/hooks/</code></td><td>Selected hooks, customized with project-specific config</td></tr>
+              <tr><td><code>.claude/settings.local.json</code></td><td>Hook registration (PostToolUse matcher for spec-drift-nudge)</td></tr>
+              <tr><td><code>.claude/hooks/</code></td><td>spec-drift-nudge hook and _journal utility</td></tr>
               <tr><td><code>.claude/agents/</code></td><td>Agent definitions</td></tr>
-              <tr><td><code>.claude/skills/coherence/SKILL.md</code></td><td>Monolithic dispatcher skill</td></tr>
+              <tr><td><code>.claude/skills/coherence/SKILL.md</code></td><td>Auto-detecting /coherence skill</td></tr>
               <tr><td><code>.claude/.gitignore</code></td><td>Keeps generated files out of version control</td></tr>
               <tr><td><code>CLAUDE.md</code></td><td>Filled-in project instructions (placeholders replaced)</td></tr>
               <tr><td><code>docs/SPEC-*.md</code></td><td>Optional SPEC documents defining architectural constraints</td></tr>
